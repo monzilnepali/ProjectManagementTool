@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import java.lang.String?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+
+<StackPane fx:id="rootStack" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="513.0" prefWidth="780.0" styleClass="text" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.info.controller.MainController">
+   <children>
+      <Pane fx:id="login_screen" prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <AnchorPane prefHeight="89.0" prefWidth="780.0" styleClass="main-color">
+               <children>
+                  <Label layoutX="259.0" layoutY="27.0" text="Project Managment Tool">
+                     <styleClass>
+                        <String fx:value="h1" />
+                        <String fx:value="text-color" />
+                     </styleClass>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <Label layoutX="358.0" layoutY="136.0" text="Login">
+               <styleClass>
+                  <String fx:value="h1" />
+                  <String fx:value="bold-text" />
+                  <String fx:value="text-color_dark" />
+               </styleClass>
+            </Label>
+            <JFXTextField fx:id="login_emailField" focusTraversable="false" labelFloat="true" layoutX="198.0" layoutY="205.0" prefHeight="49.0" prefWidth="392.0" promptText="Email address">
+               <styleClass>
+                  <String fx:value="h2" />
+                  <String fx:value="border-color" />
+               </styleClass></JFXTextField>
+            <JFXPasswordField fx:id="login_passwordField" focusTraversable="false" labelFloat="true" layoutX="198.0" layoutY="304.0" prefHeight="49.0" prefWidth="392.0" promptText="Password" styleClass="h2" />
+            <JFXButton fx:id="login_actionBtn" buttonType="RAISED" layoutX="297.0" layoutY="403.0" prefHeight="49.0" prefWidth="166.0" text="Login">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <styleClass>
+                  <String fx:value="main-color" />
+                  <String fx:value="text-color" />
+               </styleClass>
+            </JFXButton>
+            <Label layoutX="484.0" layoutY="363.0" styleClass="main-color-text" text="Forget Password?">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Label>
+            <Label layoutX="277.0" layoutY="462.0" text="Don't Have account?" />
+            <Label fx:id="login_signupBtn" layoutX="419.0" layoutY="462.0" text="Signup">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Label>
+         </children>
+      </Pane>
+      <Pane fx:id="signup_screen" prefHeight="200.0" prefWidth="200.0" visible="false" />
+   </children>
+</StackPane>

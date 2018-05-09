@@ -1,0 +1,45 @@
+/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+
+/* color  */
+*{
+	-fx-main-color:#4285F4;/*blue */
+	-fx-bg-color:#FFFFFF;/*white */
+	-fx-text-dark:#263238;/*dark */
+}
+
+
+.h1 { -fx-font-size: 24px;}
+.h2 { -fx-font-size: 22px;}
+.h3 { -fx-font-size: 18px;}
+.h4 { -fx-font-size: 16px;}
+.h5 { -fx-font-size: 12px;}
+.h6 { -fx-font-size: 10px;}
+
+.bold-text{
+	-fx-font-weight:bold;
+}
+.main-color{
+	/* main theme color of application */
+	-fx-background-color:-fx-main-color;
+}
+.main-color-text{
+	-fx-text-fill:-fx-main-color;
+}
+.main-background-color{
+	/* white color */
+	-fx-background-color:-fx-bg-color;
+}
+.text-color{
+	/*text color  */
+	-fx-text-fill:-fx-bg-color;
+}
+.text-color_dark{
+	/* text color in white background */
+	-fx-text-fill:-fx-text-dark;
+}
+
+.jfx-text-field, .jfx-password-field{
+	
+	-jfx-focus-color:-fx-main-color;
+}
+

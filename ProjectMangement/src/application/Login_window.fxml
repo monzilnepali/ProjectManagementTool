@@ -12,7 +12,7 @@
 
 <StackPane fx:id="rootStack" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="513.0" prefWidth="780.0" styleClass="text" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.info.controller.MainController">
    <children>
-      <Pane fx:id="login_screen" prefHeight="200.0" prefWidth="200.0">
+      <Pane fx:id="login_screen" prefHeight="513.0" prefWidth="780.0">
          <children>
             <AnchorPane prefHeight="89.0" prefWidth="780.0" styleClass="main-color">
                <children>
@@ -58,6 +58,41 @@
             </Label>
          </children>
       </Pane>
-      <Pane fx:id="signup_screen" prefHeight="200.0" prefWidth="200.0" visible="false" />
+      <Pane fx:id="signup_screen" prefHeight="200.0" prefWidth="769.0" visible="false">
+         <children>
+            <AnchorPane prefHeight="89.0" prefWidth="600.0" styleClass="main-color">
+               <children>
+                  <Label layoutX="163.0" layoutY="27.0" text="Project Management Tool">
+                     <styleClass>
+                        <String fx:value="text-color" />
+                        <String fx:value="h1" />
+                     </styleClass>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <Label layoutX="95.0" layoutY="125.0" styleClass="h3" text="Email Address" />
+            <JFXTextField fx:id="signup_email" layoutX="95.0" layoutY="152.0" prefHeight="49.0" prefWidth="392.0" />
+            <Label layoutX="95.0" layoutY="237.0" styleClass="h3" text="UserName" />
+            <JFXTextField fx:id="signup_username" layoutX="95.0" layoutY="264.0" prefHeight="49.0" prefWidth="392.0" />
+            <Label layoutX="95.0" layoutY="355.0" styleClass="h3" text="Password" />
+            <JFXPasswordField fx:id="signup_password" layoutX="94.0" layoutY="397.0" prefHeight="49.0" prefWidth="392.0" />
+            <Label layoutX="95.0" layoutY="473.0" styleClass="h3" text="ReEnter Password" />
+            <JFXPasswordField fx:id="signup_repassword" layoutX="94.0" layoutY="510.0" prefHeight="49.0" prefWidth="392.0" />
+            <JFXButton fx:id="signup_btn" buttonType="RAISED" layoutX="224.0" layoutY="586.0" prefHeight="49.0" prefWidth="130.0" text="SignUp">
+               <styleClass>
+                  <String fx:value="main-color" />
+                  <String fx:value="text-color" />
+               </styleClass>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </JFXButton>
+            <Label layoutX="170.0" layoutY="651.0" text="Already have an account?" />
+            <Label fx:id="signup_loginbtn" layoutX="346.0" layoutY="651.0" text="Login">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Label>
+         </children></Pane>
    </children>
 </StackPane>

@@ -4,4 +4,8 @@
 *.class
 
 # Log file
+<<<<<<< HEAD
 *.log
+=======
+*.log
+>>>>>>> 3671a2cf0d61e65927c7c8119b5c20a6166cc1ee

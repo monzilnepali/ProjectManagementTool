@@ -1,5 +1,7 @@
 package application;
 	
+import com.info.utils.DBConnection;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
@@ -18,6 +20,8 @@ public class Main extends Application {
 			String css2=this.getClass().getResource("Login_window.css").toExternalForm();
 			scene.getStylesheets().addAll(css1,css2);
 			primaryStage.setScene(scene);
+			primaryStage.setTitle("Project Management");
+			primaryStage.setResizable(false);
 			primaryStage.show();
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -25,6 +29,7 @@ public class Main extends Application {
 	}
 	
 	public static void main(String[] args) {
+		DBConnection.getConnection();
 		launch(args);
 	}
 }

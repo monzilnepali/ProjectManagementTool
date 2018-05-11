@@ -75,6 +75,7 @@ public class UserDao {
 	}//end of userRegister
 	
 	public static User userAuth(User user) {
+		//checking user emailaddress and password
 		
 		Connection conn=null;
 		PreparedStatement pst=null;

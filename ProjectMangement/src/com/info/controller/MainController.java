@@ -1,5 +1,6 @@
 package com.info.controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -13,9 +14,12 @@ import com.jfoenix.controls.JFXTextField;
 
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -81,8 +85,30 @@ public class MainController implements Initializable {
 					 User vuser=UserDao.userAuth(currentUser);
 					 if(vuser!=null) {
 						 //succesfully logged in showing home screen
+						 System.out.println("logged int");
+						 //switching to home.fxml scene 
+						 
+						 FXMLLoader loader=new FXMLLoader(getClass().getResource("/application/Home.fxml"));
+						 try {
+							loader.load();
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						 Parent p=loader.getRoot();
+						 Scene new_scene=new Scene(p);
+						 new_scene.getStylesheets().add(getClass().getResource("/application/Home.css").toExternalForm());
+						// HomeController new_controller=loader.getController();
+						// new_controller.homeDataInitial();
+						 Stage new_stage=new Stage();
+						 new_stage.setScene(new_scene);
+						 new_stage.setTitle("Project Management");
+						 new_stage.show();
+						 
+						 
+						 
 					 }else {
-						 //show error message new
+						 //show error message saying email address and password doesnot match
 					 }
 					 
 				 }else {
@@ -100,6 +126,7 @@ public class MainController implements Initializable {
 		});//end of login btn
 		
 		login_signupBtn.setOnMousePressed(e->{
+			//switching to signup screen
 			System.out.println("signup button  clicked");
 			login_screen.setVisible(false);
 			signup_screen.setVisible(true);

@@ -59,7 +59,7 @@ public class UserDao {
 			pst=conn.prepareStatement(query);
 			pst.setString(1, user.getUser_email());
 			pst.setString(2, user.getUser_name());
-			pst.setString(3, user.getUser_password());
+			pst.setString(3, hashing(user.getUser_password()));
 			pst.execute();
 			user.setUser_password("");
 			return user;
@@ -76,7 +76,7 @@ public class UserDao {
 	
 	public static User userAuth(User user) {
 		//checking user emailaddress and password
-		
+		System.out.println("user auth called"+user.getUser_email()+user.getUser_password());
 		Connection conn=null;
 		PreparedStatement pst=null;
 		ResultSet rs=null;
@@ -85,15 +85,17 @@ public class UserDao {
 		String query="SELECT * FROM user where user_email=? AND user_password=?";
 		pst=conn.prepareStatement(query);
 		pst.setString(1, user.getUser_email());
-		pst.setString(2, user.getUser_password());
+		pst.setString(2, hashing(user.getUser_password()));
 		rs=pst.executeQuery();
+		System.out.println("1");
 		while(rs.next()) {
+			System.out.println("2");
 			user.setUser_id(rs.getInt("user_id"));
+			user.setUser_password(null);
+			System.out.println("user data"+user.getUser_id()+user.getUser_email()+user.getUser_name()+user.getUser_password());
+			return user;
 		}
-		user.setUser_password(null);
-		return user;
-			
-			
+				
 		}catch(Exception e) {
 			e.printStackTrace();
 		}finally {

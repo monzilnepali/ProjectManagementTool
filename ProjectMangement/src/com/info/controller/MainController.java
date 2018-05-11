@@ -80,7 +80,7 @@ public class MainController implements Initializable {
 					 //validating email pattern
 					 //Now checking email address and password in database
 					 User currentUser=new User();
-					 currentUser.setUser_name(login_emailField.getText());
+					currentUser.setUser_email(login_emailField.getText());
 					 currentUser.setUser_password(login_passwordField.getText());
 					 User vuser=UserDao.userAuth(currentUser);
 					 if(vuser!=null) {
@@ -98,8 +98,8 @@ public class MainController implements Initializable {
 						 Parent p=loader.getRoot();
 						 Scene new_scene=new Scene(p);
 						 new_scene.getStylesheets().add(getClass().getResource("/application/Home.css").toExternalForm());
-						// HomeController new_controller=loader.getController();
-						// new_controller.homeDataInitial();
+						 HomeController new_controller=loader.getController();
+						 new_controller.homeDataInitial();
 						 Stage new_stage=new Stage();
 						 new_stage.setScene(new_scene);
 						 new_stage.setTitle("Project Management");
@@ -109,13 +109,16 @@ public class MainController implements Initializable {
 						 
 					 }else {
 						 //show error message saying email address and password doesnot match
+						 content.setHeading(new Text("login-ERROR"));
+						 content.setBody(new Text("email address and password doesnot matched"));
+						   dialog.show();
 					 }
 					 
 				 }else {
 					 //invalid email pattern show error message
 					 content.setHeading(new Text("login-ERROR"));
 					 content.setBody(new Text("Invalid Email Address"));
-						dialog.show();
+					   dialog.show();
 					 
 				 }
 				

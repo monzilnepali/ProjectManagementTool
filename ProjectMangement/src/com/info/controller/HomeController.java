@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 
 import com.info.model.ProjectModel;
 import com.jfoenix.controls.JFXTabPane;
+import com.jfoenix.controls.JFXTreeView;
 
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -21,7 +22,7 @@ import javafx.scene.control.TreeView;
 
 public class HomeController implements Initializable {
 	@FXML
-	private TreeView<ProjectModel> projectTree;
+	private JFXTreeView<ProjectModel> projectTree;
 	@FXML
 	private JFXTabPane home_tabPane;
 	private static Boolean flag=false;

@@ -1,79 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTabPane?>
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
-<?import java.lang.String?>
-<?import java.net.URL?>
-<?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Label?>
+<?import com.jfoenix.controls.JFXTreeView?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.info.controller.HomeController">
-   <top>
-      <MenuBar BorderPane.alignment="CENTER">
-        <menus>
-          <Menu mnemonicParsing="false" text="File">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Help">
-            <items>
-              <MenuItem mnemonicParsing="false" text="About" />
-            </items>
-          </Menu>
-        </menus>
-      </MenuBar>
-   </top>
-   <left>
-      <AnchorPane prefHeight="1048.0" prefWidth="356.0" BorderPane.alignment="CENTER">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.info.controller.HomeController">
+   <children>
+      <VBox prefHeight="32.0" prefWidth="1920.0">
          <children>
-            <TreeView fx:id="projectTree" prefHeight="1046.0" prefWidth="355.0" />
-         </children></AnchorPane>
-   </left>
-   <stylesheets>
-      <URL value="@application.css" />
-      <URL value="@Home.css" />
-   </stylesheets>
-   <center>
-      <JFXTabPane fx:id="home_tabPane" tabClosingPolicy="ALL_TABS" BorderPane.alignment="CENTER">
-         <tabs>
-            <Tab text="Welcome">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="h2">
-                     <children>
-                        <AnchorPane prefHeight="116.0" prefWidth="1566.0" styleClass="main-color">
-                           <children>
-                              <Label layoutX="59.0" layoutY="40.0" text="Welcome to Project Management Tools">
-                                 <styleClass>
-                                    <String fx:value="h1" />
-                                    <String fx:value="text-color" />
-                                 </styleClass>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <Label layoutX="130.0" layoutY="346.0" styleClass="bold-text" text="Create Project">
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </Label>
-                        <Label layoutX="130.0" layoutY="376.0" styleClass="h3" text="Create project for project management" />
-                        <FontAwesomeIconView glyphName="PLUS_SQUARE" layoutX="77.0" layoutY="392.0" size="45" />
-                     </children>
-                  </AnchorPane>
-              </content>
-            </Tab>
-         </tabs></JFXTabPane>
-   </center>
-</BorderPane>
+            <MenuBar>
+              <menus>
+                <Menu mnemonicParsing="false" text="File">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="Close" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Edit">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="Delete" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="About" />
+                  </items>
+                </Menu>
+              </menus>
+            </MenuBar>
+         </children>
+      </VBox>
+      <VBox layoutY="32.0" prefHeight="36.0" prefWidth="1922.0">
+         <children>
+            <JFXButton />
+         </children>
+      </VBox>
+      <HBox layoutY="68.0" prefHeight="1012.0" prefWidth="296.0" style="-fx-background-color: red;">
+         <children>
+            <JFXTreeView fx:id="projectTree" prefHeight="1048.0" prefWidth="296.0" />
+         </children>
+      </HBox>
+      <HBox layoutX="296.0" layoutY="66.0" prefHeight="1014.0" prefWidth="1624.0">
+         <children>
+            <JFXTabPane fx:id="home_tabPane" prefWidth="1624.0" tabClosingPolicy="ALL_TABS" />
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

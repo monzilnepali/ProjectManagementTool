@@ -16,6 +16,7 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -24,6 +25,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class MainController implements Initializable {
@@ -97,10 +99,22 @@ public class MainController implements Initializable {
 						}
 						 Parent p=loader.getRoot();
 						 Scene new_scene=new Scene(p);
-						 new_scene.getStylesheets().add(getClass().getResource("/application/Home.css").toExternalForm());
+					   String css1=this.getClass().getResource("/application/application.css").toExternalForm();
+						 String css2=this.getClass().getResource("/application/Home.css").toExternalForm();
+						 new_scene.getStylesheets().addAll(css1,css2);
 						 HomeController new_controller=loader.getController();
 						 new_controller.homeDataInitial();
-						 Stage new_stage=new Stage();
+						 Stage new_stage=(Stage)((Node)e.getSource()).getScene().getWindow();
+						 
+						 Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+
+					        //set Stage boundaries to visible bounds of the main screen
+						 new_stage.setX(primaryScreenBounds.getMinX());
+						 new_stage.setY(primaryScreenBounds.getMinY());
+						 new_stage.setWidth(primaryScreenBounds.getWidth());
+						 new_stage.setHeight(primaryScreenBounds.getHeight());
+						
+						 
 						 new_stage.setScene(new_scene);
 						 new_stage.setTitle("Project Management");
 						 new_stage.show();
@@ -130,7 +144,7 @@ public class MainController implements Initializable {
 		
 		login_signupBtn.setOnMousePressed(e->{
 			//switching to signup screen
-			System.out.println("signup button  clicked");
+			//System.out.println("signup button  clicked");
 			login_screen.setVisible(false);
 			signup_screen.setVisible(true);
 			Stage current_stage=(Stage)((Node)e.getSource()).getScene().getWindow();

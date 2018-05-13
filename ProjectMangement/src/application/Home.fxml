@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXTabPane?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import java.lang.String?>
 <?import java.net.URL?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -42,6 +47,33 @@
       <URL value="@Home.css" />
    </stylesheets>
    <center>
-      <JFXTabPane fx:id="home_tabPane" tabClosingPolicy="ALL_TABS" BorderPane.alignment="CENTER" />
+      <JFXTabPane fx:id="home_tabPane" tabClosingPolicy="ALL_TABS" BorderPane.alignment="CENTER">
+         <tabs>
+            <Tab text="Welcome">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="h2">
+                     <children>
+                        <AnchorPane prefHeight="116.0" prefWidth="1566.0" styleClass="main-color">
+                           <children>
+                              <Label layoutX="59.0" layoutY="40.0" text="Welcome to Project Management Tools">
+                                 <styleClass>
+                                    <String fx:value="h1" />
+                                    <String fx:value="text-color" />
+                                 </styleClass>
+                              </Label>
+                           </children>
+                        </AnchorPane>
+                        <Label layoutX="130.0" layoutY="346.0" styleClass="bold-text" text="Create Project">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Label>
+                        <Label layoutX="130.0" layoutY="376.0" styleClass="h3" text="Create project for project management" />
+                        <FontAwesomeIconView glyphName="PLUS_SQUARE" layoutX="77.0" layoutY="392.0" size="45" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+         </tabs></JFXTabPane>
    </center>
 </BorderPane>

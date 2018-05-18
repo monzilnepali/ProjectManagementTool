@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.info.model.Project;
 import com.info.model.User;
 import com.info.utils.DBConnection;
 
@@ -127,7 +128,9 @@ public class UserDao {
 		return null;
 
 	}
-
+	
+	
+	
 	public static final String hashing(String password) throws NoSuchAlgorithmException, NoSuchProviderException {
 		// for hashing user password before storing in database using SHA1 algorithm
 		String hpassword = password;

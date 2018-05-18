@@ -4,7 +4,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.StringTokenizer;
 
+import com.info.dao.ProjectDao;
 import com.info.model.Project;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
@@ -38,7 +40,7 @@ public class ProjectCreationController implements Initializable{
 	@FXML private Button projectCreationFinishBtn;
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		System.out.println("project Creation called");
+		System.out.println("\n\nproject Creation called");
 		projectCreation_projectDetail.setVisible(true);
 		projectCreation_projectTeam.setVisible(false);
 		
@@ -64,6 +66,17 @@ public class ProjectCreationController implements Initializable{
 			pro.setProjectDesc(projectDescription.getText());
 			pro.setCategories(projectCategories.getText());
 			List<String> team=new ArrayList<String>();
+			//getting email from team Members field
+			//separating them using string tokenizer 
+			System.out.println("project team member"+projectTeamMember.getText());
+			for(String email:projectTeamMember.getText().split(",")) {
+				System.out.println("email "+email);
+				team.add(email);
+			}
+			
+			
+			pro.setTeamMember(team);
+			ProjectDao.CreatProject(pro);
 			
 		});
 		

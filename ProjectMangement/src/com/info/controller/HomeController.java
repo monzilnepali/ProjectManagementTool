@@ -75,7 +75,7 @@ public class HomeController implements Initializable {
 					ObservableList<Tab> tabList = home_tabPane.getTabs();
 					Tab currentTab = null;
 					for (Tab a : tabList) {
-						System.out.println("parent" + a.getId() + "name" + a.getText());
+						//System.out.println("parent "  + a.getId() + "name " + a.getText());
 						if (item.getParent().toString().equals(a.getId())
 								&& item.getValue().getProject_name().equals(a.getText())) {
 							currentTab = a;
@@ -98,14 +98,25 @@ public class HomeController implements Initializable {
 					tab1.setText(item.getValue().getProject_name());
 					selectionModel.select(tab1);
 					
+					FXMLLoader loader=new FXMLLoader();
+					loader.setLocation(getClass().getResource("/application/"+item.getValue().getproject_file()+".fxml"));
 					try {
-						Parent p = FXMLLoader.load(
-								getClass().getResource("/application/" + item.getValue().getproject_file() + ".fxml"));
-						tab1.setContent(p);
+						loader.load();
 					} catch (IOException e1) {
-
+						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
+					if(item.getValue().getproject_file().equals("ProjectInformation")) {
+						System.out.println("projectInformationController called 1");
+					ProjectInformationController controller=loader.getController();
+					controller.setData("ram");
+					}else if(item.getValue().getproject_file().equals("TeamMember")) {
+						System.out.println("team member controller called 1" );
+						TeamMemberController controller=loader.getController();
+						controller.setData("shyam");
+					}
+					Parent p =loader.getRoot();
+					tab1.setContent(p);
 					String rootItem = item.getParent().getValue().getProject_name();
 					Tooltip tooltip = new Tooltip(rootItem + "/" + item.getValue().getProject_name());
 					tab1.setTooltip(tooltip);

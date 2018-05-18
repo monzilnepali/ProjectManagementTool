@@ -3,9 +3,15 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTabPane?>
 <?import com.jfoenix.controls.JFXTreeView?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Tab?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -47,8 +53,33 @@
       </HBox>
       <HBox layoutX="296.0" layoutY="66.0" prefHeight="1014.0" prefWidth="1624.0">
          <children>
-            <JFXTabPane fx:id="home_tabPane" prefWidth="1624.0" tabClosingPolicy="ALL_TABS" />
+            <JFXTabPane fx:id="home_tabPane" prefWidth="1624.0" tabClosingPolicy="ALL_TABS">
+               <tabs>
+                  <Tab text="Welcome">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <Label layoutX="279.0" layoutY="245.0" onMousePressed="#CreateButtonAction" text="Create Project">
+                                 <styleClass>
+                                    <String fx:value="h1" />
+                                    <String fx:value="bold-text" />
+                                 </styleClass>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </Label>
+                              <Label layoutX="282.0" layoutY="283.0" text="Create project on project Management Tool'" />
+                              <FontAwesomeIconView glyphName="PLUS_SQUARE" layoutX="226.0" layoutY="296.0" size="55" />
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </Tab>
+               </tabs></JFXTabPane>
          </children>
       </HBox>
    </children>
+   <stylesheets>
+      <URL value="@application.css" />
+      <URL value="@Home.css" />
+   </stylesheets>
 </AnchorPane>

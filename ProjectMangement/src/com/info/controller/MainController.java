@@ -99,7 +99,7 @@ public class MainController implements Initializable {
 						}
 						 Parent p=loader.getRoot();
 						 Scene new_scene=new Scene(p);
-					   String css1=this.getClass().getResource("/application/application.css").toExternalForm();
+					     String css1=this.getClass().getResource("/application/application.css").toExternalForm();
 						 String css2=this.getClass().getResource("/application/Home.css").toExternalForm();
 						 new_scene.getStylesheets().addAll(css1,css2);
 						 HomeController new_controller=loader.getController();

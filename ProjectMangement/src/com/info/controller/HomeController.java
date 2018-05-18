@@ -9,22 +9,28 @@ import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.controls.JFXTreeView;
 
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 public class HomeController implements Initializable {
 	@FXML
 	private JFXTreeView<ProjectModel> projectTree;
 	@FXML
 	private JFXTabPane home_tabPane;
+	
 	private static Boolean flag=false;
 
 	@SuppressWarnings("unchecked")
@@ -117,6 +123,31 @@ public class HomeController implements Initializable {
 
 	public void homeDataInitial() {
 		// System.out.println("home controller method called");
+	}
+	
+	 public void CreateButtonAction(MouseEvent e) {
+		System.out.println("create button is clicked");
+		//opening new stage for creation of stage
+		FXMLLoader loader=new FXMLLoader(getClass().getResource("/application/ProjectCreation.fxml"));
+		try {
+			loader.load();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		Parent p=loader.getRoot();
+		Scene scene=new Scene(p);
+		String css1=this.getClass().getResource("/application/application.css").toExternalForm();
+		String css2=this.getClass().getResource("/application/ProjectCreation.css").toExternalForm();
+		scene.getStylesheets().addAll(css1,css2);
+		Stage stage =new Stage();
+		Stage previous_stage=(Stage)((Node)e.getSource()).getScene().getWindow();
+		stage.setScene(scene);
+		stage.initModality(Modality.WINDOW_MODAL);
+		stage.initOwner(previous_stage);
+		stage.show();
+		
+		
 	}
 
 }

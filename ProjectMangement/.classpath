@@ -5,6 +5,6 @@
 	<classpathentry kind="con" path="org.eclipse.fx.ide.jdt.core.JAVAFX_CONTAINER"/>
 	<classpathentry kind="lib" path="src/Resource/jfoenix-8.0.4.jar"/>
 	<classpathentry kind="lib" path="mysql-connector-java-8.0.11.jar"/>
-	<classpathentry kind="lib" path="src/Resource/UI/fontawesomefx-8.4.jar"/>
+	<classpathentry kind="lib" path="E:/mars_Eclipse/JavaFxLogin/src/Resource/fontawesomefx-8.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -2,14 +2,16 @@ package com.info.controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
+import com.info.dao.ProjectDao;
 import com.info.model.ProjectModel;
 import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.controls.JFXTreeView;
 
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -20,7 +22,6 @@ import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -30,30 +31,32 @@ public class HomeController implements Initializable {
 	private JFXTreeView<ProjectModel> projectTree;
 	@FXML
 	private JFXTabPane home_tabPane;
-	
 	private static Boolean flag=false;
+     private static TreeItem<ProjectModel> root;
+     protected static ObservableList<String> list;
+     protected static int VerifiedUser;
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		SingleSelectionModel<Tab> selectionModel = home_tabPane.getSelectionModel();
-		// TODO Auto-generated method stub
+	}//end of initializable
+
+	public void homeDataInitial(int CurrentUserId) {
+		// System.out.println("home controller method called");
+		HomeController.VerifiedUser=CurrentUserId;
+		System.out.println("verified user "+CurrentUserId);
+		
+		
+		
+			SingleSelectionModel<Tab> selectionModel = home_tabPane.getSelectionModel();
+		
 		System.out.println("home controlle called");
-
-		TreeItem<ProjectModel> root = new TreeItem<>(new ProjectModel("", "Project"));
+		//tree view root element which is only one
+	   root = new TreeItem<>(new ProjectModel("", "Project"));
 		root.setExpanded(true);
+		
+		getProjectDetail();
 
-		TreeItem<ProjectModel> nodeA = new TreeItem<>(new ProjectModel("", "Password Manager"));
-		TreeItem<ProjectModel> nodeB = new TreeItem<>(new ProjectModel("", "banking Application"));
-		root.getChildren().addAll(nodeA, nodeB);
 
-		TreeItem<ProjectModel> nodeA1 = new TreeItem<>(new ProjectModel("ProjectInformation", "Project Information"));
-		TreeItem<ProjectModel> nodeB1 = new TreeItem<>(new ProjectModel("TeamMember", "Team Member"));
-		nodeA.getChildren().addAll(nodeA1, nodeB1);
-
-		TreeItem<ProjectModel> nodeA2 = new TreeItem<>(new ProjectModel("ProjectInformation", "Project Information"));
-		TreeItem<ProjectModel> nodeB2 = new TreeItem<>(new ProjectModel("TeamMember", "Team Member"));
-		nodeB.getChildren().addAll(nodeA2, nodeB2);
 
 		projectTree.setRoot(root);
 
@@ -116,13 +119,6 @@ public class HomeController implements Initializable {
 				
 				
 					
-		
-		
-
-	}//end of initializable
-
-	public void homeDataInitial() {
-		// System.out.println("home controller method called");
 	}
 	
 	 public void CreateButtonAction(MouseEvent e) {
@@ -149,5 +145,27 @@ public class HomeController implements Initializable {
 		
 		
 	}
+	 
+	 @SuppressWarnings("unchecked")
+	public static void getProjectDetail() {
+		 
+		 root.getChildren().clear();
+		 System.out.println("getproject details called");
+			List<String> data=ProjectDao.getProjectNameForTreeView(VerifiedUser);
+			
+		 
+		 
+		 for(String element:data) {
+				
+				TreeItem<ProjectModel> node=new TreeItem<>(new ProjectModel("",element));
+				root.getChildren().add(node);
+				TreeItem<ProjectModel> nodeA1 = new TreeItem<>(new ProjectModel("ProjectInformation", "Project Information"));
+				TreeItem<ProjectModel> nodeB1 = new TreeItem<>(new ProjectModel("TeamMember", "Team Member"));
+				node.getChildren().addAll(nodeA1, nodeB1);
+				
+			}
+		 
+	 }
+	 
 
 }

@@ -103,7 +103,7 @@ public class MainController implements Initializable {
 						 String css2=this.getClass().getResource("/application/Home.css").toExternalForm();
 						 new_scene.getStylesheets().addAll(css1,css2);
 						 HomeController new_controller=loader.getController();
-						 new_controller.homeDataInitial();
+						 new_controller.homeDataInitial(vuser.getUser_id());
 						 Stage new_stage=(Stage)((Node)e.getSource()).getScene().getWindow();
 						 
 						 Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();

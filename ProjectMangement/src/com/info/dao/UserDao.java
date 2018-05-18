@@ -107,8 +107,7 @@ public class UserDao {
 				System.out.println("2");
 				user.setUser_id(rs.getInt("user_id"));
 				user.setUser_password(null);
-				System.out.println("user data" + user.getUser_id() + user.getUser_email() + user.getUser_name()
-						+ user.getUser_password());
+				
 				return user;
 			}
 

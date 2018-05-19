@@ -9,6 +9,7 @@ public class Project {
 	private String categories;
 	private String projectDesc;
 	private List<String> TeamMember;
+	private String projectCreationDate;
 	
 	
 	public int getProjectId() {
@@ -40,6 +41,12 @@ public class Project {
 	}
 	public void setCategories(String categories) {
 		this.categories = categories;
+	}
+	public String getProjectCreationDate() {
+		return projectCreationDate;
+	}
+	public void setProjectCreationDate(String projectCreationDate) {
+		this.projectCreationDate = projectCreationDate;
 	}
 	
 	

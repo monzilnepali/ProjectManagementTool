@@ -5,10 +5,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.info.model.Project;
+import com.info.model.User;
 import com.info.utils.DBConnection;
 
 public class ProjectDao {
@@ -19,11 +22,12 @@ public class ProjectDao {
 				PreparedStatement pst=null;
 				try {
 					conn=DBConnection.getConnection();
-					String query="INSERT INTO project (project_name,project_categories,project_desc) VALUES (?,?,?)";
+					String query="INSERT INTO project (project_name,project_categories,project_desc,project_creation) VALUES (?,?,?,?)";
 					pst=conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 					pst.setString(1, project.getprojectTitle());
 					pst.setString(2, project.getCategories());
 					pst.setString(3, project.getProjectDesc());
+					pst.setString(4, ProjectDao.getCurrentTime());
 				
 					pst.execute();
 					
@@ -109,7 +113,7 @@ public class ProjectDao {
 			}
 		}
 		
-		public static  List<String> getProjectNameForTreeView(int userId) {
+		public static  List<Project> getProjectNameForTreeView(int userId) {
 			//getting name of project of currently logged in user
 			System.out.println("getprojectname called");
 			Connection conn=null;
@@ -117,23 +121,90 @@ public class ProjectDao {
 			ResultSet rs=null;
 			try {
 				conn=DBConnection.getConnection();
-				String query="SELECT project.project_name FROM project INNER JOIN userproject ON project.project_id=userproject.project_Id WHERE userproject.user_id=?";
+				String query="SELECT project.project_name,project.project_id FROM project INNER JOIN userproject ON project.project_id=userproject.project_Id WHERE userproject.user_id=?";
 				pst=conn.prepareStatement(query);
 				pst.setInt(1, userId);
 				
 			rs=pst.executeQuery();
-			List<String> list=new ArrayList<String>();
+			List<Project> list=new ArrayList<Project>();
 			while(rs.next()) {
 				System.out.println("list new data");
-				list.add(rs.getString("project_name"));
+				
+				Project pro=new Project();
+				pro.setProjectId(rs.getInt("project_id"));
+				pro.setprojectTitle(rs.getString("project_name"));
+				list.add(pro);
 			}
 				return list;
 				
 			}catch(Exception e) {
 				e.printStackTrace();
+			}finally {
+				try {pst.close();} catch (SQLException e) {	e.printStackTrace();}
+				try {conn.close();} catch (SQLException e) {	e.printStackTrace();}
+				
 			}
 			return null;
 		}
+		
+		public static Project getProjectInformation(int project_id) {
+			
+			Connection conn=null;
+			PreparedStatement pst=null;
+			ResultSet rs=null;
+			try {
+				conn=DBConnection.getConnection();
+				String query="SELECT * FROM project WHERE project_id=?";
+				pst=conn.prepareStatement(query);
+				pst.setInt(1, project_id);
+				
+				rs=pst.executeQuery();
+				while(rs.next()) {
+					Project pro=new Project();
+					pro.setprojectTitle(rs.getString("project_name"));
+					pro.setProjectDesc(rs.getString("project_desc"));
+					pro.setCategories(rs.getString("project_categories"));
+					pro.setProjectCreationDate(rs.getString("project_creation"));
+					return pro;
+				}
+				
+			}catch(Exception e) {
+				e.printStackTrace();
+			}finally {
+				try {rs.close();} catch (SQLException e) {	e.printStackTrace();}
+				try {pst.close();} catch (SQLException e) {	e.printStackTrace();}
+				try {conn.close();} catch (SQLException e) {	e.printStackTrace();}
+				
+			}
+			return null;
+			
+		}
+		public static List<User> getTeamMemberOfProject(int projectId){
+			Connection conn=null;
+			PreparedStatement pst=null;
+			ResultSet rs=null;
+			try {
+				
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			
+			
+			return null;
+			
+		}
+		
+		public static String getCurrentTime(){
+			//getting currentTime
+			Date CurrentDate =new Date();
+		
+			
+			  SimpleDateFormat ft =new SimpleDateFormat ("E yyyy-MM-dd 'at' hh:mm");
+			return ft.format(CurrentDate);
+			
+		}
+		
 		
 
 }

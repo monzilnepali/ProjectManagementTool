@@ -106,6 +106,7 @@ public class UserDao {
 			while (rs.next()) {
 				System.out.println("2");
 				user.setUser_id(rs.getInt("user_id"));
+				user.setUser_name(rs.getString("user_name"));
 				user.setUser_password(null);
 				
 				return user;

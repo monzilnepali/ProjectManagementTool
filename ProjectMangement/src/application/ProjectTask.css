@@ -1,0 +1,26 @@
+
+.table-view {
+	-fx-border-width:0.0 0 0 0.0 ;
+    -fx-base: red;
+    -fx-control-inner-background: red;
+    -fx-background-color: white;
+    -fx-padding: 0;
+  
+     
+}
+
+.table-view .column-header,
+.table-view .column-header .filler,
+.table-view .column-header-background .filler {
+    -fx-background-color:#2E303D ;
+   -fx-size:55px;
+    -fx-border-width:0.0 0.0 1 0;
+    -fx-border-color:#20232D;
+}
+
+.table-row-cell {
+    -fx-cell-size: 55px;
+}
+.table-column {
+  -fx-alignment: CENTER;
+}

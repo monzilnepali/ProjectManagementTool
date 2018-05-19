@@ -6,6 +6,7 @@
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import java.lang.String?>
 <?import java.net.URL?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
@@ -15,6 +16,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.info.controller.HomeController">
    <children>
@@ -46,10 +48,13 @@
             <JFXButton />
          </children>
       </VBox>
-      <HBox layoutY="68.0" prefHeight="1012.0" prefWidth="296.0" style="-fx-background-color: red;">
+      <HBox layoutY="68.0" prefHeight="1012.0" prefWidth="296.0">
          <children>
             <JFXTreeView fx:id="projectTree" prefHeight="1048.0" prefWidth="296.0" />
          </children>
+         <padding>
+            <Insets top="100.0" />
+         </padding>
       </HBox>
       <HBox layoutX="296.0" layoutY="66.0" prefHeight="1014.0" prefWidth="1624.0">
          <children>
@@ -57,7 +62,7 @@
                <tabs>
                   <Tab text="Welcome">
                     <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="961.0" prefWidth="1624.0">
                            <children>
                               <Label layoutX="279.0" layoutY="245.0" onMousePressed="#CreateButtonAction" text="Create Project">
                                  <styleClass>
@@ -77,6 +82,21 @@
                </tabs></JFXTabPane>
          </children>
       </HBox>
+      <AnchorPane layoutY="66.0" prefHeight="102.0" prefWidth="298.0" styleClass="main-color">
+         <children>
+            <FontAwesomeIconView fill="WHITE" glyphName="USER" layoutX="27.0" layoutY="56.0" size="35" />
+            <Label fx:id="currentUserName" layoutX="63.0" layoutY="27.0" styleClass="text-color">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </Label>
+            <Label fx:id="currentUserEmail" layoutX="63.0" layoutY="50.0" styleClass="text-color">
+               <font>
+                  <Font size="12.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
    </children>
    <stylesheets>
       <URL value="@application.css" />

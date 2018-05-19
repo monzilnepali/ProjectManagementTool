@@ -81,11 +81,11 @@ public class ProjectCreationController extends HomeController  implements Initia
 			
 			
 			pro.setTeamMember(team);
-			
+			CurrentUserSingleton tmp=CurrentUserSingleton.getInstance();	
 			ExecutorService executor=Executors.newFixedThreadPool(3);
 			Callable<Boolean> c = ()->{
 				System.out.println(Thread.currentThread().getName());
-				 return ProjectDao.CreatProject(pro,VerifiedUser);
+				 return ProjectDao.CreatProject(pro,tmp.getVuser().getUser_id());
 				 
 			};
 			

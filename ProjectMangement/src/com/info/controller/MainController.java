@@ -1,7 +1,10 @@
 package com.info.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.ResourceBundle;
 
 import com.info.dao.UserDao;
@@ -86,8 +89,20 @@ public class MainController implements Initializable {
 					 currentUser.setUser_password(login_passwordField.getText());
 					 User vuser=UserDao.userAuth(currentUser);
 					 if(vuser!=null) {
+						 try {
+							Socket socket=new Socket("localhost",9090);
+							PrintWriter out=new PrintWriter(socket.getOutputStream(),true);
+							//sending data to server
+							out.println(vuser.getUser_email()+"is online");
+						} catch (UnknownHostException e2) {
+							// TODO Auto-generated catch block
+							e2.printStackTrace();
+						} catch (IOException e2) {
+							// TODO Auto-generated catch block
+							e2.printStackTrace();
+						}
 						 //succesfully logged in showing home screen
-						 System.out.println("logged int");
+						 System.out.println("logged in");
 						 //switching to home.fxml scene 
 						 //setting current verified user in singleton class
 						 CurrentUserSingleton tmp=CurrentUserSingleton.getInstance();

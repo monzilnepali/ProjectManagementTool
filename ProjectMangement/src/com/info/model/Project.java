@@ -10,6 +10,7 @@ public class Project {
 	private String projectDesc;
 	private List<String> TeamMember;
 	private String projectCreationDate;
+	private int roleId;
 	
 	
 	public int getProjectId() {
@@ -47,6 +48,12 @@ public class Project {
 	}
 	public void setProjectCreationDate(String projectCreationDate) {
 		this.projectCreationDate = projectCreationDate;
+	}
+	public int getRoleId() {
+		return roleId;
+	}
+	public void setRoleId(int roleId) {
+		this.roleId = roleId;
 	}
 	
 	

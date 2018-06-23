@@ -12,8 +12,8 @@ public class TeamMemberController implements Initializable {
 		// TODO Auto-generated method stub
 		
 	}
-	public void setData(String data) {
-		System.out.println("team member controller "+data);
+	public void setData(Integer integer,String role) {
+		System.out.println("team member controller "+integer);
 	}
 
 }

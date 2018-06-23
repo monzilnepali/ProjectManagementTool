@@ -32,7 +32,10 @@ public class User {
 	public void setUser_password(String user_password) {
 		this.user_password = user_password;
 	}
-	
+	 @Override
+	    public String toString() {
+	        return this.user_name;
+	    }
 	
 
 }

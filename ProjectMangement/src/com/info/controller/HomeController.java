@@ -97,6 +97,7 @@ public class HomeController implements Initializable {
 					System.out.println("already exist changing active selectionn mode");
 			   // System.out.println("tab selected currnet" + currentTab.getText());
 				selectionModel.select(currentTab);// changin selected tab to present click tab
+				
 				flag=false;
 				} else {
 					System.out.println("doesnot exist adding in tabview");
@@ -118,21 +119,24 @@ public class HomeController implements Initializable {
 				if(item.getValue().getproject_file().equals("ProjectInformation")) {
 					System.out.println("projectInformationController called 1");
 				ProjectInformationController controller=loader.getController();
-				controller.setData(Integer.valueOf(item.getParent().getValue().getproject_file()));
+				
+				controller.setData(Integer.valueOf(item.getParent().getValue().getproject_file()),splitString(item.getParent().getValue().getProject_name())    );
 				
 				}else if(item.getValue().getproject_file().equals("TeamMember")) {
 					System.out.println("team member controller called 1" );
 					TeamMemberController controller=loader.getController();
 					//passing projectName and user id
-					controller.setData(item.getParent().getValue().getproject_file());
+					controller.setData(Integer.valueOf(item.getParent().getValue().getproject_file()),splitString(item.getParent().getValue().getProject_name())    );
 				}
 				
 				else if(item.getValue().getproject_file().equals("ProjectTask")) {
 					System.out.println("ProjectTask controller called 1" );
 					ProjectTaskController controller=loader.getController();
 					//passing projectName and user id
-					controller.setData(item.getParent().getValue().getproject_file());
+					controller.setData(Integer.valueOf(item.getParent().getValue().getproject_file()),splitString(item.getParent().getValue().getProject_name())    );
 				}
+				
+				
 				Parent p =loader.getRoot();
 				
 				
@@ -152,7 +156,12 @@ public class HomeController implements Initializable {
 		
 	}//end of initializable
 
-	
+	private String splitString(String project_name) {
+		//spliting [ from string
+		int index1=project_name.indexOf(">");
+		int index2=project_name.indexOf("]");
+		return project_name.substring(index1+1, index2);
+	}
 	
 	 public void CreateButtonAction(MouseEvent e) {
 		System.out.println("create button is clicked");
@@ -187,10 +196,15 @@ public class HomeController implements Initializable {
 			List<Project> data=ProjectDao.getProjectNameForTreeView(tmp.getVuser().getUser_id());
 			
 		 
-		 
+		 String role_name;
 		 for(Project element:data) {
+				if(element.getRoleId()==1) {
+					role_name="Manager";
+				}else {
+					role_name="Member";
+				}
+				TreeItem<ProjectModel> node=new TreeItem<>(new ProjectModel(element.getProjectId()+"",element.getprojectTitle()+"[-> "+role_name +"]"  )   );
 				
-				TreeItem<ProjectModel> node=new TreeItem<>(new ProjectModel(element.getProjectId()+"",element.getprojectTitle()));
 				root.getChildren().add(node);
 				TreeItem<ProjectModel> nodeA1 = new TreeItem<>(new ProjectModel("ProjectInformation", "Project Information"));
 				TreeItem<ProjectModel> nodeB1 = new TreeItem<>(new ProjectModel("TeamMember", "Team Member"));

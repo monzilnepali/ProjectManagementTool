@@ -22,7 +22,7 @@ public class ProjectInformationController implements Initializable {
 		
 		System.out.println("project information controller called");
 	}
-	public void setData(int projectid) {
+	public void setData(int projectid,String role) {
 		
 		//getting data about project
 		Project projectInfo=ProjectDao.getProjectInformation(projectid);

@@ -6,9 +6,11 @@ import javafx.beans.property.SimpleStringProperty;
 public class Task {
 	
 	private SimpleIntegerProperty taskId;
+	private SimpleIntegerProperty projectId;
 	private SimpleStringProperty taskName;
 	private SimpleStringProperty taskDescription;
-	private SimpleStringProperty taskAssignTo;
+	private SimpleIntegerProperty taskAssignTo;
+	private SimpleStringProperty taskAssignToName;
 	private SimpleStringProperty taskDeadLine;
 	private SimpleStringProperty taskStatus;
 	private SimpleStringProperty taskPriority;
@@ -32,11 +34,11 @@ public class Task {
 	public void setTaskDescription(String taskDescription) {
 		this.taskDescription = new SimpleStringProperty(taskDescription);
 	}
-	public String getTaskAssignTo() {
+	public int getTaskAssignTo() {
 		return taskAssignTo.get();
 	}
-	public void setTaskAssignTo(String taskAssignTo) {
-		this.taskAssignTo = new SimpleStringProperty(taskAssignTo);
+	public void setTaskAssignTo(int taskAssignTo) {
+		this.taskAssignTo = new SimpleIntegerProperty(taskAssignTo);
 	}
 	public String getTaskDeadLine() {
 		return taskDeadLine.get();
@@ -55,6 +57,18 @@ public class Task {
 	}
 	public void setTaskPriority(String taskPriority) {
 		this.taskPriority = new SimpleStringProperty(taskPriority);
+	}
+	public int getProjectId() {
+		return projectId.get();
+	}
+	public void setProjectId(int projectId) {
+		this.projectId = new SimpleIntegerProperty(projectId);
+	}
+	public String getTaskAssignToName() {
+		return taskAssignToName.get();
+	}
+	public void setTaskAssignToName(String taskAssignToName) {
+		this.taskAssignToName = new SimpleStringProperty(taskAssignToName);
 	}
 	
 	

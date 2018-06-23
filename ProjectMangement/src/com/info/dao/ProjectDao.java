@@ -10,7 +10,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.info.controller.CurrentUserSingleton;
 import com.info.model.Project;
+import com.info.model.Task;
 import com.info.model.User;
 import com.info.utils.DBConnection;
 
@@ -121,7 +123,7 @@ public class ProjectDao {
 			ResultSet rs=null;
 			try {
 				conn=DBConnection.getConnection();
-				String query="SELECT project.project_name,project.project_id FROM project INNER JOIN userproject ON project.project_id=userproject.project_Id WHERE userproject.user_id=?";
+				String query="SELECT project.project_name,project.project_id,userproject.role_id FROM project INNER JOIN userproject ON project.project_id=userproject.project_Id WHERE userproject.user_id=?";
 				pst=conn.prepareStatement(query);
 				pst.setInt(1, userId);
 				
@@ -133,6 +135,7 @@ public class ProjectDao {
 				Project pro=new Project();
 				pro.setProjectId(rs.getInt("project_id"));
 				pro.setprojectTitle(rs.getString("project_name"));
+				pro.setRoleId(rs.getInt("role_id"));
 				list.add(pro);
 			}
 				return list;
@@ -179,14 +182,36 @@ public class ProjectDao {
 			return null;
 			
 		}
-		public static List<User> getTeamMemberOfProject(int projectId){
+		public static List<User> getTeamMemberNameOfProject(int projectId){
+			System.out.println("gettema member name called");
 			Connection conn=null;
 			PreparedStatement pst=null;
 			ResultSet rs=null;
 			try {
+				conn=DBConnection.getConnection();
+				String query="SELECT user.user_id,user.user_name FROM userproject INNER JOIN user ON userproject.user_id=user.user_id WHERE userproject.project_id=? AND userproject.role_id=?";
+				pst=conn.prepareStatement(query);
+				pst.setInt(1, projectId);
+				pst.setInt(2, 2);
+				rs=pst.executeQuery();
+				List<User> userlist=new ArrayList<>();
+				while(rs.next()) {
+					User user=new User();
+					user.setUser_id(rs.getInt("user_id"));
+					user.setUser_name(rs.getString("user_name"));
+					userlist.add(user);
+					
+				}
+				return userlist;
+				
 				
 			}catch(Exception e) {
 				e.printStackTrace();
+			}finally {
+				try {rs.close();} catch (SQLException e) {	e.printStackTrace();}
+				try {pst.close();} catch (SQLException e) {	e.printStackTrace();}
+				try {conn.close();} catch (SQLException e) {	e.printStackTrace();}
+				
 			}
 			
 			
@@ -194,6 +219,30 @@ public class ProjectDao {
 			return null;
 			
 		}
+		public static Boolean addNewTask(Task newTask) {
+			
+			Connection conn=null;
+			PreparedStatement pst=null;
+			try {
+				conn=DBConnection.getConnection();
+				String query="INSERT INTO task (task_name,user_id,task_deadline,task_priority,project_id) VALUES (?,?,?,?,?)";
+				pst=conn.prepareStatement(query);
+				pst.setString(1, newTask.getTaskName());
+				pst.setInt(2, newTask.getTaskAssignTo());
+				pst.setString(3, newTask.getTaskDeadLine());
+				pst.setString(4, newTask.getTaskPriority());
+				pst.setInt(5, newTask.getProjectId());
+				pst.execute();
+				System.out.println("new task added");
+				return true;
+				
+				
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+			return false;
+		}
+		
 		
 		public static String getCurrentTime(){
 			//getting currentTime
@@ -205,6 +254,68 @@ public class ProjectDao {
 			
 		}
 		
+		public static List<Task> getTaskList(int projectId,String role,int userId){
+			Connection conn=null;
+			PreparedStatement pst=null;
+			ResultSet rs=null;
+			try {
+				conn=DBConnection.getConnection();
+				String query = null;
+				if(role.equals(" Manager")) {
+				
+					 query="SELECT  task_id,task_name,user_name,task_deadline,task_priority,task_status FROM task INNER JOIN user ON task.user_id=user.user_id WHERE project_id=?";
+					 pst=conn.prepareStatement(query);
+						pst.setInt(1, projectId);
+				}else {
+					query="SELECT  task_id,task_name,user_name,task_deadline,task_priority,task_status FROM task INNER JOIN user ON task.user_id=user.user_id WHERE project_id=? AND user.user_id=?";
+					 pst=conn.prepareStatement(query);
+						pst.setInt(1, projectId);
+						pst.setInt(2, userId);
+				}
+				
+				
+				rs=pst.executeQuery();
+				List<Task> taskList=new ArrayList<>();
+				while(rs.next()) {
+					Task newTask=new Task();
+					newTask.setTaskId(rs.getInt("task_id"));
+					newTask.setTaskName(rs.getString("task_name"));
+					newTask.setTaskAssignToName(rs.getString("user_name"));
+					newTask.setTaskDeadLine(rs.getString("task_deadline"));
+					newTask.setTaskPriority(rs.getString("task_priority"));
+					newTask.setTaskStatus(rs.getString("task_status"));
+					taskList.add(newTask);
+					
+					
+				}
+				return taskList;
+				
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			
+			return null;
+		}
+		
+		public static Boolean updateTaskStatus(int taskId,String taskStatus) {
+			System.out.println("update task status called");
+			Connection con=null;
+			PreparedStatement pst=null;
+			try {
+				con=DBConnection.getConnection();
+				String query="UPDATE task SET task_status=? WHERE task_id=?";
+				pst=con.prepareStatement(query);
+				pst.setString(1, taskStatus);
+				pst.setInt(2, taskId);
+				pst.execute();
+				return true;
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+			return false;
+			
+		}
 		
 
 }

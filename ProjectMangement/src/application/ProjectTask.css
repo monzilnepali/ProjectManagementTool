@@ -1,8 +1,8 @@
 
 .table-view {
 	-fx-border-width:0.0 0 0 0.0 ;
-    -fx-base: red;
-    -fx-control-inner-background: red;
+    -fx-base: black;
+    -fx-control-inner-background: white;
     -fx-background-color: white;
     -fx-padding: 0;
   
@@ -23,4 +23,38 @@
 }
 .table-column {
   -fx-alignment: CENTER;
+}
+.table-row-cell:selected{
+    -fx-background-color:#f5f5f5;
+   
+    
+}
+
+.table-view .table-row-cell {
+	
+    -fx-background-color:white;
+    -fx-border-width:0 0 1 0;
+    -fx-border-color:#E0E0E0;
+   
+}
+.table-view .table-row-cell:hover{
+	-fx-background-color:#f5f5f5;
+	
+}
+.table-view .table-row-cell:active{
+	-fx-background-color:#f5f5f5;
+}
+.table-view .table-column{
+	 -fx-border-width: 0;
+	
+}
+.table-row-cell:empty {
+	 
+    -fx-background-color: white;
+     -fx-border-color:red;
+}
+ 
+.table-row-cell:empty .table-cell {
+	 -fx-border-width: 0px;
+   
 }

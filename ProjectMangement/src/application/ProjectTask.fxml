@@ -11,13 +11,13 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="1014.0" prefWidth="1624.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.info.controller.ProjectTaskController">
+<AnchorPane prefHeight="1014.0" prefWidth="1568.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.info.controller.ProjectTaskController">
    <children>
-      <VBox nodeOrientation="RIGHT_TO_LEFT" prefHeight="112.0" prefWidth="1624.0">
+      <VBox nodeOrientation="RIGHT_TO_LEFT" prefHeight="112.0" prefWidth="1568.0">
          <children>
             <AnchorPane prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="AddTaskBtn" layoutX="28.0" layoutY="33.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="155.0" text="Add Task">
+                  <Button fx:id="AddTaskBtn" layoutX="64.0" layoutY="33.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="155.0" text="Add Task">
                      <styleClass>
                         <String fx:value="main-color" />
                         <String fx:value="text-color" />
@@ -27,7 +27,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <Label layoutX="1535.0" layoutY="46.0" text="Task ">
+                  <Label layoutX="1447.0" layoutY="40.0" text="Task ">
                      <styleClass>
                         <String fx:value="h1" />
                         <String fx:value="bold-text" />
@@ -37,21 +37,24 @@
             </AnchorPane>
          </children>
       </VBox>
-      <VBox layoutY="110.0" prefHeight="905.0" prefWidth="1623.0">
+      <VBox layoutY="110.0" prefHeight="905.0" prefWidth="1568.0">
          <children>
             <ScrollPane prefHeight="916.0" prefWidth="1623.0">
                <content>
-                  <TableView fx:id="taskTable" focusTraversable="false" prefHeight="901.0" prefWidth="1621.0" scaleShape="false">
+                  <TableView fx:id="taskTable" focusTraversable="false" prefHeight="903.0" prefWidth="1565.0" scaleShape="false">
                     <columns>
-                      <TableColumn prefWidth="135.00000762939453" text="Task Name" />
-                      <TableColumn prefWidth="177.6666717529297" text="Task Assign To" />
-                        <TableColumn prefWidth="205.66665649414062" text="Task Deadline" />
-                        <TableColumn prefWidth="196.33331298828125" text="Task Status" />
-                        <TableColumn prefWidth="235.0" text="Task priority" />
+                      <TableColumn fx:id="taskName" prefWidth="135.00000762939453" text="Task Name" />
+                      <TableColumn fx:id="userName" prefWidth="177.6666717529297" text="Task Assign To" />
+                        <TableColumn fx:id="taskDeadLine" prefWidth="205.66665649414062" text="Task Deadline" />
+                        <TableColumn fx:id="taskStatus" prefWidth="196.33331298828125" text="Task Status" />
+                        <TableColumn fx:id="taskPriority" prefWidth="235.0" text="Task priority" />
                     </columns>
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                      </columnResizePolicy>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </TableView>
                </content>
             </ScrollPane>

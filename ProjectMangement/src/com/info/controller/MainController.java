@@ -1,6 +1,8 @@
 package com.info.controller;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.URL;
@@ -13,6 +15,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.controls.JFXPasswordField;
+import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXTextField;
 
 import javafx.event.Event;
@@ -49,6 +52,9 @@ public class MainController implements Initializable {
 	private static int flag=0;//for switching to login screen after succesfully signup
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		
+		JFXSnackbar snackbar=new JFXSnackbar(rootStack);
+		snackbar.show("test message", 5000);
 		login_screen.setVisible(true);
 		signup_screen.setVisible(false);
 		System.out.println("main controller called");
@@ -89,18 +95,7 @@ public class MainController implements Initializable {
 					 currentUser.setUser_password(login_passwordField.getText());
 					 User vuser=UserDao.userAuth(currentUser);
 					 if(vuser!=null) {
-						 try {
-							Socket socket=new Socket("localhost",9090);
-							PrintWriter out=new PrintWriter(socket.getOutputStream(),true);
-							//sending data to server
-							out.println(vuser.getUser_email()+"is online");
-						} catch (UnknownHostException e2) {
-							// TODO Auto-generated catch block
-							e2.printStackTrace();
-						} catch (IOException e2) {
-							// TODO Auto-generated catch block
-							e2.printStackTrace();
-						}
+						
 						 //succesfully logged in showing home screen
 						 System.out.println("logged in");
 						 //switching to home.fxml scene 
@@ -122,7 +117,7 @@ public class MainController implements Initializable {
 						 new_scene.getStylesheets().addAll(css1,css2);
 						
 						 Stage new_stage=(Stage)((Node)e.getSource()).getScene().getWindow();
-						 
+						
 						 Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
 
 					        //set Stage boundaries to visible bounds of the main screen

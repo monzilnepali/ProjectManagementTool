@@ -75,6 +75,8 @@
                               </Label>
                               <Label layoutX="282.0" layoutY="283.0" text="Create project on project Management Tool'" />
                               <FontAwesomeIconView glyphName="PLUS_SQUARE" layoutX="226.0" layoutY="296.0" size="55" />
+                              <Label layoutX="226.0" layoutY="383.0" text="notification" />
+                              <Label fx:id="notify" layoutX="226.0" layoutY="435.0" />
                            </children>
                         </AnchorPane>
                     </content>

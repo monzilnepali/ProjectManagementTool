@@ -52,7 +52,7 @@ public class ProjectDao {
 						addTeamMember(generatedKey,GetUserId(email),2);
 						
 					}
-					System.out.println("project created");
+					System.out.println("<project created>");
 					return true;
 					
 				}catch(Exception e) {
@@ -117,7 +117,7 @@ public class ProjectDao {
 		
 		public static  List<Project> getProjectNameForTreeView(int userId) {
 			//getting name of project of currently logged in user
-			System.out.println("getprojectname called");
+			//System.out.println("getprojectname called");
 			Connection conn=null;
 			PreparedStatement pst=null;
 			ResultSet rs=null;
@@ -130,7 +130,7 @@ public class ProjectDao {
 			rs=pst.executeQuery();
 			List<Project> list=new ArrayList<Project>();
 			while(rs.next()) {
-				System.out.println("list new data");
+				//System.out.println("list new data");
 				
 				Project pro=new Project();
 				pro.setProjectId(rs.getInt("project_id"));

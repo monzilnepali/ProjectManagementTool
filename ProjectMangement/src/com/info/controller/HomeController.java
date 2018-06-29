@@ -1,10 +1,19 @@
 package com.info.controller;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import javax.swing.plaf.synth.SynthSpinnerUI;
 
 import com.info.dao.ProjectDao;
 import com.info.model.Project;
@@ -12,8 +21,14 @@ import com.info.model.ProjectModel;
 import com.info.model.User;
 import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.controls.JFXTreeView;
+import com.sun.javafx.stage.WindowCloseRequestHandler;
 
+import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -39,11 +54,14 @@ public class HomeController implements Initializable {
 	private static Boolean flag=false;
      private static TreeItem<ProjectModel> root;
      protected static ObservableList<String> list;
-     static CurrentUserSingleton tmp=CurrentUserSingleton.getInstance();	
+     @FXML private Label notify;
+      static CurrentUserSingleton tmp=CurrentUserSingleton.getInstance();	//current user object
+     private BufferedReader reader=null;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		
+		System.out.println("-------------------\n\n");
+		System.out.println("home controlle called\n");
 		
     
 		System.out.println("home controller method called,user="+tmp.getVuser().getUser_name());
@@ -52,22 +70,49 @@ public class HomeController implements Initializable {
 		currentUserName.setText(tmp.getVuser().getUser_email());
 		
 		
-		
+
 		
 		
 		
 		SingleSelectionModel<Tab> selectionModel = home_tabPane.getSelectionModel();
 	
-	System.out.println("home controlle called");
+
 	//tree view root element which is only one
    root = new TreeItem<>(new ProjectModel("", "Project"));
 	root.setExpanded(true);
 	
 	getProjectDetail();
 
-
-
 	projectTree.setRoot(root);
+	
+	System.out.println("connecting to server");
+	
+	 try {		
+		 
+		 Socket socket=new Socket("localhost",9090);
+		 tmp.setClientSocket(socket);
+		 reader=new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		 tmp.setReader(reader);
+		 ClientListenerTest clientlistener1=new ClientListenerTest(socket,reader);
+     	 clientlistener1.setDaemon(true);
+	     clientlistener1.start();
+		 
+		
+		
+		 PrintWriter out=new PrintWriter(socket.getOutputStream(),true);
+		 tmp.setOut(out);
+		 System.out.println("sending username to server and user id is");
+		out.println("loginHandler|"+tmp.getVuser().getUser_id());
+		
+	} catch (UnknownHostException e2) {
+		// TODO Auto-generated catch block
+		e2.printStackTrace();
+	} catch (IOException e2) {
+		// TODO Auto-generated catch block
+		e2.printStackTrace();
+	}
+
+	System.out.println("----->\noutside the thread");
 
 	projectTree.setOnMouseClicked(e -> {
 		if (e.getClickCount() == 2) {

@@ -43,3 +43,12 @@
 	-jfx-focus-color:-fx-main-color;
 }
 
+/* style for button notification snack bar */
+
+.jfx-snackbar-content{
+	-fx-background-color:black;
+	-fx-padding:5 40 5 40;
+}
+.jfx-snackbar-toast{
+	-fx-text-fill:white;
+}

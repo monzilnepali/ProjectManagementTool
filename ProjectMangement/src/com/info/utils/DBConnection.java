@@ -10,7 +10,7 @@ public class DBConnection {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/projectmanagement","root","");
 		//	JOptionPane.showMessageDialog(null,"connection successful");
-			System.out.println("connection successfull");
+			//System.out.println("connection successfull");
 			return con;
 			
 		}catch(Exception e){

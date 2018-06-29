@@ -1,5 +1,6 @@
 package com.info.controller;
 
+import java.beans.EventHandler;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -20,15 +21,16 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-
 import com.info.dao.ProjectDao;
 import com.info.model.Project;
+import com.jfoenix.controls.JFXProgressBar;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -61,10 +63,13 @@ public class ProjectCreationController extends HomeController  implements Initia
 	@FXML private Button projectCreationFinishBtn;
 	@FXML private Button uploadDocs;
 	@FXML private ListView<String> docsList;
+	@FXML private JFXProgressBar taskProgress;
 	ObservableList<String>list=FXCollections.observableArrayList();
+    private List<File> files;
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		taskProgress.setVisible(false);
 		System.out.println("\n\nproject Creation called");
 		CurrentUserSingleton tmp=CurrentUserSingleton.getInstance();	
 		docsList.setVisible(false);
@@ -94,59 +99,20 @@ public class ProjectCreationController extends HomeController  implements Initia
 			list.clear();
 			//uploading file in websever
 			Stage currentStage=(Stage)((Node)e.getSource()).getScene().getWindow();
-			List<File> files = fc.showOpenMultipleDialog(currentStage);
-			//getting selected fie directory
+		    files = fc.showOpenMultipleDialog(currentStage);
+			//getting selected file directory
 			for(File f:files) {
 				if(f!=null) {
 					System.out.println("path"+f.getAbsolutePath());
 					list.add(f.getName()+"\t"+fileSize(f.length()));
 					
+					
 				}
 			}
 			docsList.setVisible(true);
 			docsList.setItems(list);
-			System.out.println("file chooser finised");
-			try {
-				Socket socket=new Socket("localhost",9090);
-				//sending data to server
-				PrintWriter out=new PrintWriter(socket.getOutputStream(),true);
-				out.println("upload");
-				//getting response for the server 
-				BufferedReader input=new BufferedReader(new InputStreamReader(socket.getInputStream()));
-				System.out.println(input.readLine());
-				//sending file in server
-				
-				BufferedOutputStream bufferout=new BufferedOutputStream(socket.getOutputStream());
-				BufferedInputStream fileReader;
-				for(File f:files) {
-					if(f!=null) {
-						System.out.println("upload file in server");
-						//sending file name
-					    out.println(projectTitle.getText());
-					    PrintWriter out1=new PrintWriter(socket.getOutputStream(),true);
-						out1.println(f.getName());
-						fileReader=new BufferedInputStream(new FileInputStream(f));
-						byte[] buffer=new byte[1024];
-						int bytesRead=0;
-						while((bytesRead=fileReader.read(buffer))!=-1) {
-							bufferout.write(buffer, 0, bytesRead);
-							bufferout.flush();
-							
-						}
-						
-						
-					}
-				}
-			         socket.close();
-				
-				
-			} catch (UnknownHostException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			
+		
 			
 		});
 		projectCreationBackBtn.setOnAction(e->{
@@ -157,7 +123,9 @@ public class ProjectCreationController extends HomeController  implements Initia
 		projectCreationFinishBtn.setOnAction(e->{
 			//getting data from form and insert into database
 			
-			
+			taskProgress.setVisible(true);
+			//System.out.println("task is visible");
+		
 			Project pro=new Project();
 			
 			pro.setprojectTitle(projectTitle.getText());
@@ -166,9 +134,9 @@ public class ProjectCreationController extends HomeController  implements Initia
 			List<String> team=new ArrayList<String>();
 			//getting email from team Members field
 			//separating them using string tokenizer 
-			System.out.println("project team member"+projectTeamMember.getText());
+		//	System.out.println("project team member"+projectTeamMember.getText());
 			for(String email:projectTeamMember.getText().split(",")) {
-				System.out.println("email "+email);
+			//	System.out.println("email "+email);
 				team.add(email);
 			}
 			
@@ -177,7 +145,7 @@ public class ProjectCreationController extends HomeController  implements Initia
 			
 			ExecutorService executor=Executors.newFixedThreadPool(3);
 			Callable<Boolean> c = ()->{
-				System.out.println(Thread.currentThread().getName());
+				//System.out.println(Thread.currentThread().getName());
 				 return ProjectDao.CreatProject(pro,tmp.getVuser().getUser_id());
 				 
 			};
@@ -187,6 +155,16 @@ public class ProjectCreationController extends HomeController  implements Initia
 			try {
 				Boolean result =future.get();
 				if(result) {
+					//after creation of project successfull uploading file to server
+					//uploading file to server 
+				//	System.out.println("called fileupload thread and userid");
+					FileUploadTask task=new FileUploadTask(projectTitle.getText(),files);
+					new Thread(task).start();
+					
+					task.setOnSucceeded(e1->{
+						System.out.println("project creation completee");
+						taskProgress.setVisible(false);
+					});
 					Stage currentStage=(Stage)((Node)e.getSource()).getScene().getWindow();
 					
 					currentStage.close();

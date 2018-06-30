@@ -1,5 +1,6 @@
 package com.info.controller;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -93,6 +94,8 @@ public class HomeController implements Initializable {
 		 tmp.setClientSocket(socket);
 		 reader=new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		 tmp.setReader(reader);
+	   	BufferedOutputStream bufferout=new BufferedOutputStream(socket.getOutputStream());
+		 tmp.setBufferout(bufferout);
 		 ClientListenerTest clientlistener1=new ClientListenerTest(socket,reader);
      	 clientlistener1.setDaemon(true);
 	     clientlistener1.start();

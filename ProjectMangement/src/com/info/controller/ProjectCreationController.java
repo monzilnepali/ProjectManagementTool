@@ -1,36 +1,21 @@
 package com.info.controller;
 
-import java.beans.EventHandler;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
 import java.net.URL;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.StringTokenizer;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import com.info.dao.ProjectDao;
 import com.info.model.Project;
 import com.jfoenix.controls.JFXProgressBar;
-import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
-
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.WorkerStateEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -70,6 +55,9 @@ public class ProjectCreationController extends HomeController  implements Initia
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		taskProgress.setVisible(false);
+		
+		
+	
 		System.out.println("\n\nproject Creation called");
 		CurrentUserSingleton tmp=CurrentUserSingleton.getInstance();	
 		docsList.setVisible(false);
@@ -96,11 +84,14 @@ public class ProjectCreationController extends HomeController  implements Initia
 			
 		});
 		uploadDocs.setOnAction(e->{
+			
+			
 			list.clear();
 			//uploading file in websever
 			Stage currentStage=(Stage)((Node)e.getSource()).getScene().getWindow();
 		    files = fc.showOpenMultipleDialog(currentStage);
 			//getting selected file directory
+		    if(files!=null) {
 			for(File f:files) {
 				if(f!=null) {
 					System.out.println("path"+f.getAbsolutePath());
@@ -112,8 +103,19 @@ public class ProjectCreationController extends HomeController  implements Initia
 			docsList.setVisible(true);
 			docsList.setItems(list);
 			
-		
+		    
 			
+			FileUploadTask task=new FileUploadTask(projectTitle.getText(),files);
+			new Thread(task).start();
+			
+			task.setOnSucceeded(e1->{
+				System.out.println("project creation completee");
+				
+			});
+			
+		    }else {
+		    	System.out.println("nothing to upload ");
+		    }
 		});
 		projectCreationBackBtn.setOnAction(e->{
 			//showing projectdetail pane
@@ -123,7 +125,7 @@ public class ProjectCreationController extends HomeController  implements Initia
 		projectCreationFinishBtn.setOnAction(e->{
 			//getting data from form and insert into database
 			
-			taskProgress.setVisible(true);
+		
 			//System.out.println("task is visible");
 		
 			Project pro=new Project();
@@ -131,17 +133,17 @@ public class ProjectCreationController extends HomeController  implements Initia
 			pro.setprojectTitle(projectTitle.getText());
 			pro.setProjectDesc(projectDescription.getText());
 			pro.setCategories(projectCategories.getText());
-			List<String> team=new ArrayList<String>();
+			List<String> teamMemberList=new ArrayList<String>();
 			//getting email from team Members field
 			//separating them using string tokenizer 
 		//	System.out.println("project team member"+projectTeamMember.getText());
 			for(String email:projectTeamMember.getText().split(",")) {
 			//	System.out.println("email "+email);
-				team.add(email);
+				teamMemberList.add(email);
 			}
 			
 			
-			pro.setTeamMember(team);
+			pro.setTeamMember(teamMemberList);
 			
 			ExecutorService executor=Executors.newFixedThreadPool(3);
 			Callable<Boolean> c = ()->{
@@ -158,13 +160,38 @@ public class ProjectCreationController extends HomeController  implements Initia
 					//after creation of project successfull uploading file to server
 					//uploading file to server 
 				//	System.out.println("called fileupload thread and userid");
-					FileUploadTask task=new FileUploadTask(projectTitle.getText(),files);
+					
+					/*FileUploadTask task=new FileUploadTask(projectTitle.getText(),files);
 					new Thread(task).start();
 					
 					task.setOnSucceeded(e1->{
 						System.out.println("project creation completee");
 						taskProgress.setVisible(false);
 					});
+					*/
+					
+					//sending mail to all team member
+					System.out.println("call mail send in server");
+					tmp.getOut().println("sendMail");
+					//sending project name for description in mail
+					tmp.getOut().println(projectTitle.getText());
+					//sending array of team member  to send mail
+					
+					taskProgress.setVisible(true);
+					
+				    	 //calling sendmailworker task to send mail to all team member
+				     SendMailWorkerClient sendmail=new SendMailWorkerClient(teamMemberList);
+				     
+				     taskProgress.progressProperty().bind(sendmail.progressProperty());
+				     
+				     new Thread(sendmail).start();
+				     
+				    	 
+				    	 
+				     
+					
+					
+					
 					Stage currentStage=(Stage)((Node)e.getSource()).getScene().getWindow();
 					
 					currentStage.close();

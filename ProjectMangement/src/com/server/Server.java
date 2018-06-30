@@ -1,5 +1,6 @@
 package com.server;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -32,6 +33,7 @@ public class Server extends Thread {
 			
 				PrintWriter out=new PrintWriter(clientSocket.getOutputStream(),true);
 				BufferedReader input=new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+			
 				ServerWorker client=new ServerWorker(this,clientSocket,out,input);
 				
 				

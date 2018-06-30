@@ -1,5 +1,6 @@
 package com.info.controller;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -14,6 +15,7 @@ public class CurrentUserSingleton {
 	private Socket clientSocket;
 	private BufferedReader reader;
 	private PrintWriter out;
+	private BufferedOutputStream bufferout;
 	
 	private static  CurrentUserSingleton singleton=new CurrentUserSingleton();
 	
@@ -48,5 +50,11 @@ public class CurrentUserSingleton {
 	}
 	public void setOut(PrintWriter out) {
 		this.out = out;
+	}
+	public BufferedOutputStream getBufferout() {
+		return bufferout;
+	}
+	public void setBufferout(BufferedOutputStream bufferout) {
+		this.bufferout = bufferout;
 	}
 }

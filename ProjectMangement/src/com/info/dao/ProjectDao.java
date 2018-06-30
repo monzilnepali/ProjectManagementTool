@@ -16,9 +16,12 @@ import com.info.model.Task;
 import com.info.model.User;
 import com.info.utils.DBConnection;
 
-public class ProjectDao {
 
+public class ProjectDao {
+	
+	
 		public static Boolean CreatProject(Project project ,int managerId) {
+			   
 				//add project data into database
 				Connection conn=null;
 				PreparedStatement pst=null;
@@ -42,14 +45,14 @@ public class ProjectDao {
 					}
 					 
 					//System.out.println("Inserted record's ID: " + generatedKey);
-					addTeamMember(generatedKey,managerId,1);
+					addTeamMember(generatedKey,managerId,1,1);
 					//assigning project id to team member
 					for(String email:project.getTeamMember()) {
 						//gettting user id 
 						//adding user_id and project id in userprojectTable
 						System.out.println("team member email"+email);
 						
-						addTeamMember(generatedKey,GetUserId(email),2);
+						addTeamMember(generatedKey,GetUserId(email),2,0);
 						
 					}
 					System.out.println("<project created>");
@@ -92,17 +95,18 @@ public class ProjectDao {
 			return 0;
 			
 		}
-		private static void addTeamMember(int projectId,int userId,int roleId) {
+		private static void addTeamMember(int projectId,int userId,int roleId,int status) {
 			//assign project id and useid respectively
 			Connection conn=null;
 			PreparedStatement pst=null;
 			try {
 				conn=DBConnection.getConnection();
-				String query="INSERT INTO userproject (project_id,user_id,role_id) VALUES (?,?,?)";
+				String query="INSERT INTO userproject (project_id,user_id,role_id,status) VALUES (?,?,?,?)";
 				pst=conn.prepareStatement(query);
 				pst.setInt(1, projectId);
 				pst.setInt(2, userId);
 				pst.setInt(3, roleId);
+				pst.setInt(4, status);
 				pst.execute();
 				
 				

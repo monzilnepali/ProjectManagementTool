@@ -1,6 +1,7 @@
 package com.info.controller;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
@@ -26,16 +27,27 @@ public class ClientListener extends Task<String> {
 				 int i=0;
 				 String msg;
 			   while(true) {
-			
-				 if(reader!=null) {
-				msg="server response "+i+" is "+reader.readLine();
-			    System.out.println(msg);
-			    i++;
-			   System.out.println("return data to main thread");
-			    return msg;
-		       
-			    
-			 }
+//			
+//				 if(reader!=null) {
+//					 String input=reader.readLine();
+//			     	msg="server response "+i+" is "+input;
+//				  System.out.println(msg);
+//				  if(input.equals("notify")) {
+//					  System.out.println("send notification");
+//				  }else {
+//					  System.out.println("no notification");
+//				  }
+//			      i++;
+//			  
+//			    
+//			 }
+				   String response=reader.readLine();
+				   if(response.equals("userPresence")) {
+					   System.out.println(reader.readLine());
+				   }else if(response.equals("notify")) {
+					   System.out.println("notificatio called");
+					   System.out.println("notiifcation from system is -->"+reader.readLine());
+				   }
 				
 			 }
 			 
@@ -47,6 +59,11 @@ public class ClientListener extends Task<String> {
 		return null;
 		
 	}
+
+
+
+
+
 	
 	
 	}

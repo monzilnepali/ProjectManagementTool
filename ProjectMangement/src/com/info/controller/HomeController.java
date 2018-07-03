@@ -28,8 +28,11 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -37,6 +40,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.Tooltip;
@@ -56,15 +60,22 @@ public class HomeController implements Initializable {
      private static TreeItem<ProjectModel> root;
      protected static ObservableList<String> list;
      @FXML private Label notify;
+     @FXML private Label notifylist;
       static CurrentUserSingleton tmp=CurrentUserSingleton.getInstance();	//current user object
      private BufferedReader reader=null;
+     @FXML
+     private ListView<String> notificationListview;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		System.out.println("-------------------\n\n");
 		System.out.println("home controlle called\n");
+	
+		ObservableList<String> notificationlist=FXCollections.observableArrayList("first","second");
+	
+		notificationListview.setItems(notificationlist);
 		
-    
+		notificationlist.add("third");
 		System.out.println("home controller method called,user="+tmp.getVuser().getUser_name());
 		
 		currentUserEmail.setText(tmp.getVuser().getUser_name());
@@ -97,15 +108,37 @@ public class HomeController implements Initializable {
 	   	BufferedOutputStream bufferout=new BufferedOutputStream(socket.getOutputStream());
 		 tmp.setBufferout(bufferout);
 		 ClientListenerTest clientlistener1=new ClientListenerTest(socket,reader);
-     	 clientlistener1.setDaemon(true);
-	     clientlistener1.start();
 		 
+ 
+		 
+		 
+		  notify.textProperty().bind(clientlistener1.messageProperty());
+	   	 final ChangeListener changelistener=new ChangeListener<String>() {
+
+
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				
+				System.out.println("the old value is "+oldValue+"\nthe new value is "+newValue);
+				notifylist.setText(oldValue+"\n"+newValue);
+				notificationlist.add(newValue);
+				
+			}
+ 
+			 
+		 };
+		 notify.textProperty().addListener(changelistener);
+	  Thread newThread=new Thread(clientlistener1);
+	  newThread.setDaemon(true);
+	  newThread.start();
+	
 		
 		
 		 PrintWriter out=new PrintWriter(socket.getOutputStream(),true);
 		 tmp.setOut(out);
 		 System.out.println("sending username to server and user id is");
-		out.println("loginHandler|"+tmp.getVuser().getUser_id());
+		out.println("loginHandler");
+		out.println(tmp.getVuser().getUser_id());//sending user id
 		
 	} catch (UnknownHostException e2) {
 		// TODO Auto-generated catch block

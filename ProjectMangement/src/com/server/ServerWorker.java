@@ -42,33 +42,24 @@ public class ServerWorker extends Thread{
 		try {
 		//	System.out.println("sending hello client to client ");
 		
-			  out.println("hello client");
+			//  out.println("hello client");
 			while(true) {
 			String clientInput=input.readLine();
-			//System.out.println("clientInput"+ clientInput);
-			//splitting clientinput
-			StringTokenizer st=new StringTokenizer(clientInput,"|");
-		//	out.println("hello client again");
-	        clientInputArray=new String[2];
-			int i=0;
-			while(st.hasMoreElements()) {
 			
-				clientInputArray[i]=st.nextToken();
-				i++;
-			}
-		
-			//System.out.println("client 1 input:"+clientInputArray[0]);
-			//System.out.println("client 2 input:"+clientInputArray[1]);
 			
-		    if(clientInputArray[0].equals("upload")) {
+			
+		    if(clientInput.equals("upload")) {
 		    	System.out.println("file uploader called ---->");
 		    	FileUploadHandler();
 		    	
-		    }else if(clientInputArray[0].equals("loginHandler")) {
+		    }else if(clientInput.equals("loginHandler")) {
 		    	System.out.println("login handler called--->");
 		    	loginHandler();
-		    }else if(clientInputArray[0].equals("sendMail")) {
+		    }else if(clientInput.equals("sendMail")) {
 		    	System.out.println("mail send called");
+		    	//sending mail to all team member
+		    	//sending notification to online user
+		    	
 		    	SendMain();
 		    	
 		    }
@@ -87,12 +78,14 @@ public class ServerWorker extends Thread{
 	}
 	
 	
-	
-	
 
 	private void SendMain() throws IOException {
 		
+		
 		String projectName=this.input.readLine();
+		SendNotification(projectName);//sending notification to online user only
+		
+		
 		String msg="invitaion from project Name-->"+projectName;
     	System.out.println("the project name"+projectName);
     	Boolean stop=true;
@@ -123,21 +116,34 @@ public class ServerWorker extends Thread{
 		
 	}
 
-	private void loginHandler() throws NumberFormatException, IOException {
-		//System.out.println("login handler called");
-		this.currentUserId=Integer.valueOf(clientInputArray[1]);
-		 // System.out.println("currently logged user id"+clientInputArray[1]);
+	private void SendNotification(String projectName) {
+		System.out.println("sending notification");
+	//sending notification
+		List<ServerWorker> workerList=server.getServerWorker();
+		for(ServerWorker worker:workerList) {
+			worker.out.println("notify");
+			worker.out.println("reqest from "+projectName);
+			worker.out.flush();
+			
+		}
+		System.out.println("finishing sending notification to user");
 		
+	}
+
+	private void loginHandler() throws NumberFormatException, IOException {
+		//System.out.println("user id is"+this.input.readLine());
+		this.currentUserId=Integer.valueOf(this.input.readLine());
 		  //sending msg to message to other online team member
 		  
 		//  System.out.println("sending msg to other active client");
 		  List<ServerWorker> workerList=server.getServerWorker();
 		  int i=0;
 		  System.out.println("\n-----------------------\n");
-		  System.out.println("\nsending notification\n");
+		  System.out.println("\nsending user presence notification\n");
 		  for(ServerWorker worker:workerList) {
+			
 			  if(currentUserId!=worker.currentUserId) {
-				  //send notification to othetr active user
+				  //send notification to other active user
 				 
 			  String msg="client id "+currentUserId+" is online-->"+i;
 			  System.out.println("\nsending notification about"+msg);
@@ -146,9 +152,9 @@ public class ServerWorker extends Thread{
 			  worker.out.flush();
 			  
 			//get notify about all active connection in server
-			  System.out.println("get notify\n");
+			 
 			 System.out.println("current user id is"+this.currentUserId);
-			  out.println("client id "+worker.currentUserId+" iss online --->"+i);
+			  this.out.println("client id "+worker.currentUserId+" iss online --->"+i);
 			  System.out.println("get notify about "+"client id"+worker.currentUserId+"iss online--->"+i);
 		  
 			  }

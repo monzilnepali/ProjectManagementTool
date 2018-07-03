@@ -232,7 +232,7 @@ public class MainController implements Initializable {
 		});
 		
 		
-	}//end of initializa method
+	}//end of initializable method
 	
 	
 	private void switchToLoginFromSignup(Event e) {

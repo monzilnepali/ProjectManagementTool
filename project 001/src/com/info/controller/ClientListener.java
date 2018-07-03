@@ -1,15 +1,16 @@
 package com.info.controller;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.List;
 
 import javafx.concurrent.Task;
 
 public class ClientListener extends Task<String> {
 	private Socket socket;
 	private  BufferedReader reader;
+	private List<String> notifyList;
 
 	public ClientListener(Socket socket, BufferedReader reader) {
 		this.socket=socket;
@@ -19,35 +20,36 @@ public class ClientListener extends Task<String> {
 
 
 	@Override
-	protected String call() throws Exception {
+	public String call() {
 		try {
 			System.out.println("listening to server response.... ");
 			 
 		
 				 int i=0;
-				 String msg;
 			   while(true) {
-//			
-//				 if(reader!=null) {
-//					 String input=reader.readLine();
-//			     	msg="server response "+i+" is "+input;
-//				  System.out.println(msg);
-//				  if(input.equals("notify")) {
-//					  System.out.println("send notification");
-//				  }else {
-//					  System.out.println("no notification");
-//				  }
-//			      i++;
-//			  
-//			    
-//			 }
-				   String response=reader.readLine();
-				   if(response.equals("userPresence")) {
-					   System.out.println(reader.readLine());
-				   }else if(response.equals("notify")) {
-					   System.out.println("notificatio called");
-					   System.out.println("notiifcation from system is -->"+reader.readLine());
-				   }
+			
+				 if(reader!=null) {
+					 String msg=reader.readLine();
+					 if(msg.equals("userPresence")) {
+					 
+						 String msg1=reader.readLine();
+			        System.out.println("server response "+ i +" is "+msg1+"");
+			        updateMessage(msg1);
+			       Thread.sleep(2000);//sleeping thread for sometime otherwise multiple response from server will not shown in observable list listenre
+			    
+					 }
+			       
+			       
+			    if(msg.equals("notify")) {
+			    	System.out.println("notification receive");
+			    	System.out.println("the notification:"+reader.readLine());
+			    }
+			    i++;
+			  
+			    //return "server response"+i+"is"+reader.readLine();
+		       
+			    
+			 }
 				
 			 }
 			 
@@ -58,12 +60,8 @@ public class ClientListener extends Task<String> {
 			}
 		return null;
 		
+		
 	}
-
-
-
-
-
 	
 	
 	}

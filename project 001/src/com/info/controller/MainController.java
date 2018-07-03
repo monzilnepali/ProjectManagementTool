@@ -112,6 +112,8 @@ public class MainController implements Initializable {
 						 new_scene.getStylesheets().addAll(css1,css2);
 						
 						 Stage new_stage=(Stage)((Node)e.getSource()).getScene().getWindow();
+						 
+						tmp.setStage(p);
 						
 						 Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
 

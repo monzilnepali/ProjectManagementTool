@@ -7,6 +7,9 @@ import java.net.Socket;
 
 import com.info.model.User;
 
+import javafx.scene.Parent;
+import javafx.stage.Stage;
+
 
 
 public class CurrentUserSingleton {
@@ -16,6 +19,7 @@ public class CurrentUserSingleton {
 	private BufferedReader reader;
 	private PrintWriter out;
 	private BufferedOutputStream bufferout;
+	private Parent stage;
 	
 	private static  CurrentUserSingleton singleton=new CurrentUserSingleton();
 	
@@ -57,4 +61,11 @@ public class CurrentUserSingleton {
 	public void setBufferout(BufferedOutputStream bufferout) {
 		this.bufferout = bufferout;
 	}
+	public Parent getStage() {
+		return stage;
+	}
+	public void setStage(Parent stage) {
+		this.stage = stage;
+	}
+
 }

@@ -13,6 +13,7 @@ import java.util.ResourceBundle;
 import com.info.dao.ProjectDao;
 import com.info.model.Project;
 import com.info.model.ProjectModel;
+import com.info.model.Task1;
 import com.jfoenix.controls.*;
 
 
@@ -33,10 +34,12 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.TreeItem;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class HomeController implements Initializable {
+	@FXML private AnchorPane mainRoot;
 	@FXML
 	private JFXTreeView<ProjectModel> projectTree;
 	@FXML
@@ -50,19 +53,37 @@ public class HomeController implements Initializable {
      @FXML private Label notifylist;
       static CurrentUserSingleton tmp=CurrentUserSingleton.getInstance();	//current user object
      private BufferedReader reader=null;
-     @FXML
-     private ListView<String> notificationListview;
+     @FXML private ListView<Task1> notificationListView;
+ 	
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		System.out.println("-------------------\n\n");
 		System.out.println("home controlle called\n");
-	
-		ObservableList<String> notificationlist=FXCollections.observableArrayList("first","second");
-	
-		notificationListview.setItems(notificationlist);
 		
-		notificationlist.add("third");
+		JFXSnackbar snackbar=new JFXSnackbar(mainRoot);
+	
+	
+		ObservableList<Task1> notificationlist=FXCollections.observableArrayList();
+		notificationlist.add(new Task1(1,"task1 running"));
+		notificationlist.add(new Task1(2,"task2 finished"));
+		notificationlist.add(new Task1(3,"task3 completed"));
+		
+	
+		notificationListView.setItems(notificationlist);
+		
+		
+		
+		notificationListView.setOnMouseClicked(e->{
+			
+			System.out.println("list view clicked");
+			
+			int item=notificationListView.getSelectionModel().getSelectedIndex();
+			Task1 data=notificationListView.getSelectionModel().getSelectedItem();
+			System.out.println("select index is"+item+"\n data is"+data.getId());
+			
+		});		
+		
 		System.out.println("home controller method called,user="+tmp.getVuser().getUser_name());
 		
 		currentUserEmail.setText(tmp.getVuser().getUser_name());
@@ -94,7 +115,7 @@ public class HomeController implements Initializable {
 		 tmp.setReader(reader);
 	   	BufferedOutputStream bufferout=new BufferedOutputStream(socket.getOutputStream());
 		 tmp.setBufferout(bufferout);
-		 ClientListenerTest clientlistener1=new ClientListenerTest(socket,reader);
+		 ClientListener clientlistener1=new ClientListener(socket,reader);
 		 
  
 		 
@@ -108,7 +129,9 @@ public class HomeController implements Initializable {
 				
 				System.out.println("the old value is "+oldValue+"\nthe new value is "+newValue);
 				notifylist.setText(oldValue+"\n"+newValue);
-				notificationlist.add(newValue);
+				//notificationlist.add(newValue);
+				
+				snackbar.show(newValue, 6000);//showing notification popup from button about user online
 				
 			}
  
@@ -126,6 +149,7 @@ public class HomeController implements Initializable {
 		 System.out.println("sending username to server and user id is");
 		out.println("loginHandler");
 		out.println(tmp.getVuser().getUser_id());//sending user id
+		out.println(tmp.getVuser().getUser_name());//sending username to server
 		
 	} catch (UnknownHostException e2) {
 		// TODO Auto-generated catch block

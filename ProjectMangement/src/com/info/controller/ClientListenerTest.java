@@ -32,7 +32,7 @@ public class ClientListenerTest extends Task<String> {
 					 String msg=reader.readLine();
 			        System.out.println("server response "+ i +" is "+msg+"");
 			        updateMessage("server response "+ i +" is "+msg+"");
-			     Thread.sleep(2000);
+			     Thread.sleep(2000);//sleeping thread for sometime otherwise multiple response from server will not shown in observable list listenre
 			    
 			       
 			       

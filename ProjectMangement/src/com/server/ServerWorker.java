@@ -131,8 +131,9 @@ public class ServerWorker extends Thread{
 	}
 
 	private void loginHandler() throws NumberFormatException, IOException {
-		//System.out.println("user id is"+this.input.readLine());
-		this.currentUserId=Integer.valueOf(this.input.readLine());
+		
+		
+		this.currentUserId=Integer.valueOf(this.input.readLine());//getting currently logged in user id 
 		  //sending msg to message to other online team member
 		  
 		//  System.out.println("sending msg to other active client");

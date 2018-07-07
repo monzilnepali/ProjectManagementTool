@@ -113,7 +113,7 @@ public class MainController implements Initializable {
 						
 						 Stage new_stage=(Stage)((Node)e.getSource()).getScene().getWindow();
 						 
-						tmp.setStage(p);
+						
 						
 						 Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
 

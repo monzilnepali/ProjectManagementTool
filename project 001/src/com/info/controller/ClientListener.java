@@ -2,8 +2,12 @@ package com.info.controller;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.util.List;
+
+import com.info.model.NotifyTask;
+
 
 import javafx.concurrent.Task;
 
@@ -11,6 +15,7 @@ public class ClientListener extends Task<String> {
 	private Socket socket;
 	private  BufferedReader reader;
 	private List<String> notifyList;
+	private ObjectInputStream objIn;
 
 	public ClientListener(Socket socket, BufferedReader reader) {
 		this.socket=socket;
@@ -23,6 +28,7 @@ public class ClientListener extends Task<String> {
 	public String call() {
 		try {
 			System.out.println("listening to server response.... ");
+			
 			 
 		
 				 int i=0;
@@ -32,17 +38,20 @@ public class ClientListener extends Task<String> {
 					 String msg=reader.readLine();
 					 if(msg.equals("userPresence")) {
 					 
+						 //String msg1=reader.readLine();
+						 
 						 String msg1=reader.readLine();
-			        System.out.println("server response "+ i +" is "+msg1+"");
-			        updateMessage(msg1);
-			       Thread.sleep(2000);//sleeping thread for sometime otherwise multiple response from server will not shown in observable list listenre
+					        System.out.println("server response "+ i +" is "+msg1+"");
+					        updateMessage(msg1);
+			              Thread.sleep(2000);//sleeping thread for sometime otherwise multiple response from server will not shown in observable list listenre
 			    
 					 }
 			       
 			       
 			    if(msg.equals("notify")) {
 			    	System.out.println("notification receive");
-			    	System.out.println("the notification:"+reader.readLine());
+			    	//System.out.println("the notification:"+reader.readLine());
+			    	updateMessage(reader.readLine());
 			    }
 			    i++;
 			  

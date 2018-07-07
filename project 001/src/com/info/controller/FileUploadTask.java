@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -16,13 +17,13 @@ import java.util.List;
 
 import javafx.concurrent.Task;
 
-public class FileUploadTask extends Task<Object> {
+public class FileUploadTask extends Thread {
 	private String projectName;
 	private List<File> files;
 	private BufferedInputStream fileReader=null;
 	CurrentUserSingleton tmp=CurrentUserSingleton.getInstance();
 	@Override
-	protected Object call() throws Exception {
+	public void run() {
 		System.out.println("fileupload task is called ");
 		
 		PrintWriter out=tmp.getOut();
@@ -34,7 +35,13 @@ public class FileUploadTask extends Task<Object> {
 
 		for(File f:files) {
 		
-			UploadFile(f);
+			
+			try {
+				UploadFile(f);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			
 		
@@ -44,18 +51,27 @@ public class FileUploadTask extends Task<Object> {
 			
 		
 	
-		return null;
+		
 	}
 	private void UploadFile(File f) throws IOException {
+		System.out.println("uploading file");
 		//uploading file to server
-		tmp.getOut().println(f.getName());
-		DataOutputStream dos = new DataOutputStream(tmp.getClientSocket().getOutputStream());
-		FileInputStream fis = new FileInputStream(f);
-		byte[] buffer = new byte[4096];
+		tmp.getOut().println(f.getName());//sending filename to server
+		tmp.getOut().println("start");
 		
-		while (fis.read(buffer) > 0) {
-			dos.write(buffer);
+		DataOutputStream dos = new DataOutputStream(tmp.getClientSocket().getOutputStream());
+		BufferedInputStream fileReader=new BufferedInputStream(new FileInputStream(f));
+		byte[] buffer = new byte[1024];
+		int byteRead=0;
+		while((byteRead=fileReader.read(buffer))!=-1) {
+			dos.write(buffer,0,byteRead);
+			dos.flush();
+			System.out.println("uploading "+byteRead);
 		}
+		
+		fileReader.close();
+		
+	
 		System.out.println("uploading file completed");
 		
 		

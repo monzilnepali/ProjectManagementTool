@@ -1,5 +1,6 @@
 package com.info.controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -31,6 +32,7 @@ public class TaskAddController implements Initializable {
 	@FXML private ComboBox<String> taskPriority;
 	@FXML private Button createTasktBtn;
 	private static int currentProjectId;
+	static CurrentUserSingleton tmp=CurrentUserSingleton.getInstance();
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 			System.out.println("task add controller callled");
@@ -75,20 +77,33 @@ public class TaskAddController implements Initializable {
 				newTask.setTaskAssignTo(teamMemberList.getValue().getUser_id());
 				newTask.setTaskPriority(taskPriority.getValue());
 				newTask.setProjectId(currentProjectId);
+				//sending newtask data to server to store data in database
 				
-				if(ProjectDao.addNewTask(newTask)) {
-					//close the window
+			   tmp.getOut().println("TaskAdd");	
+			   try {
+				   System.out.println("writing objec to server");
+				tmp.getObjOut().writeObject(newTask);//transfer object to server
+				
+				System.out.println("response back from server");
+				
 					Stage currentStage=(Stage)((Node)e.getSource()).getScene().getWindow();
 					
 					
 					
 					controller.loadData();
 					currentStage.close();
-					
-				}else {
-					//show error message
-					System.out.println("error while adding new task in database");
-				}
+				
+				
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+				
+				
+				
+				
+				
 			}
 			
 			

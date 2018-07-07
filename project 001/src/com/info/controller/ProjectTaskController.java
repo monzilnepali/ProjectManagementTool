@@ -72,6 +72,13 @@ public class ProjectTaskController implements Initializable {
 			
 		});
 		
+		
+		//on selecting the row of table
+		taskTable.setOnMouseClicked(e->{
+			Task selectedTask=taskTable.getSelectionModel().getSelectedItem();
+			System.out.println("the selected row is "+selectedTask.getTaskName());
+		});
+		
 	}
 	public void setData(Integer integer,String role) {
 		
@@ -98,7 +105,7 @@ public class ProjectTaskController implements Initializable {
 						e1.printStackTrace();
 					}
 					TaskStatusUpdateController controller=loader.getController();
-					controller.setData(selectedTask.getTaskId(),this);
+					controller.setData(selectedTask,this);
 					Parent p=loader.getRoot();
 					Scene scene=new Scene(p);
 					Stage newStage=new Stage();

@@ -1,75 +1,75 @@
 package com.info.model;
 
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
+import java.io.Serializable;
 
-public class Task {
+@SuppressWarnings("serial")
+public class Task implements Serializable {
 	
-	private SimpleIntegerProperty taskId;
-	private SimpleIntegerProperty projectId;
-	private SimpleStringProperty taskName;
-	private SimpleStringProperty taskDescription;
-	private SimpleIntegerProperty taskAssignTo;
-	private SimpleStringProperty taskAssignToName;
-	private SimpleStringProperty taskDeadLine;
-	private SimpleStringProperty taskStatus;
-	private SimpleStringProperty taskPriority;
-	
-	
+	private int taskId;
+	private int projectId;
+	private String taskName;
+	private String taskDescription;
+	private int taskAssignTo;
+	private String taskAssignToName;
+	private String taskDeadLine;
+	private String taskStatus;
+	private String taskPriority;
 	public int getTaskId() {
-		return taskId.get();
+		return taskId;
 	}
 	public void setTaskId(int taskId) {
-		this.taskId = new SimpleIntegerProperty(taskId);
-	}
-	public String getTaskName() {
-		return taskName.get();
-	}
-	public void setTaskName(String taskName) {
-		this.taskName = new SimpleStringProperty(taskName);
-	}
-	public String getTaskDescription() {
-		return taskDescription.get();
-	}
-	public void setTaskDescription(String taskDescription) {
-		this.taskDescription = new SimpleStringProperty(taskDescription);
-	}
-	public int getTaskAssignTo() {
-		return taskAssignTo.get();
-	}
-	public void setTaskAssignTo(int taskAssignTo) {
-		this.taskAssignTo = new SimpleIntegerProperty(taskAssignTo);
-	}
-	public String getTaskDeadLine() {
-		return taskDeadLine.get();
-	}
-	public void setTaskDeadLine(String taskDeadLine) {
-		this.taskDeadLine = new SimpleStringProperty(taskDeadLine);
-	}
-	public String getTaskStatus() {
-		return taskStatus.get();
-	}
-	public void setTaskStatus(String taskStatus) {
-		this.taskStatus = new SimpleStringProperty(taskStatus);
-	}
-	public String getTaskPriority() {
-		return taskPriority.get();
-	}
-	public void setTaskPriority(String taskPriority) {
-		this.taskPriority = new SimpleStringProperty(taskPriority);
+		this.taskId = taskId;
 	}
 	public int getProjectId() {
-		return projectId.get();
+		return projectId;
 	}
 	public void setProjectId(int projectId) {
-		this.projectId = new SimpleIntegerProperty(projectId);
+		this.projectId = projectId;
+	}
+	public String getTaskName() {
+		return taskName;
+	}
+	public void setTaskName(String taskName) {
+		this.taskName = taskName;
+	}
+	public String getTaskDescription() {
+		return taskDescription;
+	}
+	public void setTaskDescription(String taskDescription) {
+		this.taskDescription = taskDescription;
+	}
+	public int getTaskAssignTo() {
+		return taskAssignTo;
+	}
+	public void setTaskAssignTo(int taskAssignTo) {
+		this.taskAssignTo = taskAssignTo;
 	}
 	public String getTaskAssignToName() {
-		return taskAssignToName.get();
+		return taskAssignToName;
 	}
 	public void setTaskAssignToName(String taskAssignToName) {
-		this.taskAssignToName = new SimpleStringProperty(taskAssignToName);
+		this.taskAssignToName = taskAssignToName;
 	}
+	public String getTaskDeadLine() {
+		return taskDeadLine;
+	}
+	public void setTaskDeadLine(String taskDeadLine) {
+		this.taskDeadLine = taskDeadLine;
+	}
+	public String getTaskStatus() {
+		return taskStatus;
+	}
+	public void setTaskStatus(String taskStatus) {
+		this.taskStatus = taskStatus;
+	}
+	public String getTaskPriority() {
+		return taskPriority;
+	}
+	public void setTaskPriority(String taskPriority) {
+		this.taskPriority = taskPriority;
+	}
+	
+	
 	
 	
 	

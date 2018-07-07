@@ -106,12 +106,10 @@ public class ProjectCreationController extends HomeController  implements Initia
 		    
 			
 			FileUploadTask task=new FileUploadTask(projectTitle.getText(),files);
-			new Thread(task).start();
+			task.setDaemon(true);
+			task.start();
 			
-			task.setOnSucceeded(e1->{
-				System.out.println("project creation completee");
-				
-			});
+			
 			
 		    }else {
 		    	System.out.println("nothing to upload ");
@@ -206,7 +204,7 @@ public class ProjectCreationController extends HomeController  implements Initia
 		
 	}
 	
-	public String fileSize(double size) {
+	public static String fileSize(double size) {
 		//converting bytes to KB and MB for displaying filesize of document uploaded
 		
 		if(size<=1024*1024) {

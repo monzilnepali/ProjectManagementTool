@@ -4,6 +4,8 @@ import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.URL;
@@ -110,11 +112,19 @@ public class HomeController implements Initializable {
 	 try {		
 		 
 		 Socket socket=new Socket("localhost",9090);
+		 //settingup required i/o for service
 		 tmp.setClientSocket(socket);
 		 reader=new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		 tmp.setReader(reader);
 	   	BufferedOutputStream bufferout=new BufferedOutputStream(socket.getOutputStream());
 		 tmp.setBufferout(bufferout);
+		 
+		 ObjectInputStream objIn=new ObjectInputStream(socket.getInputStream());
+		 tmp.setObjIn(objIn);
+		 
+		 ObjectOutputStream objOut=new ObjectOutputStream(socket.getOutputStream());
+		 tmp.setObjOut(objOut);
+		 
 		 ClientListener clientlistener1=new ClientListener(socket,reader);
 		 
  
@@ -227,6 +237,12 @@ public class HomeController implements Initializable {
 					//passing projectName and user id
 					controller.setData(Integer.valueOf(item.getParent().getValue().getproject_file()),splitString(item.getParent().getValue().getProject_name())    );
 				}
+				else if(item.getValue().getproject_file().equals("TeamCalender")) {
+					System.out.println("TeamCalender controller called 1" );
+					TeamCalenderController controller=loader.getController();
+					//passing projectName and user id
+					//controller.setData(Integer.valueOf(item.getParent().getValue().getproject_file()),splitString(item.getParent().getValue().getProject_name())    );
+				}
 				
 				
 				Parent p =loader.getRoot();
@@ -301,7 +317,8 @@ public class HomeController implements Initializable {
 				TreeItem<ProjectModel> nodeA1 = new TreeItem<>(new ProjectModel("ProjectInformation", "Project Information"));
 				TreeItem<ProjectModel> nodeB1 = new TreeItem<>(new ProjectModel("TeamMember", "Team Member"));
 				TreeItem<ProjectModel> nodeC1 = new TreeItem<>(new ProjectModel("ProjectTask", "Project Task"));
-				node.getChildren().addAll(nodeA1, nodeB1,nodeC1);
+				TreeItem<ProjectModel> nodeD1 = new TreeItem<>(new ProjectModel("TeamCalender", "Team Calender"));
+				node.getChildren().addAll(nodeA1, nodeB1,nodeC1,nodeD1);
 				
 			}
 		 

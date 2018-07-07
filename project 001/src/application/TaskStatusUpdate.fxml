@@ -1,21 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXRadioButton?>
-<?import java.lang.String?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 
-<AnchorPane prefHeight="192.0" prefWidth="335.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.info.controller.TaskStatusUpdateController">
+<AnchorPane prefHeight="605.0" prefWidth="445.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.info.controller.TaskStatusUpdateController">
    <children>
-      <JFXRadioButton fx:id="inProgressStatus" focusTraversable="false" layoutX="110.0" layoutY="52.0" prefHeight="21.0" prefWidth="115.0" text="In Progress" />
-      <JFXRadioButton fx:id="finishedStatus" focusTraversable="false" layoutX="111.0" layoutY="89.0" prefHeight="21.0" prefWidth="106.0" text="Finished" />
-      <Button fx:id="taskStatusBtn" layoutX="127.0" layoutY="128.0" mnemonicParsing="false" text="Update">
-         <styleClass>
-            <String fx:value="main-color" />
-            <String fx:value="text-color" />
-         </styleClass>
-      </Button>
-      <Label layoutX="130.0" layoutY="14.0" text="Task Status" />
+      <HBox alignment="CENTER" prefHeight="59.0" prefWidth="454.0" styleClass="main-color">
+         <children>
+            <Label alignment="TOP_CENTER" text="Task Status" textFill="WHITE" />
+         </children>
+      </HBox>
+      <Label layoutX="34.0" layoutY="93.0" text="Task Title:" />
+      <TextField fx:id="taskTitle" layoutX="30.0" layoutY="130.0" prefHeight="40.0" prefWidth="394.0" />
+      <Label layoutX="30.0" layoutY="188.0" text="Task description:" />
+      <TextField fx:id="taskDesc" layoutX="30.0" layoutY="229.0" prefHeight="40.0" prefWidth="394.0" />
+      <Button fx:id="uploadFileBtn" layoutX="30.0" layoutY="303.0" mnemonicParsing="false" styleClass="main-color" text="Upload File" textFill="WHITE" />
+      <ListView fx:id="fileList" layoutX="30.0" layoutY="350.0" prefHeight="109.0" prefWidth="394.0" />
+      <Label layoutX="30.0" layoutY="469.0" text="Task status:" />
+      <CheckBox fx:id="checkBox1" layoutX="31.0" layoutY="497.0" mnemonicParsing="false" selected="true" text="Running" />
+      <CheckBox fx:id="checkBox2" layoutX="163.0" layoutY="497.0" mnemonicParsing="false" text="complete" />
+      <Button layoutX="163.0" layoutY="551.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="128.0" styleClass="main-color" text="Update" textFill="WHITE" />
    </children>
 </AnchorPane>

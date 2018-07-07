@@ -64,7 +64,7 @@
                <tabs>
                   <Tab text="Welcome">
                     <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="961.0" prefWidth="1302.0">
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="961.0" prefWidth="1220.0">
                            <children>
                               <Label layoutX="279.0" layoutY="245.0" onMousePressed="#CreateButtonAction" text="Create Project">
                                  <styleClass>
@@ -85,11 +85,11 @@
                     </content>
                   </Tab>
                </tabs></JFXTabPane>
-            <TitledPane animated="false" collapsible="false" text="Notification">
+            <TitledPane animated="false" collapsible="false" prefHeight="1014.0" prefWidth="384.0" text="Notification">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1084.0" prefWidth="354.0">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="976.0" prefWidth="127.0">
                      <children>
-                        <ListView fx:id="notificationListView" layoutX="-6.0" layoutY="-1.0" prefHeight="435.0" prefWidth="330.0" />
+                        <ListView fx:id="notificationListView" layoutX="-6.0" layoutY="-1.0" prefHeight="436.0" prefWidth="339.0" />
                      </children>
                   </AnchorPane>
               </content>

@@ -2,6 +2,8 @@ package com.info.controller;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 
@@ -19,7 +21,8 @@ public class CurrentUserSingleton {
 	private BufferedReader reader;
 	private PrintWriter out;
 	private BufferedOutputStream bufferout;
-	private Parent stage;
+	private ObjectOutputStream objOut;
+	private ObjectInputStream objIn;
 	
 	private static  CurrentUserSingleton singleton=new CurrentUserSingleton();
 	
@@ -61,11 +64,18 @@ public class CurrentUserSingleton {
 	public void setBufferout(BufferedOutputStream bufferout) {
 		this.bufferout = bufferout;
 	}
-	public Parent getStage() {
-		return stage;
+	public ObjectOutputStream getObjOut() {
+		return objOut;
 	}
-	public void setStage(Parent stage) {
-		this.stage = stage;
+	public void setObjOut(ObjectOutputStream objOut) {
+		this.objOut = objOut;
 	}
+	public ObjectInputStream getObjIn() {
+		return objIn;
+	}
+	public void setObjIn(ObjectInputStream objIn) {
+		this.objIn = objIn;
+	}
+	
 
 }

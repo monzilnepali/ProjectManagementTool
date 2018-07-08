@@ -10,10 +10,13 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.List;
+
+import org.apache.commons.io.IOUtils;
 
 import javafx.concurrent.Task;
 
@@ -37,7 +40,15 @@ public class FileUploadTask extends Thread {
 		
 			
 			try {
+				//sending filesize
+				System.out.println("sending file size to server");
+				out.println(fileSize);
+				
+				//sending ready signal
+				out.println("uploadDocs");
 				UploadFile(f);
+				
+				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -57,25 +68,37 @@ public class FileUploadTask extends Thread {
 		System.out.println("uploading file");
 		//uploading file to server
 		tmp.getOut().println(f.getName());//sending filename to server
-		tmp.getOut().println("start");
-		
-		DataOutputStream dos = new DataOutputStream(tmp.getClientSocket().getOutputStream());
-		BufferedInputStream fileReader=new BufferedInputStream(new FileInputStream(f));
-		byte[] buffer = new byte[1024];
-		int byteRead=0;
-		while((byteRead=fileReader.read(buffer))!=-1) {
-			dos.write(buffer,0,byteRead);
-			dos.flush();
-			System.out.println("uploading "+byteRead);
-		}
-		
-		fileReader.close();
+        DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(tmp.getClientSocket().getOutputStream()));
+        byte[] done = new byte[3];
+        String str = "done";  //randomly anything
+        done = str.getBytes();
+	    FileInputStream fis = new FileInputStream(f);
+	    byte[] buf=new byte[1024];
+	    int n;
+	    while((n =fis.read(buf)) != -1){
+	        dos.write(buf,0,n);
+	       // System.out.println(n);
+	      
+	    }
+	    System.out.println("socket is"+tmp.getClientSocket());
+	    System.out.println("loop exit");	  //should i close the dataoutputstream here and make a new one each time?                 
+	    dos.write(done,0,3);
+	    System.out.println("sending termination to server");
+	   
+	    
+	    fis.close();
+	    return;
+	
+	        
+	}	 
+    
+		       
+    
 		
 	
-		System.out.println("uploading file completed");
+	
 		
-		
-	}
+
 	public FileUploadTask(String proname,List<File> files) {
 		this.projectName=proname;
 		this.files=files;

@@ -1,5 +1,6 @@
 package com.info.controller;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -119,6 +120,9 @@ public class HomeController implements Initializable {
 	   	BufferedOutputStream bufferout=new BufferedOutputStream(socket.getOutputStream());
 		 tmp.setBufferout(bufferout);
 		 
+		 BufferedInputStream bufferin=new BufferedInputStream(socket.getInputStream());
+		 tmp.setBufferin(bufferin);
+		 
 		 ObjectInputStream objIn=new ObjectInputStream(socket.getInputStream());
 		 tmp.setObjIn(objIn);
 		 
@@ -149,8 +153,10 @@ public class HomeController implements Initializable {
 		 };
 		 notify.textProperty().addListener(changelistener);
 	  Thread newThread=new Thread(clientlistener1);
+	  
+	  
 	  newThread.setDaemon(true);
-	  newThread.start();
+	 // newThread.start();
 	
 		
 		
@@ -263,6 +269,9 @@ public class HomeController implements Initializable {
 		
 		
 	}//end of initializable
+	
+	
+	
 
 	private String splitString(String project_name) {
 		//spliting [ from string

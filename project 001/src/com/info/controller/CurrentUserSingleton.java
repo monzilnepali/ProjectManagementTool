@@ -1,5 +1,6 @@
 package com.info.controller;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.ObjectInputStream;
@@ -21,8 +22,10 @@ public class CurrentUserSingleton {
 	private BufferedReader reader;
 	private PrintWriter out;
 	private BufferedOutputStream bufferout;
+	private BufferedInputStream bufferin;
 	private ObjectOutputStream objOut;
 	private ObjectInputStream objIn;
+	private Thread clientListener;
 	
 	private static  CurrentUserSingleton singleton=new CurrentUserSingleton();
 	
@@ -75,6 +78,18 @@ public class CurrentUserSingleton {
 	}
 	public void setObjIn(ObjectInputStream objIn) {
 		this.objIn = objIn;
+	}
+	public BufferedInputStream getBufferin() {
+		return bufferin;
+	}
+	public void setBufferin(BufferedInputStream bufferin) {
+		this.bufferin = bufferin;
+	}
+	public Thread getClientListener() {
+		return clientListener;
+	}
+	public void setClientListener(Thread clientListener) {
+		this.clientListener = clientListener;
 	}
 	
 

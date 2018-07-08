@@ -156,35 +156,25 @@ public class ProjectCreationController extends HomeController  implements Initia
 				Boolean result =future.get();
 				if(result) {
 					//after creation of project successfull uploading file to server
-					//uploading file to server 
-				//	System.out.println("called fileupload thread and userid");
-					
-					/*FileUploadTask task=new FileUploadTask(projectTitle.getText(),files);
-					new Thread(task).start();
-					
-					task.setOnSucceeded(e1->{
-						System.out.println("project creation completee");
-						taskProgress.setVisible(false);
-					});
-					*/
+				
+				
 					
 					//sending mail to all team member
-					System.out.println("call mail send in server");
-					tmp.getOut().println("sendMail");
+				//	System.out.println("call mail send in server");
+				//	tmp.getOut().println("sendMail");
 					//sending project name for description in mail
-					tmp.getOut().println(projectTitle.getText());
+				//	tmp.getOut().println(projectTitle.getText());
 					//sending array of team member  to send mail
 					
 					taskProgress.setVisible(true);
 					
 				    	 //calling sendmailworker task to send mail to all team member
-				     SendMailWorkerClient sendmail=new SendMailWorkerClient(teamMemberList);
+				   //  SendMailWorkerClient sendmail=new SendMailWorkerClient(teamMemberList);
 				     
-				     taskProgress.progressProperty().bind(sendmail.progressProperty());
+				  //   taskProgress.progressProperty().bind(sendmail.progressProperty());
 				     
-				     new Thread(sendmail).start();
+				   //  new Thread(sendmail).start();
 				     
-				    	 
 				    	 
 				     
 					

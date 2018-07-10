@@ -1,6 +1,7 @@
 package com.info.controller;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -84,8 +85,7 @@ public class ProjectCreationController extends HomeController  implements Initia
 			
 		});
 		uploadDocs.setOnAction(e->{
-			
-			
+
 			list.clear();
 			//uploading file in websever
 			Stage currentStage=(Stage)((Node)e.getSource()).getScene().getWindow();
@@ -105,9 +105,7 @@ public class ProjectCreationController extends HomeController  implements Initia
 			
 		    
 			
-			FileUploadTask task=new FileUploadTask(projectTitle.getText(),files);
-			task.setDaemon(true);
-		//	task.start();
+			
 			
 			
 			
@@ -124,7 +122,7 @@ public class ProjectCreationController extends HomeController  implements Initia
 			//getting data from form and insert into database
 			
 		
-			//System.out.println("task is visible");
+			System.out.println("project creation finished button called");
 		
 			Project pro=new Project();
 			
@@ -142,53 +140,26 @@ public class ProjectCreationController extends HomeController  implements Initia
 			
 			
 			pro.setTeamMember(teamMemberList);
+			pro.setFileList(files);
+			//writing the object to the server
+			tmp.getOut().println("projectCreation");
 			
-			ExecutorService executor=Executors.newFixedThreadPool(3);
-			Callable<Boolean> c = ()->{
-				//System.out.println(Thread.currentThread().getName());
-				 return ProjectDao.CreatProject(pro,tmp.getVuser().getUser_id());
-				 
-			};
+			//sending the manager id to server
 			
-			Future<Boolean> future =executor.submit(c);
+			tmp.getOut().println(tmp.getVuser().getUser_id());
 			
 			try {
-				Boolean result =future.get();
-				if(result) {
-					//after creation of project successfull uploading file to server
-				
-				
-					
-					//sending mail to all team member
-				//	System.out.println("call mail send in server");
-				//	tmp.getOut().println("sendMail");
-					//sending project name for description in mail
-				//	tmp.getOut().println(projectTitle.getText());
-					//sending array of team member  to send mail
-					
-					taskProgress.setVisible(true);
-					
-				    	 //calling sendmailworker task to send mail to all team member
-				   //  SendMailWorkerClient sendmail=new SendMailWorkerClient(teamMemberList);
-				     
-				  //   taskProgress.progressProperty().bind(sendmail.progressProperty());
-				     
-				   //  new Thread(sendmail).start();
-				     
-				    	 
-				     
-					
-					
-					
-					Stage currentStage=(Stage)((Node)e.getSource()).getScene().getWindow();
-					
-					currentStage.close();
-					HomeController.getProjectDetail();
-				}
-			} catch (Exception e1) {
-				
+				tmp.getObjOut().writeObject(pro);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
 				e1.printStackTrace();
-			} 
+			}
+			
+			
+			
+			
+			
+			
 			
 		});
 		

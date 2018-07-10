@@ -12,7 +12,7 @@ import java.util.ResourceBundle;
 import java.util.Date;
 import com.info.dao.ProjectDao;
 import com.info.dao.UserDao;
-import com.info.model.Task;
+import com.info.model.TaskModel;
 import com.info.model.User;
 
 import javafx.collections.FXCollections;
@@ -118,7 +118,7 @@ public class TaskAddController implements Initializable {
 				System.out.println("please check inputs");
 			}else {
 				//ready to insert task data in database
-				Task newTask=new Task();
+				TaskModel newTask=new TaskModel();
 				newTask.setTaskName(taskNameField.getText());
 				newTask.setTaskDeadLine(deadlinedate);
 				newTask.setTaskAssignTo(teamMemberList.getValue().getUser_id());

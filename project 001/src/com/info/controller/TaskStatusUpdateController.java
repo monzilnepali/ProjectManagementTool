@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import com.info.dao.ProjectDao;
-import com.info.model.Task;
+import com.info.model.TaskModel;
 import com.jfoenix.controls.*;
 
 import javafx.collections.FXCollections;
@@ -53,7 +53,7 @@ public class TaskStatusUpdateController implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		System.out.println("task status update called");
 	}
-	public void setData(Task task, ProjectTaskController controller) {
+	public void setData(TaskModel task, ProjectTaskController controller) {
 		System.out.println("set data task status update called");
 		// filling data in form
 		
@@ -85,7 +85,7 @@ public class TaskStatusUpdateController implements Initializable {
 			//requesting server to download the docs of task using task id
 			tmp.getOut().println("downloadTaskNote");
 			tmp.getOut().println(task.getTaskId());
-			tmp.getOut().print(projectname);
+			tmp.getOut().println(projectname);
 		
 			
 			

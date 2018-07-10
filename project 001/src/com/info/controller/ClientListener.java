@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -14,7 +15,7 @@ import java.util.List;
 
 import com.info.model.TransferFileModel;
 import com.info.model.NotifyTask;
-
+import com.info.model.TaskModel;
 
 import javafx.concurrent.Task;
 
@@ -77,6 +78,11 @@ public class ClientListener extends Task<String> {
 					 }else if(msg.equals("ProjectNameViaId")) {
 						 System.out.println("getting project name from id from server");
 						 System.out.println("th ");
+						 
+					 }else if(msg.equals("TaskFileIncoming")) {
+						 System.out.println("task file incoming handler");
+						 TaskFileIncomingHandler();
+						 
 					 }
 			    i++;
 			  
@@ -94,6 +100,64 @@ public class ClientListener extends Task<String> {
 				e.printStackTrace();
 			}
 		return null;
+		
+		
+	}
+
+
+
+	private void TaskFileIncomingHandler() throws IOException, ClassNotFoundException {
+		//getting projectname
+		
+		String projectName=this.reader.readLine();
+		System.out.println("the project Name is"+projectName);
+		TaskModel newTask=(TaskModel) this.objIn.readObject();
+		System.out.println("the filelsit is"+newTask.getFile());
+		
+		//writing file
+		FileInputStream instream = null;
+		FileOutputStream outstream = null;
+		
+		// creating directory of that project
+				File file = new File(
+						"D:\\Client\\" + projectName + "\\task");
+
+				if (!file.exists()) {
+					if (file.mkdirs()) {
+						System.out.println("directory created");
+					} else {
+						System.out.println("failed to create directory");
+					}
+				}
+				String projectDirPath = file.getAbsolutePath();
+				System.out.println("server dir " + projectDirPath);
+		
+		for(File f:newTask.getFile()) {
+			
+			if(f!=null) {
+				instream = new FileInputStream(f);
+				File outFile = new File(
+						projectDirPath + "\\" + f.getName());
+				outstream = new FileOutputStream(outFile);
+				byte[] buffer = new byte[1024];
+
+				int length;
+				/*
+				 * copying the contents from input stream to output stream
+				 * using read and write methods
+				 */
+				while ((length = instream.read(buffer)) > 0) {
+					outstream.write(buffer, 0, length);
+				}
+				// storing the file path in database
+				System.out.println("storing the detail of task in client device");
+				
+				
+				
+			}
+		}
+		System.out.println("downloading task docs completed");
+		
 		
 		
 	}

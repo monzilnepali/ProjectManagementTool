@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @SuppressWarnings("serial")
-public class Task implements Serializable {
+public class TaskModel implements Serializable {
 	
 	private int taskId;
 	private int projectId;

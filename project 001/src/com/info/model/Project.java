@@ -1,8 +1,11 @@
 package com.info.model;
 
+import java.io.File;
+import java.io.Serializable;
 import java.util.List;
 
-public class Project {
+@SuppressWarnings("serial")
+public class Project implements Serializable {
 
 	private int projectId;
 	private String projectTitle;
@@ -10,6 +13,7 @@ public class Project {
 	private String projectDesc;
 	private List<String> TeamMember;
 	private String projectCreationDate;
+	private List<File> fileList;
 	private int roleId;
 	
 	
@@ -54,6 +58,12 @@ public class Project {
 	}
 	public void setRoleId(int roleId) {
 		this.roleId = roleId;
+	}
+	public List<File> getFileList() {
+		return fileList;
+	}
+	public void setFileList(List<File> fileList) {
+		this.fileList = fileList;
 	}
 	
 	

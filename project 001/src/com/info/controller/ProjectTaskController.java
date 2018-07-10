@@ -5,7 +5,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import com.info.dao.ProjectDao;
-import com.info.model.Task;
+import com.info.model.TaskModel;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -25,12 +25,12 @@ import javafx.stage.Stage;
 public class ProjectTaskController implements Initializable {
 
 	
-	 @FXML   private TableView<Task> taskTable;
-	 @FXML private TableColumn<Task,String> taskName; 
-	 @FXML private TableColumn<Task,String> userName;
-	 @FXML private TableColumn<Task,String> taskDeadLine;
-	 @FXML private TableColumn<Task,String> taskStatus;
-	 @FXML private TableColumn<Task,String> taskPriority;
+	 @FXML   private TableView<TaskModel> taskTable;
+	 @FXML private TableColumn<TaskModel,String> taskName; 
+	 @FXML private TableColumn<TaskModel,String> userName;
+	 @FXML private TableColumn<TaskModel,String> taskDeadLine;
+	 @FXML private TableColumn<TaskModel,String> taskStatus;
+	 @FXML private TableColumn<TaskModel,String> taskPriority;
 	 
 	 
 	 private static String role;
@@ -75,7 +75,7 @@ public class ProjectTaskController implements Initializable {
 		
 		//on selecting the row of table
 		taskTable.setOnMouseClicked(e->{
-			Task selectedTask=taskTable.getSelectionModel().getSelectedItem();
+			TaskModel selectedTask=taskTable.getSelectionModel().getSelectedItem();
 			System.out.println("the selected row is "+selectedTask.getTaskName());
 		});
 		
@@ -96,7 +96,7 @@ public class ProjectTaskController implements Initializable {
 					//opening window to allow manager to update the task
 				}else {
 					System.out.println("open");
-					Task selectedTask=taskTable.getSelectionModel().getSelectedItem();
+					TaskModel selectedTask=taskTable.getSelectionModel().getSelectedItem();
 					FXMLLoader loader=new FXMLLoader();
 					loader.setLocation(getClass().getResource("/application/TaskStatusUpdate.fxml"));
 					try {
@@ -129,16 +129,16 @@ public class ProjectTaskController implements Initializable {
 		System.out.println("load data called");
 				CurrentUserSingleton tmp=CurrentUserSingleton.getInstance();
 				
-				ObservableList<Task> taskList=FXCollections.observableArrayList(ProjectDao.getTaskList(currentProjectId,ProjectTaskController.role,tmp.getVuser().getUser_id()));
-				for(Task ts:taskList) {
+				ObservableList<TaskModel> taskList=FXCollections.observableArrayList(ProjectDao.getTaskList(currentProjectId,ProjectTaskController.role,tmp.getVuser().getUser_id()));
+				for(TaskModel ts:taskList) {
 					System.out.println("task name"+ts.getTaskName());
 				}
 				
-				taskName.setCellValueFactory(new PropertyValueFactory<Task,String>("taskName"));
-				userName.setCellValueFactory(new PropertyValueFactory<Task,String>("taskAssignToName"));
-				taskDeadLine.setCellValueFactory(new PropertyValueFactory<Task,String>("taskDeadLine"));
-				taskStatus.setCellValueFactory(new PropertyValueFactory<Task,String>("taskStatus"));
-				taskPriority.setCellValueFactory(new PropertyValueFactory<Task,String>("taskPriority"));
+				taskName.setCellValueFactory(new PropertyValueFactory<TaskModel,String>("taskName"));
+				userName.setCellValueFactory(new PropertyValueFactory<TaskModel,String>("taskAssignToName"));
+				taskDeadLine.setCellValueFactory(new PropertyValueFactory<TaskModel,String>("taskDeadLine"));
+				taskStatus.setCellValueFactory(new PropertyValueFactory<TaskModel,String>("taskStatus"));
+				taskPriority.setCellValueFactory(new PropertyValueFactory<TaskModel,String>("taskPriority"));
 				
 				taskTable.setItems(taskList);
 		

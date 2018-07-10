@@ -16,7 +16,7 @@ import javax.mail.internet.MimeMessage;
 public class SendMailHandler {
 
 
-public static Boolean SendMailMethod(String msg,String ToAddress){
+public static Boolean SendMailMethod(String subject,String msg,String ToAddress){
 	  //Setting up configurations for the email connection to the Google SMTP server using TLS
     Properties props = new Properties();
     props.put("mail.smtp.host", "true");
@@ -43,7 +43,7 @@ public static Boolean SendMailMethod(String msg,String ToAddress){
         //Setting the recepients from the address variable
         msgMine.setRecipients(Message.RecipientType.TO, address);
       //String timeStamp = new SimpleDateFormat("yyyymmdd_hh-mm-ss").format(new Date());
-        msgMine.setSubject("Invitation");
+        msgMine.setSubject(subject);
         msgMine.setSentDate(new Date());
         msgMine.setText(msg);
         msgMine.setHeader("XPriority", "0");

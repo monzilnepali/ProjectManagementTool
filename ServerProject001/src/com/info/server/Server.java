@@ -1,9 +1,12 @@
 package com.info.server;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -33,8 +36,11 @@ public class Server extends Thread {
 			
 				PrintWriter out=new PrintWriter(clientSocket.getOutputStream(),true);
 				BufferedReader input=new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-			
-				ServerWorker client=new ServerWorker(this,clientSocket,out,input);
+				ObjectOutputStream objOut=new ObjectOutputStream(clientSocket.getOutputStream());
+				ObjectInputStream objIn=new ObjectInputStream(clientSocket.getInputStream());
+			   BufferedInputStream bufferin=new BufferedInputStream(clientSocket.getInputStream());
+			   BufferedOutputStream bufferout=new BufferedOutputStream(clientSocket.getOutputStream());
+				ServerWorker client=new ServerWorker(this,clientSocket,out,input,objOut,objIn,bufferin,bufferout);
 				
 				
 				workerList.add(client);

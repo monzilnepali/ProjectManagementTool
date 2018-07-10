@@ -123,13 +123,15 @@ public class HomeController implements Initializable {
 		 BufferedInputStream bufferin=new BufferedInputStream(socket.getInputStream());
 		 tmp.setBufferin(bufferin);
 		 
-		 ObjectInputStream objIn=new ObjectInputStream(socket.getInputStream());
-		 tmp.setObjIn(objIn);
-		 
 		 ObjectOutputStream objOut=new ObjectOutputStream(socket.getOutputStream());
 		 tmp.setObjOut(objOut);
 		 
-		 ClientListener clientlistener1=new ClientListener(socket,reader);
+		 
+		 ObjectInputStream objIn=new ObjectInputStream(socket.getInputStream());
+		 tmp.setObjIn(objIn);
+		 
+		
+		 ClientListener clientlistener1=new ClientListener(socket,reader,objOut,objIn);
 		 
  
 		 
@@ -154,10 +156,10 @@ public class HomeController implements Initializable {
 		 notify.textProperty().addListener(changelistener);
 	  Thread newThread=new Thread(clientlistener1);
 	  
-	  
+	 
 	  newThread.setDaemon(true);
-	 // newThread.start();
-	
+	  newThread.start();
+	  tmp.setClientListener(newThread);
 		
 		
 		 PrintWriter out=new PrintWriter(socket.getOutputStream(),true);

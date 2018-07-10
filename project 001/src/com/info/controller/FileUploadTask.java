@@ -34,7 +34,7 @@ public class FileUploadTask extends Thread {
 		//sending project to server to create folder of that project
 		out.println(projectName);
 		int fileSize=files.size();
-		int i=1;
+		
 
 		for(File f:files) {
 		
@@ -68,26 +68,22 @@ public class FileUploadTask extends Thread {
 		System.out.println("uploading file");
 		//uploading file to server
 		tmp.getOut().println(f.getName());//sending filename to server
-        DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(tmp.getClientSocket().getOutputStream()));
-        byte[] done = new byte[3];
-        String str = "done";  //randomly anything
-        done = str.getBytes();
-	    FileInputStream fis = new FileInputStream(f);
-	    byte[] buf=new byte[1024];
-	    int n;
-	    while((n =fis.read(buf)) != -1){
-	        dos.write(buf,0,n);
-	       // System.out.println(n);
-	      
-	    }
-	    System.out.println("socket is"+tmp.getClientSocket());
-	    System.out.println("loop exit");	  //should i close the dataoutputstream here and make a new one each time?                 
-	    dos.write(done,0,3);
-	    System.out.println("sending termination to server");
-	   
-	    
-	    fis.close();
-	    return;
+        BufferedInputStream fileReader=new BufferedInputStream(new FileInputStream(f));
+        byte[] buffer=new byte[(int) f.length()];
+        int byteRead=0;
+      
+       
+        //sending the file size to server
+        tmp.getOut().println(f.length());
+        System.out.println("file size is"+f.length());
+      
+        	tmp.getBufferout().write(buffer);
+        	System.out.println("byteRead= "+byteRead);
+        	
+      
+        System.out.println("upload complete");
+		
+		
 	
 	        
 	}	 

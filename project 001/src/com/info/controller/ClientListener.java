@@ -40,7 +40,6 @@ public class ClientListener extends Task<String> {
 			System.out.println("listening to server response.... ");
 			
 		
-		
 				 int i=0;
 			   while(true) {
 			
@@ -71,9 +70,13 @@ public class ClientListener extends Task<String> {
 						 downloadDocs();
 						 System.out.println("downloaddocs method complete  completed");
 						 System.out.println("the current state of clientlistener is  "+Thread.currentThread().getState());
+						 continue;
 					
 						
 						 
+					 }else if(msg.equals("ProjectNameViaId")) {
+						 System.out.println("getting project name from id from server");
+						 System.out.println("th ");
 					 }
 			    i++;
 			  
@@ -100,8 +103,10 @@ public class ClientListener extends Task<String> {
 	private void downloadDocs() throws IOException, ClassNotFoundException {
 		//downloading the docs of project
 		//getting filename from server
+		
 		System.out.println("download method start");
-		String projectName=reader.readLine();
+		//String projectName=reader.readLine();
+		String projectName="manjio";
 		System.out.println("the project name is"+projectName);
 		System.out.println("the data from object serialization is");
 		TransferFileModel cf=(TransferFileModel) objIn.readObject();
@@ -132,6 +137,7 @@ public class ClientListener extends Task<String> {
 			
 			bufferout.write(buffer, 0, byteRead);
 		
+			
 		System.out.println("download complete in server side");
 		
 	}

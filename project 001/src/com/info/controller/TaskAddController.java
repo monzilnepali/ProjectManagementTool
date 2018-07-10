@@ -1,15 +1,17 @@
 package com.info.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Date;
+
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-
+import java.util.Date;
 import com.info.dao.ProjectDao;
+import com.info.dao.UserDao;
 import com.info.model.Task;
 import com.info.model.User;
 
@@ -21,7 +23,9 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class TaskAddController implements Initializable {
@@ -32,12 +36,34 @@ public class TaskAddController implements Initializable {
 	@FXML private ComboBox<String> taskPriority;
 	@FXML private Button createTasktBtn;
 	private static int currentProjectId;
+	
+    @FXML private Button uploadDocsBtn;
+
+    @FXML private ListView<String> docsList;
+    ObservableList<String>listdocs=FXCollections.observableArrayList();
+    private List<File> files;
+    private FileChooser fc;
+	
 	static CurrentUserSingleton tmp=CurrentUserSingleton.getInstance();
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 			System.out.println("task add controller callled");
-		
+			docsList.setVisible(true);
 			
+			//filechooser
+			  fc=new FileChooser();
+			//restrict the file selection
+			//allowing picture extenstion and office extension
+			
+
+					fc.getExtensionFilters().addAll(
+							new FileChooser.ExtensionFilter("Picture", "*.jpg","*.png"),
+							new FileChooser.ExtensionFilter("Word Document", "*.docx "),
+							new FileChooser.ExtensionFilter("Excel", "*.xlsx"),
+							new FileChooser.ExtensionFilter("powerpoint", "*.ppt"),
+							new FileChooser.ExtensionFilter("Text File", "*.txt")
+							
+							);
 		
 	}
 	
@@ -55,6 +81,27 @@ public class TaskAddController implements Initializable {
 		ObservableList<User> teamlist=FXCollections.observableArrayList(ProjectDao.getTeamMemberNameOfProject(currentProjectId));
 		teamMemberList.setItems(teamlist);
 		
+		
+		uploadDocsBtn.setOnAction(e->{
+			//onclicking the upload docs btn
+			list.clear();
+			//uploading file in websever
+			Stage currentStage=(Stage)((Node)e.getSource()).getScene().getWindow();
+		    files = fc.showOpenMultipleDialog(currentStage);
+			//getting selected file directory
+		    if(files!=null) {
+			for(File f:files) {
+				if(f!=null) {
+					System.out.println("path"+f.getAbsolutePath());
+					listdocs.add(f.getName()+"\t"+ ProjectCreationController.fileSize(f.length()) );
+					
+					
+				}
+			}
+			docsList.setItems(listdocs);
+			
+		    }	
+		});
 		
 		createTasktBtn.setOnAction(e->{
 			//onclicking create button
@@ -77,14 +124,19 @@ public class TaskAddController implements Initializable {
 				newTask.setTaskAssignTo(teamMemberList.getValue().getUser_id());
 				newTask.setTaskPriority(taskPriority.getValue());
 				newTask.setProjectId(currentProjectId);
+				newTask.setTaskCreationDate (UserDao.formattedDate(new Date()));
+				
+				newTask.setFile(files);
+				
+				
 				//sending newtask data to server to store data in database
 				
 			   tmp.getOut().println("TaskAdd");	
 			   try {
 				   System.out.println("writing objec to server");
-				tmp.getObjOut().writeObject(newTask);//transfer object to server
+				   tmp.getObjOut().writeObject(newTask);//transfer object to server
 				
-				System.out.println("response back from server");
+				  System.out.println("response back from server");
 				
 					Stage currentStage=(Stage)((Node)e.getSource()).getScene().getWindow();
 					

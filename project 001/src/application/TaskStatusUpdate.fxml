@@ -1,29 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="605.0" prefWidth="445.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.info.controller.TaskStatusUpdateController">
+<AnchorPane prefHeight="624.0" prefWidth="478.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.info.controller.TaskStatusUpdateController">
    <children>
-      <HBox alignment="CENTER" prefHeight="59.0" prefWidth="454.0" styleClass="main-color">
+      <HBox alignment="CENTER" prefHeight="59.0" prefWidth="478.0" styleClass="main-color">
          <children>
-            <Label alignment="TOP_CENTER" text="Task Status" textFill="WHITE" />
+            <Label alignment="TOP_CENTER" text="Task Status" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font></Label>
          </children>
       </HBox>
-      <Label layoutX="34.0" layoutY="93.0" text="Task Title:" />
-      <TextField fx:id="taskTitle" layoutX="30.0" layoutY="130.0" prefHeight="40.0" prefWidth="394.0" />
-      <Label layoutX="30.0" layoutY="188.0" text="Task description:" />
-      <TextField fx:id="taskDesc" layoutX="30.0" layoutY="229.0" prefHeight="40.0" prefWidth="394.0" />
-      <Button fx:id="uploadFileBtn" layoutX="30.0" layoutY="303.0" mnemonicParsing="false" styleClass="main-color" text="Upload File" textFill="WHITE" />
-      <ListView fx:id="fileList" layoutX="30.0" layoutY="350.0" prefHeight="109.0" prefWidth="394.0" />
-      <Label layoutX="30.0" layoutY="469.0" text="Task status:" />
-      <CheckBox fx:id="checkBox1" layoutX="31.0" layoutY="497.0" mnemonicParsing="false" selected="true" text="Running" />
-      <CheckBox fx:id="checkBox2" layoutX="163.0" layoutY="497.0" mnemonicParsing="false" text="complete" />
-      <Button layoutX="163.0" layoutY="551.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="128.0" styleClass="main-color" text="Update" textFill="WHITE" />
+      <Label layoutX="21.0" layoutY="107.0" text="Project Name:" />
+      <Label fx:id="projectName" layoutX="140.0" layoutY="107.0" />
+      <Label layoutX="21.0" layoutY="149.0" text="Task Name" />
+      <Label fx:id="taskTitle" layoutX="140.0" layoutY="149.0" />
+      <Label layoutX="21.0" layoutY="199.0" text="Task description:" />
+      <Label fx:id="taskDesc" layoutX="150.0" layoutY="199.0" />
+      <Button fx:id="docsDownloadBtn" layoutX="14.0" layoutY="281.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="126.0" text="Download Docs">
+         <styleClass>
+            <String fx:value="main-color" />
+            <String fx:value="text-color" />
+         </styleClass>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <ListView fx:id="docsList" focusTraversable="false" layoutX="161.0" layoutY="253.0" prefHeight="85.0" prefWidth="306.0" />
+      <Label layoutX="21.0" layoutY="366.0" text="Task Assigned Date" />
+      <Label fx:id="taskAssignDate" layoutX="161.0" layoutY="366.0" />
+      <Label layoutX="21.0" layoutY="405.0" text="Task Deadline Date" />
+      <Label fx:id="taskDeadlineDate" layoutX="161.0" layoutY="405.0" />
+      <Separator layoutY="450.0" prefHeight="3.0" prefWidth="478.0" />
+      <Separator layoutY="231.0" prefHeight="6.0" prefWidth="478.0" />
    </children>
 </AnchorPane>

@@ -267,11 +267,11 @@ public class ProjectDao {
 				String query = null;
 				if(role.equals(" Manager")) {
 				
-					 query="SELECT  task_id,task_name,user_name,task_deadline,task_priority,task_status FROM task INNER JOIN user ON task.user_id=user.user_id WHERE project_id=?";
+					 query="SELECT  task_id,task_name,user_name,task_deadline,task_priority,task_status,project_id FROM task INNER JOIN user ON task.user_id=user.user_id WHERE project_id=?";
 					 pst=conn.prepareStatement(query);
 						pst.setInt(1, projectId);
 				}else {
-					query="SELECT  task_id,task_name,user_name,task_deadline,task_priority,task_status FROM task INNER JOIN user ON task.user_id=user.user_id WHERE project_id=? AND user.user_id=?";
+					query="SELECT  task_id,task_name,user_name,task_deadline,task_priority,task_status,project_id FROM task INNER JOIN user ON task.user_id=user.user_id WHERE project_id=? AND user.user_id=?";
 					 pst=conn.prepareStatement(query);
 						pst.setInt(1, projectId);
 						pst.setInt(2, userId);
@@ -284,6 +284,7 @@ public class ProjectDao {
 					Task newTask=new Task();
 					newTask.setTaskId(rs.getInt("task_id"));
 					newTask.setTaskName(rs.getString("task_name"));
+					newTask.setProjectId(rs.getInt("project_id"));
 					newTask.setTaskAssignToName(rs.getString("user_name"));
 					newTask.setTaskDeadLine(rs.getString("task_deadline"));
 					newTask.setTaskPriority(rs.getString("task_priority"));
@@ -320,6 +321,59 @@ public class ProjectDao {
 			return false;
 			
 		}
+		public static String getProjectNameThroughId(int id) {
+			System.out.println("getprojetName through id called");
+			Connection con=null;
+			PreparedStatement pst=null;
+			ResultSet rs=null;
+			try {
+				con=DBConnection.getConnection();
+				String query="SELECT project_name FROM project WHERE project_id=?";
+				pst=con.prepareStatement(query);
+				pst.setInt(1, id);
+				rs=pst.executeQuery();
+				while(rs.next()) {
+					System.out.println("the project name"+rs.getString("project_name"));
+					return rs.getString("project_name");
+				}
+				
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			
+			return null;
+		}
 		
+		public static List<String> getTaskFileThroughId(int taskId){
+		System.out.println("gettask tile through id");
+			Connection con=null;
+			PreparedStatement pst=null;
+			ResultSet rs=null;
+			try {
+				con=DBConnection.getConnection();
+				String query="SELECT file_name,file_size FROM taskfile WHERE task_id=?";
+				pst=con.prepareStatement(query);
+				pst.setInt(1, taskId);
+				rs=pst.executeQuery();
+				
+				List<String> list=new ArrayList<>();
+				while(rs.next()) {
+					System.out.println(rs.getString("file_name")+"\t"+rs.getString("file_size"));
+					list.add(  rs.getString("file_name")+"\t"+rs.getString("file_size"));
+				}
+				return list;
+				
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			
+			return null;
+			
+			
+			
+		}
+	
 
 }

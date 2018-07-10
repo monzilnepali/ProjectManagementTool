@@ -93,6 +93,7 @@ public class ProjectTaskController implements Initializable {
 			if(e.getClickCount()==2) {
 				if(ProjectTaskController.role.equals(" Manager")) {
 					System.out.println("no open");
+					//opening window to allow manager to update the task
 				}else {
 					System.out.println("open");
 					Task selectedTask=taskTable.getSelectionModel().getSelectedItem();
@@ -125,6 +126,7 @@ public class ProjectTaskController implements Initializable {
 	}
 	public void loadData() {
 		//populating table
+		System.out.println("load data called");
 				CurrentUserSingleton tmp=CurrentUserSingleton.getInstance();
 				
 				ObservableList<Task> taskList=FXCollections.observableArrayList(ProjectDao.getTaskList(currentProjectId,ProjectTaskController.role,tmp.getVuser().getUser_id()));

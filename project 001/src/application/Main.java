@@ -1,5 +1,8 @@
 package application;
 	
+import java.util.Date;
+
+import com.info.dao.UserDao;
 import com.info.utils.DBConnection;
 
 import javafx.application.Application;
@@ -13,6 +16,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
+			System.out.println("current ttime"+UserDao.formattedDate(new Date()));
 			Parent p=FXMLLoader.load(getClass().getResource("Login_window.fxml"));
 			Scene scene = new Scene(p);
 			System.out.println("width"+primaryStage.getMaxHeight());

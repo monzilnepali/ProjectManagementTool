@@ -1,7 +1,9 @@
 package com.info.controller;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -16,96 +18,87 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class TaskStatusUpdateController implements Initializable {
+	@FXML private Label projectName;
 
-	    
-	    @FXML
-	    private TextField taskTitle;
+	@FXML private Label taskTitle;
 
-	    @FXML
-	    private TextField taskDesc;
+	@FXML
+	private Label taskDesc;
 
-	    @FXML
-	    private Button uploadFileBtn;
+	@FXML
+	private Button docsDownloadBtn;
 
-	    @FXML
-	    private ListView<String> fileList;
-	    
-	    @FXML
-	    private CheckBox checkBox1;
+	@FXML
+	private ListView<String> docsList;
 
-	    @FXML
-	    private CheckBox checkBox2;
-	    
-	    private List<File> files;
-	    ObservableList<String> list=FXCollections.observableArrayList();
-	    
+	@FXML
+	private Label taskAssignDate;
+
+	@FXML
+	private Label taskDeadlineDate;
+	private List<String > list=new ArrayList<String>();
+	ObservableList<String> olist;
+	
+    static CurrentUserSingleton tmp=CurrentUserSingleton.getInstance();	//current user object
+
+
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		
-		
-				FileChooser fc=new FileChooser();
-				//restrict the file selection
-				//allowing picture extenstion and office extension
-			
-				fc.getExtensionFilters().addAll(
-						new FileChooser.ExtensionFilter("Picture", "*.jpg","*.png"),
-						new FileChooser.ExtensionFilter("Word Document", "*.docx "),
-						new FileChooser.ExtensionFilter("Excel", "*.xlsx"),
-						new FileChooser.ExtensionFilter("powerpoint", "*.ppt"),
-						new FileChooser.ExtensionFilter("Text File", "*.txt")
-						
-						);
-	
-	
-				uploadFileBtn.setOnAction(e->{
-					//opening file chooser
-					Stage currentStage=(Stage)((Node)e.getSource()).getScene().getWindow();
-				    files = fc.showOpenMultipleDialog(currentStage);
-					//getting selected file directory
-				    if(files!=null) {
-					for(File f:files) {
-						if(f!=null) {
-							System.out.println("path"+f.getAbsolutePath());
-							list.add(f.getName()+"\t"+ProjectCreationController.fileSize(f.length()));
-							
-							
-						}
-					}
-					
-					fileList.setItems(list);
-					
-				    }
-				});
-				checkBox1.setOnMouseClicked(e->{
-					
-					checkBox1.setSelected(true);
-					checkBox2.setSelected(false);
-				});	
-				
-				checkBox2.setOnMouseClicked(e->{
-					
-					checkBox2.setSelected(true);
-					checkBox1.setSelected(false);
-				});	
-				
-				
-		
-		
+		System.out.println("task status update called");
 	}
-	public void setData(Task task,ProjectTaskController controller) {
+	public void setData(Task task, ProjectTaskController controller) {
 		System.out.println("set data task status update called");
-		//filling data in form
-		taskTitle.setDisable(true);
+		// filling data in form
+		
+		//getting the name of project from server
+		System.out.println("the project id"+task.getProjectId());
+		String projectname=ProjectDao.getProjectNameThroughId(task.getProjectId());
+		//getting the list of all  file of that task via task id
+		System.out.println("the project name s "+projectname);
+		System.out.println("task ttike"+task.getTaskId());
+		
+		
+		projectName.setText(projectname);
+		taskDeadlineDate.setText(task.getTaskDeadLine());
 		taskTitle.setText(task.getTaskName());
 		
-		 
+		list=ProjectDao.getTaskFileThroughId(task.getTaskId());
+		for(String st:list) {
+			System.out.println("the file "+st);
+		}
+		olist=FXCollections.observableArrayList(list);
+
+		docsList.setItems(olist);
 	
+		
+		
+		docsDownloadBtn.setOnAction(e->{
+			//downloading task docs started
+			
+			//requesting server to download the docs of task using task id
+			tmp.getOut().println("downloadTaskNote");
+			tmp.getOut().println(task.getTaskId());
+			tmp.getOut().print(projectname);
+		
+			
+			
+			
+			
+		});
+		
+		
+		
+		
+		
+		
+
 	}
 
 }

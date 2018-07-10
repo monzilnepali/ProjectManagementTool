@@ -4,8 +4,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.sql.Connection;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -142,5 +145,13 @@ public class UserDao {
 		}
 		return sb.toString();
 	}// end of hashing function
+	
+	
+	public static String formattedDate(Date date) {
+		//formatting the date data.utils
+		
+		SimpleDateFormat ft =new SimpleDateFormat ("E yyyy-MM-dd 'at' hh:mm a");
+		return ft.format(date);
+	}
 
 }

@@ -107,7 +107,7 @@ public class ProjectCreationController extends HomeController  implements Initia
 			
 			FileUploadTask task=new FileUploadTask(projectTitle.getText(),files);
 			task.setDaemon(true);
-			task.start();
+		//	task.start();
 			
 			
 			

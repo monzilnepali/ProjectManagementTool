@@ -1,6 +1,8 @@
 package com.info.model;
 
+import java.io.File;
 import java.io.Serializable;
+import java.util.List;
 
 @SuppressWarnings("serial")
 public class Task implements Serializable {
@@ -12,8 +14,10 @@ public class Task implements Serializable {
 	private int taskAssignTo;
 	private String taskAssignToName;
 	private String taskDeadLine;
+	private String taskCreationDate;
 	private String taskStatus;
 	private String taskPriority;
+	private List<File> file;
 	public int getTaskId() {
 		return taskId;
 	}
@@ -67,6 +71,18 @@ public class Task implements Serializable {
 	}
 	public void setTaskPriority(String taskPriority) {
 		this.taskPriority = taskPriority;
+	}
+	public List<File> getFile() {
+		return file;
+	}
+	public void setFile(List<File> file) {
+		this.file = file;
+	}
+	public String getTaskCreationDate() {
+		return taskCreationDate;
+	}
+	public void setTaskCreationDate(String taskCreationDate) {
+		this.taskCreationDate = taskCreationDate;
 	}
 	
 	

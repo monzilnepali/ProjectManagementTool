@@ -4,15 +4,20 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import com.info.dao.ProjectDao;
 import com.info.model.Project;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 
 public class ProjectInformationController implements Initializable {
 
@@ -22,6 +27,9 @@ public class ProjectInformationController implements Initializable {
     @FXML private Label projectCreationDate;
     @FXML private Label projectCategories;
     @FXML private Button docsDownloadBtn;
+    @FXML private ListView<String> ProjectDocsList;
+    ObservableList<String> olist;
+    
     
     static CurrentUserSingleton tmp=CurrentUserSingleton.getInstance();	//current user object
 	@Override
@@ -52,14 +60,20 @@ public class ProjectInformationController implements Initializable {
 		projectCategories.setText(projectInfo.getCategories());
 		projectCreationDate.setText(projectInfo.getProjectCreationDate());
 		
+		//setting listview with the projectdocs
+		
+		
+		olist=FXCollections.observableArrayList(ProjectDao.getProjectFileThroughProjectId(projectid));
+		ProjectDocsList.setItems(olist);
+		
 		docsDownloadBtn.setOnAction(e->{
 			//downloading the documentation of project
 			//create new folder in user device 
 			//requesting server 
 			System.out.println("button clicked");
 			tmp.getOut().println("docsDownload");
-			//sending the project name 
-			tmp.getOut().println(projectInfo.getprojectTitle());
+			//sending the project id 
+			tmp.getOut().println(projectid);
 		
 			//making client listener thread wait
 			

@@ -76,7 +76,7 @@ public class ProjectDao {
 	}
 
 	private static int GetUserId(String email) {
-		// gettting userId using email
+		// gettting userId using email from database
 		Connection conn = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
@@ -297,6 +297,18 @@ public class ProjectDao {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				pst.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
 		}
 		return false;
 	}
@@ -348,6 +360,18 @@ public class ProjectDao {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				pst.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
 		}
 
 		return null;
@@ -373,13 +397,13 @@ public class ProjectDao {
 	}
 	public static String getProjectNameThroughId(int id) {
 		System.out.println("getprojetName through id called");
-		Connection con = null;
+		Connection conn = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			con = DBConnection.getConnection();
+			conn = DBConnection.getConnection();
 			String query = "SELECT project_name FROM project WHERE project_id=?";
-			pst = con.prepareStatement(query);
+			pst = conn.prepareStatement(query);
 			pst.setInt(1, id);
 			rs = pst.executeQuery();
 			while (rs.next()) {
@@ -390,6 +414,18 @@ public class ProjectDao {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				pst.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
 		}
 
 		return null;
@@ -397,13 +433,13 @@ public class ProjectDao {
 
 	public static List<String> getTaskFileThroughId(int taskId) {
 		System.out.println("gettask tile through id");
-		Connection con = null;
+		Connection conn = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			con = DBConnection.getConnection();
+			conn = DBConnection.getConnection();
 			String query = "SELECT file_name,file_size FROM taskfile WHERE task_id=?";
-			pst = con.prepareStatement(query);
+			pst = conn.prepareStatement(query);
 			pst.setInt(1, taskId);
 			rs = pst.executeQuery();
 
@@ -418,10 +454,60 @@ public class ProjectDao {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				pst.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
 		}
 
 		return null;
 
+	}
+	
+	public static List<String> getProjectFileThroughProjectId(int projectid){
+		Connection conn = null;
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		try {
+		   conn=DBConnection.getConnection();
+		   String query="SELECT project_fileName,project_fileSize FROM projectfile 	WHERE project_id=?";
+		   pst=conn.prepareStatement(query);
+		   pst.setInt(1, projectid);
+		   rs=pst.executeQuery();
+		   List<String> fileList=new ArrayList<>();
+		   while(rs.next()) {
+			   
+			   fileList.add(rs.getString("project_fileName")+"\t"+rs.getString("project_fileSize"));
+		   }
+		   return fileList;
+		}catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				pst.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+		}
+		
+		
+		
+		return null;
+		
 	}
 
 }

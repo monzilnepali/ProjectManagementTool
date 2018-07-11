@@ -1,14 +1,7 @@
 package com.info.controller;
 
-import java.awt.Toolkit;
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
 import java.net.URL;
-import java.net.UnknownHostException;
 import java.util.ResourceBundle;
 
 import com.info.dao.UserDao;
@@ -27,8 +20,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -49,19 +40,20 @@ public class MainController implements Initializable {
     @FXML private JFXButton signup_btn;
     @FXML private Label signup_loginbtn;
 	private static int flag=0;//for switching to login screen after succesfully signup
+	
+	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		
-		JFXSnackbar snackbar=new JFXSnackbar(rootStack);
-	
-
-		snackbar.show("test message", 5000);
-	
-
 		
 		login_screen.setVisible(true);
 		signup_screen.setVisible(false);
 		System.out.println("main controller called");
+		
+		SoundPlay sp=new SoundPlay();
+		sp.setDaemon(true);
+		sp.start();
+	
 		
 		
 		JFXDialogLayout content=new JFXDialogLayout();

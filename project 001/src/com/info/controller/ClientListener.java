@@ -78,6 +78,9 @@ public class ClientListener extends Task<String> {
 					}else if(msg.equals("ProjectFileIncoming")) {
 						System.out.println("ProjectFileIncoming called in client side");
 						ProjectFileIncomingHandler();
+					}else if(msg.equals("projectCreationCompleted")){
+						System.out.println("projectCreationCompleted called");
+						updateMessage(msg);
 					}
 					i++;
 
@@ -95,7 +98,7 @@ public class ClientListener extends Task<String> {
 	}
 
 	private void ProjectFileIncomingHandler()
-			throws IOException, ClassNotFoundException {
+			throws IOException, ClassNotFoundException, InterruptedException {
 
 		// downlaod the docs of project from database
 		// receiving project Name
@@ -144,6 +147,10 @@ public class ClientListener extends Task<String> {
 			}
 		}
 		System.out.println("downloading task docs completed");
+		updateMessage("downloadCompleted");
+		Thread.sleep(2000);
+		updateMessage(projectDirPath);
+		
 
 	}
 

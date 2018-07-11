@@ -32,6 +32,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.Tooltip;
@@ -52,13 +54,18 @@ public class HomeController implements Initializable {
 	private static Boolean flag=false;
      private static TreeItem<ProjectModel> root;
      protected static ObservableList<String> list;
+    
      @FXML private Label notify;
      @FXML private Label notifylist;
       static CurrentUserSingleton tmp=CurrentUserSingleton.getInstance();	//current user object
      private BufferedReader reader=null;
      @FXML private ListView<Task1> notificationListView;
- 	
+     
 
+     @FXML      private MenuItem projectRefreshBtn;
+
+ 	
+private static  Stage CurrentStage;
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		System.out.println("-------------------\n\n");
@@ -75,7 +82,10 @@ public class HomeController implements Initializable {
 	
 		notificationListView.setItems(notificationlist);
 		
-		
+		projectRefreshBtn.setOnAction(e->{
+			System.out.println("projectRefreshBtn clicked");
+			getProjectDetail();
+		});
 		
 		notificationListView.setOnMouseClicked(e->{
 			
@@ -147,7 +157,17 @@ public class HomeController implements Initializable {
 				notifylist.setText(oldValue+"\n"+newValue);
 				//notificationlist.add(newValue);
 				
+				if(oldValue.equals("downloadCompleted")) {
+					ProjectInformationController.showDialog(newValue);
+				}else if(newValue.equals("projectCreationCompleted")) {
+					//getProjectDetail();
+					CurrentStage.close();
+					
+					
+					
+				}else {
 				snackbar.show(newValue, 6000);//showing notification popup from button about user online
+				}
 				
 			}
  
@@ -302,6 +322,7 @@ public class HomeController implements Initializable {
 		stage.setScene(scene);
 		stage.initModality(Modality.WINDOW_MODAL);
 		stage.initOwner(previous_stage);
+		CurrentStage=stage;
 		stage.show();
 		
 		

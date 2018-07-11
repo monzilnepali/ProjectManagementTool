@@ -26,6 +26,7 @@ public class ProjectTaskController implements Initializable {
 
 	
 	 @FXML   private TableView<TaskModel> taskTable;
+	 @FXML   private TableView<TaskModel> taskTableComplete;
 	 @FXML private TableColumn<TaskModel,String> taskName; 
 	 @FXML private TableColumn<TaskModel,String> userName;
 	 @FXML private TableColumn<TaskModel,String> taskDeadLine;
@@ -37,6 +38,7 @@ public class ProjectTaskController implements Initializable {
 	 
 	 
 	 @FXML	 private Button AddTaskBtn;
+	 @FXML private Button refreshBtn;
 	 private static int currentProjectId;
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -77,6 +79,12 @@ public class ProjectTaskController implements Initializable {
 		taskTable.setOnMouseClicked(e->{
 			TaskModel selectedTask=taskTable.getSelectionModel().getSelectedItem();
 			System.out.println("the selected row is "+selectedTask.getTaskName());
+		});
+		
+		refreshBtn.setOnAction(e->{
+			
+			loadData();
+			
 		});
 		
 	}
@@ -141,6 +149,9 @@ public class ProjectTaskController implements Initializable {
 				taskPriority.setCellValueFactory(new PropertyValueFactory<TaskModel,String>("taskPriority"));
 				
 				taskTable.setItems(taskList);
+				
+				
+				
 		
 		
 	}

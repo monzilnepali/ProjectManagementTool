@@ -10,11 +10,14 @@ import java.util.ResourceBundle;
 
 import com.info.dao.ProjectDao;
 import com.info.model.Project;
+import com.jfoenix.controls.JFXProgressBar;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -27,6 +30,7 @@ public class ProjectInformationController implements Initializable {
     @FXML private Label projectCreationDate;
     @FXML private Label projectCategories;
     @FXML private Button docsDownloadBtn;
+    @FXML  private JFXProgressBar downloadProgressBar;
     @FXML private ListView<String> ProjectDocsList;
     ObservableList<String> olist;
     
@@ -35,6 +39,7 @@ public class ProjectInformationController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		docsDownloadBtn.setVisible(false);
+		downloadProgressBar.setVisible(false);
 		System.out.println("project information controller called");
 		
 		
@@ -75,12 +80,19 @@ public class ProjectInformationController implements Initializable {
 			//sending the project id 
 			tmp.getOut().println(projectid);
 		
-			//making client listener thread wait
 			
 			
 			
 		});
 		
+	}
+	public static void showDialog(String filePath) {
+		 Alert alert = new Alert(AlertType.INFORMATION);
+	        alert.setTitle("Download Completed");
+	      
+	        alert.setContentText("File location: "+filePath);
+	 
+	        alert.showAndWait();
 	}
 
 }

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import java.lang.String?>
 <?import java.net.URL?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ScrollPane?>
@@ -8,14 +11,15 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="1015.0" prefWidth="1284.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.info.controller.ProjectTaskController">
+<AnchorPane prefHeight="1016.0" prefWidth="1181.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.info.controller.ProjectTaskController">
    <children>
-      <VBox layoutY="110.0" prefHeight="905.0" prefWidth="1284.0">
+      <VBox layoutY="110.0" prefHeight="906.0" prefWidth="1180.0">
          <children>
-            <ScrollPane prefHeight="916.0" prefWidth="1514.0">
+            <ScrollPane prefHeight="910.0" prefWidth="1247.0">
                <content>
-                  <TableView fx:id="taskTable" focusTraversable="false" prefHeight="903.0" prefWidth="1280.0" scaleShape="false">
+                  <TableView fx:id="taskTable" focusTraversable="false" prefHeight="903.0" prefWidth="1178.0" scaleShape="false">
                     <columns>
                       <TableColumn fx:id="taskName" prefWidth="135.00000762939453" text="Task Name" />
                       <TableColumn fx:id="userName" prefWidth="177.6666717529297" text="Task Assign To" />
@@ -34,10 +38,32 @@
             </ScrollPane>
          </children>
       </VBox>
-      <Button fx:id="AddTaskBtn" layoutX="1157.0" layoutY="43.0" mnemonicParsing="false" text="add Task" />
+      <Button fx:id="AddTaskBtn" layoutX="1054.0" layoutY="45.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="107.0" text="Add Task">
+         <font>
+            <Font size="18.0" />
+         </font>
+         <styleClass>
+            <String fx:value="main-color" />
+            <String fx:value="text-color" />
+         </styleClass>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+      <Button fx:id="refreshBtn" layoutX="52.0" layoutY="53.0" mnemonicParsing="false" text="Refresh">
+         <graphic>
+            <FontAwesomeIconView fill="WHITE" glyphName="REFRESH" size="20" styleClass="main-color" />
+         </graphic>
+         <styleClass>
+            <String fx:value="main-color" />
+            <String fx:value="text-color" />
+         </styleClass>
+      </Button>
    </children>
    <stylesheets>
       <URL value="@ProjectTask.css" />
       <URL value="@application.css" />
    </stylesheets>
+   <padding>
+      <Insets left="20.0" />
+   </padding>
 </AnchorPane>

@@ -18,6 +18,8 @@ public class TaskModel implements Serializable {
 	private String taskPriority;
 	private String taskCreationDate;
 	private List<File> file;
+	private List<File> completedFile;
+	private String summaryofTask;
 	
 	public List<File> getFile() {
 		return file;
@@ -84,6 +86,18 @@ public class TaskModel implements Serializable {
 	}
 	public void setTaskCreationDate(String taskCreationDate) {
 		this.taskCreationDate = taskCreationDate;
+	}
+	public String getSummaryofTask() {
+		return summaryofTask;
+	}
+	public void setSummaryofTask(String summaryofTask) {
+		this.summaryofTask = summaryofTask;
+	}
+	public List<File> getCompletedFile() {
+		return completedFile;
+	}
+	public void setCompletedFile(List<File> completedFile) {
+		this.completedFile = completedFile;
 	}
 	
 	

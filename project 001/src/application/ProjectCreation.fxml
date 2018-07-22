@@ -17,7 +17,7 @@
 
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.info.controller.ProjectCreationController">
    <children>
-      <Pane fx:id="projectCreation_projectDetail" prefHeight="200.0" prefWidth="200.0">
+      <Pane fx:id="projectCreation_projectDetail" prefHeight="200.0" prefWidth="200.0" visible="false">
          <children>
             <AnchorPane prefHeight="800.0" prefWidth="650.0">
                <children>
@@ -62,7 +62,7 @@
             </AnchorPane>
          </children>
       </Pane>
-      <Pane fx:id="projectCreation_projectTeam" prefHeight="200.0" prefWidth="200.0" visible="false">
+      <Pane fx:id="projectCreation_projectTeam" prefHeight="200.0" prefWidth="200.0">
          <children>
             <AnchorPane fx:id="addTeamMemberPane" prefHeight="800.0" prefWidth="650.0">
                <children>
@@ -106,6 +106,7 @@
                      </cursor>
                   </Button>
                   <JFXProgressBar fx:id="taskProgress" layoutX="118.0" layoutY="535.0" prefHeight="21.0" prefWidth="427.0" />
+                  <Label fx:id="waitLabel" layoutX="293.0" layoutY="569.0" text="Please Wait" />
                </children></AnchorPane>
          </children>
       </Pane>

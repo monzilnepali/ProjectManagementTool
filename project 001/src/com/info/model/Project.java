@@ -14,6 +14,7 @@ public class Project implements Serializable {
 	private List<String> TeamMember;
 	private String projectCreationDate;
 	private List<File> fileList;
+	private String projectImage;
 	private int roleId;
 	
 	
@@ -65,6 +66,12 @@ public class Project implements Serializable {
 	public void setFileList(List<File> fileList) {
 		this.fileList = fileList;
 	}
+    public String getProjectImage() {
+        return projectImage;
+    }
+    public void setProjectImage(String projectImage) {
+        this.projectImage = projectImage;
+    }
 	
 	
 }

@@ -11,16 +11,22 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class Server extends Thread {
 
 	private int serverPort;
 	private ArrayList<ServerWorker> workerList=new ArrayList<>();//storing list of all active user so that we can message to them
+	
+
 
 	public Server(int serverPort) {
 		this.serverPort=serverPort;
 	}
+	
+	
+	
 	public List<ServerWorker> getServerWorker(){
 		return workerList;
 	}
@@ -30,11 +36,14 @@ public class Server extends Thread {
 		try {
 			ServerSocket serversocket=new ServerSocket(serverPort);
 			Boolean stop=false;
+			System.out.println("Server started..");
+			System.out.println("waiting for client to connect");
 			while(!stop) {
-				System.out.println("waiting for client to connect");
+				
 				Socket clientSocket=serversocket.accept();
 			
 				PrintWriter out=new PrintWriter(clientSocket.getOutputStream(),true);
+				
 				BufferedReader input=new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 				ObjectOutputStream objOut=new ObjectOutputStream(clientSocket.getOutputStream());
 				ObjectInputStream objIn=new ObjectInputStream(clientSocket.getInputStream());
@@ -44,6 +53,7 @@ public class Server extends Thread {
 				
 				
 				workerList.add(client);
+				
 				client.start();
 			} 
 		} catch (IOException e) {

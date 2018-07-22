@@ -2,6 +2,7 @@ package application;
 	
 import java.util.Date;
 
+import com.info.controller.CurrentUserSingleton;
 import com.info.dao.UserDao;
 import com.info.utils.DBConnection;
 
@@ -13,9 +14,12 @@ import javafx.scene.Scene;
 
 
 public class Main extends Application {
+	 static CurrentUserSingleton tmp=CurrentUserSingleton.getInstance();	//current user object
 	@Override
 	public void start(Stage primaryStage) {
 		try {
+			tmp.setStage(primaryStage);
+			
 			System.out.println("current ttime"+UserDao.formattedDate(new Date()));
 			Parent p=FXMLLoader.load(getClass().getResource("Login_window.fxml"));
 			Scene scene = new Scene(p);

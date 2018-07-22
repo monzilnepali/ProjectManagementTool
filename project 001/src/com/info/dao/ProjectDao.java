@@ -351,6 +351,7 @@ public class ProjectDao {
 				newTask.setTaskId(rs.getInt("task_id"));
 				newTask.setTaskName(rs.getString("task_name"));
 				newTask.setProjectId(rs.getInt("project_id"));
+				
 				newTask.setTaskAssignToName(rs.getString("user_name"));
 				newTask.setTaskDeadLine(rs.getString("task_deadline"));
 				newTask.setTaskPriority(rs.getString("task_priority"));
@@ -572,6 +573,55 @@ public class ProjectDao {
 		
 		
 		return null;
+		
+	}
+	public static  List<String> getCompletedTask(int taskid){
+		Connection conn=null;
+		PreparedStatement pst=null;
+		ResultSet rs=null;
+		try {
+			
+			conn=DBConnection.getConnection();
+			String query="SELECT file_name,file_size FROM taskfile 	WHERE task_id=?";
+			pst=conn.prepareStatement(query);
+			pst.setInt(1, taskid);
+			rs=pst.executeQuery();
+			List<String> listFile=new ArrayList<>();
+			while(rs.next()) {
+				
+				listFile.add(rs.getString("file_name")+"\t"+rs.getString("file_size"));
+					
+			}
+			
+			return listFile;
+			
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	
+		return null;
+		
+		
+	}
+	public static Boolean MarkTaskCompleted(int taskId) {
+		Connection conn=null;
+		PreparedStatement pst=null;
+		
+		try {
+			conn=DBConnection.getConnection();
+			String query="UPDATE task SET task_status=? WHERE task_id=?";
+			pst=conn.prepareStatement(query);
+			pst.setString(1,"completed");
+			pst.setInt(2, taskId);
+			pst.execute();
+			return true;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	
+		return false;
+		
 		
 	}
 

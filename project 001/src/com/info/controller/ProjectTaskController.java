@@ -100,8 +100,30 @@ public class ProjectTaskController implements Initializable {
 		taskTable.setOnMouseClicked(e->{
 			if(e.getClickCount()==2) {
 				if(ProjectTaskController.role.equals(" Manager")) {
-					System.out.println("no open");
-					//opening window to allow manager to update the task
+				
+					
+					System.out.println("open");
+					TaskModel selectedTask=taskTable.getSelectionModel().getSelectedItem();
+					FXMLLoader loader=new FXMLLoader();
+					loader.setLocation(getClass().getResource("/application/TaskCompletion.fxml"));
+					try {
+						loader.load();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					TaskCompletionController controller=loader.getController();
+					controller.setData(selectedTask,this);
+					Parent p=loader.getRoot();
+					Scene scene=new Scene(p);
+					Stage newStage=new Stage();
+					newStage.setScene(scene);
+					Stage previousStage=(Stage)((Node)e.getSource()).getScene().getWindow();
+					newStage.initModality(Modality.WINDOW_MODAL);
+					newStage.initOwner(previousStage);
+					newStage.setTitle("update task status");
+					newStage.show();
+					
 				}else {
 					System.out.println("open");
 					TaskModel selectedTask=taskTable.getSelectionModel().getSelectedItem();

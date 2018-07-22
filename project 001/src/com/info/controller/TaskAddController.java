@@ -6,6 +6,7 @@ import java.net.URL;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -50,6 +51,12 @@ public class TaskAddController implements Initializable {
 			System.out.println("task add controller callled");
 			docsList.setVisible(true);
 			
+			//setting task deadline datepicker min. date to present date
+			
+			LocalDate localDate = LocalDate.now();//For reference
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy");
+			String formattedString = localDate.format(formatter);
+		
 			//filechooser
 			  fc=new FileChooser();
 			//restrict the file selection

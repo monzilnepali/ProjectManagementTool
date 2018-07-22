@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXProgressBar?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="273.0" prefWidth="457.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="secondPhase.ServerConnectionController">
+   <children>
+      <Label fx:id="msg" layoutX="184.0" layoutY="53.0" text="please wait" />
+      <JFXProgressBar layoutX="129.0" layoutY="118.0" />
+   </children>
+</AnchorPane>

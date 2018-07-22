@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="547.0" prefWidth="446.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.info.controller.TaskCompletionController">
+   <children>
+      <Label layoutX="54.0" layoutY="99.0" text="Task Name:" />
+      <Label fx:id="taskName" layoutX="147.0" layoutY="99.0" />
+      <Label layoutX="54.0" layoutY="142.0" text="Task Assign To" />
+      <Label fx:id="taskAssignUserName" layoutX="155.0" layoutY="142.0" />
+      <Label layoutX="47.0" layoutY="207.0" text="Upload FIle" />
+      <ListView fx:id="taskFileList" layoutX="47.0" layoutY="236.0" prefHeight="91.0" prefWidth="375.0" />
+      <Button fx:id="FileDownload" layoutX="49.0" layoutY="347.0" mnemonicParsing="false" text="Download" />
+      <Button fx:id="MarkCompletedBtn" layoutX="162.0" layoutY="477.0" mnemonicParsing="false" text="Mark completed" />
+   </children>
+</AnchorPane>

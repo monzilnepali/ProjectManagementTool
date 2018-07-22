@@ -1,5 +1,6 @@
 package com.info.dao;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,7 +13,6 @@ import java.util.List;
 
 import com.info.model.Project;
 import com.info.model.TaskModel;
-
 import com.info.utils.DbConnection;
 
 public class ProjectDao {
@@ -60,13 +60,13 @@ public class ProjectDao {
 		}
 		return 0;
 	}
-	public static String getEmailThroughId(int userId) {
+	public static String getEmailThroughId(int userid) {
 
 		try {
 			conn = DbConnection.getConnection();
 			String query = "SELECT user_email FROM user WHERE	 user_id=?";
 			pst = conn.prepareStatement(query);
-			pst.setInt(1, userId);
+			pst.setInt(1, userid);
 			rs = pst.executeQuery();
 			while (rs.next()) {
 				return rs.getString("user_email");
@@ -126,49 +126,6 @@ public class ProjectDao {
 	}
 
 
-	public static List<Project> getProjectNameForTreeView(int userId) {
-		// getting name of project of currently logged in user
-		// System.out.println("getprojectname called");
-		Connection conn = null;
-		PreparedStatement pst = null;
-		ResultSet rs = null;
-		try {
-			conn = DbConnection.getConnection();
-			String query = "SELECT project.project_name,project.project_id,userproject.role_id FROM project INNER JOIN userproject ON project.project_id=userproject.project_Id WHERE userproject.user_id=?";
-			pst = conn.prepareStatement(query);
-			pst.setInt(1, userId);
-
-			rs = pst.executeQuery();
-			List<Project> list = new ArrayList<Project>();
-			while (rs.next()) {
-				// System.out.println("list new data");
-
-				Project pro = new Project();
-				pro.setProjectId(rs.getInt("project_id"));
-				pro.setprojectTitle(rs.getString("project_name"));
-				pro.setRoleId(rs.getInt("role_id"));
-				list.add(pro);
-			}
-			return list;
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				pst.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			try {
-				conn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-
-		}
-		return null;
-	}
-
 	
 	public static Boolean setProjectFile(int projectId, String filePath,
 			String fileName, String fileSize) {
@@ -212,6 +169,7 @@ public class ProjectDao {
 
 	}
 	public static int CreatProject(Project newProject, int managerId) {
+		ResultSet rs=null;
 	   try {
 		   conn=DbConnection.getConnection();
 		   String query = "INSERT INTO project (project_name,project_categories,project_desc,project_creation) VALUES (?,?,?,?)";
@@ -222,10 +180,10 @@ public class ProjectDao {
 			pst.setString(4, ProjectDao.getCurrentTime());
 
 			pst.execute();
-
+System.out.println("project created");
 			// getting id of currently inserted data in project
 			// project Id is assign to each team member of project
-			ResultSet rs = pst.getGeneratedKeys();
+			 rs = pst.getGeneratedKeys();
 			int generatedKey = 0;
 			if (rs.next()) {
 				generatedKey = rs.getInt(1);
@@ -234,7 +192,23 @@ public class ProjectDao {
 		   
 	   }catch(Exception e) {
 		   e.printStackTrace();
-	   }
+	   }finally {
+			try {
+				rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				pst.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 		
 		
 		
@@ -310,6 +284,352 @@ public class ProjectDao {
 		return 0;
 
 	}
+	
+	public static List<String> getProjectFileThroughProjectId(int projectid){
+		System.out.println("getProjectFileThroughProjectId called  -->"+projectid);
+		Connection conn = null;
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		try {
+			conn=DbConnection.getConnection();
+			String query="SELECT project_filePath from projectfile WHERE project_id=?";
+			pst=conn.prepareStatement(query);
+			pst.setInt(1, projectid);
+			rs=pst.executeQuery();
+			List<String> filePathList=new ArrayList<>();
+			while(rs.next()) {
+				filePathList.add( rs.getString("project_filePath"));
+			}
+			
+			return filePathList;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				pst.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		
+		
+		return null;
+		
+	}
+	
+	public static String getProjectNameThroughId(int id) {
+		
+		Connection conn = null;
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		try {
+			conn = DbConnection.getConnection();
+			String query = "SELECT project_name FROM project WHERE project_id=?";
+			pst = conn.prepareStatement(query);
+			pst.setInt(1, id);
+			rs = pst.executeQuery();
+			while (rs.next()) {
+				
+				return rs.getString("project_name");
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				pst.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return null;
+	}
+	public static void setCompletedTaskFile(int task_id,String filePath,String filename,String filesize) {
+		
+		
+		Connection conn = null;
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		try {
+		conn=DbConnection.getConnection();
+		String query="INSERT INTO taskcompletefile VALUES(?,?,?,?)";
+		pst=conn.prepareStatement(query);
+		pst.setInt(1, task_id);
+	   pst.setString(2, filePath);
+	   pst.setString(3, filename);
+	   pst.setString(4, filesize);
+	   pst.execute();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			
+			try {
+				pst.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		
+		
+	}
+	
+	public static void setTaskStatus(int taskid,String status) {
+		
+		Connection conn = null;
+		PreparedStatement pst = null;
+		
+		try {
+		conn=DbConnection.getConnection();
+		String query="UPDATE task SET task_status=? where task_id=?";
+		pst=conn.prepareStatement(query);
+		pst.setString(1, status);
+		pst.setInt(2, taskid);
+		pst.execute();
+		
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				pst.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	public static String getEmailAddressOfProjectManage(int projectid) {
+		
+		Connection conn=null;
+		PreparedStatement pst=null;
+		ResultSet rs=null;
+		try{
+			conn=DbConnection.getConnection();
+			String query="SELECT user_email FROM user  INNER JOIN userproject ON user.user_id=userproject.user_id   where project_id=? AND role_id=? ";
+			pst=conn.prepareStatement(query);
+			pst.setInt(1, projectid);
+			pst.setInt(2, 1);//1= for manager and 2 for team memeber
+			rs=pst.executeQuery();
+			while(rs.next()) {
+				//return email of manager
+				return rs.getString("user_email");
+			}
+			
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				pst.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return null;
+	}
+	
+	public static List<String> getTaskInformation(int taskId) {
+		
+		Connection conn=null;
+		PreparedStatement pst=null;
+		ResultSet rs=null;
+		try{
+			conn=DbConnection.getConnection();
+			String query="SELECT task_name,user_name,task_desc,task_deadline,task_assignDate,project_name FROM "
+					+ " task INNER JOIN user on task.user_id=user.user_id "
+					+ "INNER JOIN project on task.project_id=project.project_id WHERE task_id=? ";
+			pst=conn.prepareStatement(query);
+			pst.setInt(1, taskId);
+			rs=pst.executeQuery();
+			ArrayList<String> taskInfo=new ArrayList<String>();
+			while(rs.next()) {
+				
+				
+				taskInfo.add(rs.getString("task_name"));
+				taskInfo.add(rs.getString("user_name"));
+				taskInfo.add(rs.getString("task_desc"));
+				taskInfo.add(rs.getString("task_deadline"));
+				taskInfo.add(rs.getString("task_assignDate"));
+				taskInfo.add(rs.getString("project_name"));
+				return taskInfo;
+
+			}
+			
+					
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				pst.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return null;
+		
+		
+		
+	}
+	public static String getUserNameThroughId(int userid) {
+		
+		Connection conn=null;
+		PreparedStatement pst=null;
+		ResultSet rs=null;
+		try{
+			conn=DbConnection.getConnection();
+		    String query="SELECT user_name FROM user WHERE user_id=?";
+		    pst=conn.prepareStatement(query);
+		    pst.setInt(1, userid);
+		    rs=pst.executeQuery();
+		    while(rs.next()) {
+		    	return rs.getString("user_name");
+		    }
+			
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				pst.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		
+		
+		
+		return null;
+	}
+	public static int getUserIdFromtask(int taskId) {
+		
+		
+		Connection conn=null;
+		PreparedStatement pst=null;
+		ResultSet rs=null;
+		try{
+			conn=DbConnection.getConnection();
+		    String query="SELECT user_id FROM task WHERE task_id=?";
+		    pst=conn.prepareStatement(query);
+		    pst.setInt(1, taskId);
+		    rs=pst.executeQuery();
+		    while(rs.next()) {
+		    	return rs.getInt("user_id");
+		    }
+			
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				pst.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return 0;
+	}
+
+	public static List<Project> getProjectNameViaUserId(int userId) {
+	    System.out.println("getprokectName via user id called");
+        // getting name of project of currently logged in user
+        // System.out.println("getprojectname called");
+        Connection conn = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        try {
+            conn = DbConnection.getConnection();
+            String query = "SELECT project.project_name,project.project_id,userproject.role_id,project.project_image FROM project INNER JOIN userproject ON project.project_id=userproject.project_Id WHERE userproject.user_id=?";
+            pst = conn.prepareStatement(query);
+            pst.setInt(1, userId);
+
+            rs = pst.executeQuery();
+            List<Project> list = new ArrayList<Project>();
+            while (rs.next()) {
+                // System.out.println("list new data");
+                   System.out.println("fetch details of project"+rs.getString("project_name"));
+                Project pro = new Project();
+                pro.setProjectId(rs.getInt("project_id"));
+                pro.setprojectTitle(rs.getString("project_name"));
+                pro.setRoleId(rs.getInt("role_id"));
+                pro.setProjectImage(rs.getString("project_image"));
+                list.add(pro);
+            }
+            return list;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                pst.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return null;
+    }
 
 
 }

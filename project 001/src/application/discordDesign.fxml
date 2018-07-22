@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+
+<AnchorPane prefHeight="1080.0" prefWidth="1920.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171">
+   <children>
+      <VBox layoutX="-2.0" prefHeight="1080.0" prefWidth="134.0" style="-fx-background-color: #202225;" />
+      <VBox layoutX="132.0" prefHeight="1080.0" prefWidth="354.0" style="-fx-background-color: #2F3136;">
+         <children>
+            <HBox prefHeight="80.0" prefWidth="359.0" style="-fx-background-color: red;" />
+         </children>
+      </VBox>
+      <VBox layoutX="486.0" layoutY="-1.0" prefHeight="1081.0" prefWidth="1435.0" style="-fx-background-color: #36393F;">
+         <children>
+            <HBox prefHeight="80.0" prefWidth="1400.0" style="-fx-background-color: blue;" />
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

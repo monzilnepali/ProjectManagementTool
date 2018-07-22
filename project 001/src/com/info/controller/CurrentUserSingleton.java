@@ -26,6 +26,7 @@ public class CurrentUserSingleton {
 	private ObjectOutputStream objOut;
 	private ObjectInputStream objIn;
 	private Thread clientListener;
+	private Stage stage;
 	
 	private static  CurrentUserSingleton singleton=new CurrentUserSingleton();
 	
@@ -90,6 +91,12 @@ public class CurrentUserSingleton {
 	}
 	public void setClientListener(Thread clientListener) {
 		this.clientListener = clientListener;
+	}
+	public Stage getStage() {
+		return stage;
+	}
+	public void setStage(Stage stage) {
+		this.stage = stage;
 	}
 	
 

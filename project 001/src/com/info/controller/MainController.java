@@ -50,10 +50,7 @@ public class MainController implements Initializable {
 		signup_screen.setVisible(false);
 		System.out.println("main controller called");
 		
-		SoundPlay sp=new SoundPlay();
-		sp.setDaemon(true);
-		sp.start();
-	
+		
 		
 		
 		JFXDialogLayout content=new JFXDialogLayout();
@@ -99,7 +96,7 @@ public class MainController implements Initializable {
 						 CurrentUserSingleton tmp=CurrentUserSingleton.getInstance();
 						 tmp.setVuser(vuser);
 						 
-						 FXMLLoader loader=new FXMLLoader(getClass().getResource("/application/Home.fxml"));
+						 FXMLLoader loader=new FXMLLoader(getClass().getResource("/secondPhase/ServerConnection.fxml"));
 						 try {
 							loader.load();
 						} catch (IOException e1) {
@@ -108,26 +105,19 @@ public class MainController implements Initializable {
 						}
 						 Parent p=loader.getRoot();
 						 Scene new_scene=new Scene(p);
-					     String css1=this.getClass().getResource("/application/application.css").toExternalForm();
-						 String css2=this.getClass().getResource("/application/Home.css").toExternalForm();
-						 new_scene.getStylesheets().addAll(css1,css2);
+					    // String css1=this.getClass().getResource("/application/application.css").toExternalForm();
+						// String css2=this.getClass().getResource("/application/Home.css").toExternalForm();
+						 //new_scene.getStylesheets().addAll(css1,css2);
 						
 						 Stage new_stage=(Stage)((Node)e.getSource()).getScene().getWindow();
 						 
 						
 						
-						 Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
-
-					        //set Stage boundaries to visible bounds of the main screen
-						 new_stage.setX(primaryScreenBounds.getMinX());
-						 new_stage.setY(primaryScreenBounds.getMinY());
-						 new_stage.setWidth(primaryScreenBounds.getWidth());
-						 new_stage.setHeight(primaryScreenBounds.getHeight());
 						
-						 
 						 new_stage.setScene(new_scene);
 						 new_stage.setTitle("Project Management");
 						 new_stage.show();
+						
 						 
 						 
 						 

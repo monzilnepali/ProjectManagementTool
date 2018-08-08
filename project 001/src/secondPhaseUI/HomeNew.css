@@ -58,6 +58,11 @@
 .list-cell{
 	-fx-background-color:#2D2F34;
 	-fx-text-fill:white;
-	
+}
+.labelStyle{
+	-fx-padding:5px;
+	-fx-pref-height:30px;
+	-fx-pref-width:330px;
+	-fx-font-size:19px;
 	
 }

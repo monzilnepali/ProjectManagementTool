@@ -22,6 +22,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -45,8 +46,14 @@ public class HomeNewController implements Initializable {
     private VBox projectListPane;
     @FXML private Label project_name;
     @FXML   private BorderPane mainPane;
-    @FXML Label information_btn;
+    @FXML Label project_info;
+    @FXML private Label task_running;
+    @FXML private Label task_completed;
+    @FXML private Label project_team;
+    static  private Label activeTab;
     @FXML Label currentTab;
+    @FXML
+    private FontAwesomeIconView addTaskBtn;
     private static int activeProjectId;
     static CurrentUserSingleton tmp = CurrentUserSingleton.getInstance(); 
   
@@ -54,7 +61,8 @@ public class HomeNewController implements Initializable {
     public void initialize(URL arg0, ResourceBundle arg1) {
         System.out.println("new Home Controller called");
         
-        
+        activeTab=project_name;
+
        
         
         window_minimize.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -82,23 +90,59 @@ public class HomeNewController implements Initializable {
                System.exit(0);
             }
         });
-        information_btn.setOnMouseClicked(e->{
-            //information window will open
-            System.out.println("information bnt clicked");
-            currentTab.setText("# INFORMATION");
-           tmp.setActiveTab("information");
-            FXMLLoader loader=new FXMLLoader(getClass().getResource("/secondPhaseUI/ProjectInformation.fxml"));
+        project_info.setOnMouseClicked(e->{
+           tabClickedAction("ProjectInformation");
+           
+            currentTab.setText("# PROJECT INFORMATION");
+            project_info.setStyle("-fx-background-color:#36393F;");
+            activeTab.setStyle("-fx-background-color:transparent;");
+            activeTab=project_info;
+        });
+        project_team.setOnMouseClicked(e->{
+           // tabClickedAction("ProjectInformation");
+           
+            currentTab.setText("# PROJECT TEAM");
+            project_team.setStyle("-fx-background-color:#36393F;");
+           activeTab.setStyle("-fx-background-color:transparent;");
+            
+            activeTab=project_team;
+        });
+        task_running.setOnMouseClicked(e->{
+            // tabClickedAction("ProjectInformation");
+            
+             currentTab.setText("# TASK RUNNING");
+             task_running.setStyle("-fx-background-color:#36393F;");
+            activeTab.setStyle("-fx-background-color:transparent;");
+             
+             activeTab=task_running;
+         });
+        task_completed.setOnMouseClicked(e->{
+            // tabClickedAction("ProjectInformation");
+            
+             currentTab.setText("# TASK COMPLETED");
+             task_completed.setStyle("-fx-background-color:#36393F;");
+            activeTab.setStyle("-fx-background-color:transparent;");
+             
+             activeTab=task_completed;
+         });
         
-            try {
-                mainPane.setCenter(loader.load());
-            } catch (IOException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-            }
-
+        addTaskBtn.setOnMouseClicked(e->{
+            System.out.println("task add");
         });
         
         
+        
+    }
+    private void tabClickedAction(String fileName) {
+        FXMLLoader loader=new FXMLLoader(getClass().getResource("/secondPhaseUI/"+fileName+".fxml"));
+        
+        try {
+            mainPane.setCenter(loader.load());
+        } catch (IOException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+       
     }
     public void setdata(List<Project> projectList)  {
         int size=projectList.size();
@@ -205,7 +249,7 @@ public class HomeNewController implements Initializable {
                 });
               
                  imageView[imageCount].setCursor(Cursor.HAND);
-                 Circle glass = new Circle(60,75,45);
+                 Circle glass = new Circle(57,60,45);
                  imageView[imageCount].setClip(glass);
                  imageView[imageCount].setFitHeight(120); 
                      imageView[imageCount].setFitWidth(120); 
@@ -219,14 +263,16 @@ public class HomeNewController implements Initializable {
         }
         //adding project add button
       try {
-        Image  projectCreationImage = new Image(new FileInputStream("addButton.jpg"));
+        Image  projectCreationImage = new Image(new FileInputStream("E:\\project\\ProjectManagementTool\\project 001\\src\\Resource\\UI\\addButton1.png"));
         ImageView imageView1=new ImageView();
         imageView1.setImage(projectCreationImage);
         imageView1.setCursor(Cursor.HAND);
-        Circle glass1 = new Circle(60,75,45);
-        imageView1.setClip(glass1);
+   
         imageView1.setFitHeight(120); 
         imageView1.setFitWidth(120); 
+      
+
+        projectListPane.getChildren().add(imageView1);
         
         
     } catch (FileNotFoundException e) {

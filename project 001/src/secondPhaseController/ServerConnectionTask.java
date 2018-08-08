@@ -1,4 +1,4 @@
-package secondPhase;
+package secondPhaseController;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -24,10 +24,8 @@ public class ServerConnectionTask extends Task<List<Project>> {
     @Override
     protected List<Project> call() throws Exception {
         updateMessage("connecting to server");
-        ServerConnection();
+        //ServerConnection();
         //connecting to server
-      
-        
         updateMessage("fetch data...");
         //getting project list
         getProjectList();
@@ -37,7 +35,7 @@ public class ServerConnectionTask extends Task<List<Project>> {
        
        
        
-       return null;
+       return projectList;
        
         
         
@@ -50,6 +48,7 @@ public class ServerConnectionTask extends Task<List<Project>> {
     private void gettingProjectImage() {
         System.out.println("getting projectImage called");
        for(Project pro:projectList) {
+        
            File file=new File("D:\\client\\"+pro.getprojectTitle()+"\\"+pro.getprojectTitle()+".jpg");
            if(file.exists()) {
                System.out.println("the file exit of project"+pro.getprojectTitle());
@@ -71,13 +70,13 @@ public class ServerConnectionTask extends Task<List<Project>> {
             
             try {
                 Project pro=(Project)tmp.getObjIn().readObject();
-                System.out.println("the project name send from server is"+pro.getprojectTitle());
+               
                 if(pro.getRoleId()==007) {
                     this.projectList=projectList;
                     break;
                     
-                }else {
-                    
+                }else if(pro!=null) {
+                    System.out.println("the project name send from server is"+pro.getprojectTitle());
                     projectList.add(pro);
                 }
                 
@@ -97,35 +96,6 @@ public class ServerConnectionTask extends Task<List<Project>> {
         
     }
 
-    private void ServerConnection() {
-        try {
-            Socket socket = new Socket("localhost", 9090);
-            // settingup required i/o for service
-            tmp.setClientSocket(socket);
-            BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(socket.getInputStream()));
-            tmp.setReader(reader);
-            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-            tmp.setOut(out);
-            BufferedOutputStream bufferout = new BufferedOutputStream(
-                    socket.getOutputStream());
-            tmp.setBufferout(bufferout);
-
-            BufferedInputStream bufferin = new BufferedInputStream(
-                    socket.getInputStream());
-            tmp.setBufferin(bufferin);
-
-            ObjectOutputStream objOut = new ObjectOutputStream(
-                    socket.getOutputStream());
-            tmp.setObjOut(objOut);
-
-            ObjectInputStream objIn = new ObjectInputStream(
-                    socket.getInputStream());
-            tmp.setObjIn(objIn);
-            }catch(Exception e) {
-                e.printStackTrace();
-            }
-        
-    }
+    
 
 }

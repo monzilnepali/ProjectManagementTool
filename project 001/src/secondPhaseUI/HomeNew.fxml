@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import java.lang.String?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="secondPhaseController.HomeNewController">
+   <children>
+      <HBox prefHeight="30.0" prefWidth="1921.0" styleClass="sidebar">
+         <children>
+            <AnchorPane prefHeight="30.0" prefWidth="1923.0">
+               <children>
+                  <Label layoutX="9.0" layoutY="2.0" text="PROJECT MANAGMENT" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
+                  <FontAwesomeIconView fx:id="window_minimize" fill="WHITE" glyphName="MINUS" layoutX="1861.0" layoutY="22.0" size="22" />
+                  <FontAwesomeIconView fx:id="window_close" fill="WHITE" glyphName="REMOVE" layoutX="1896.0" layoutY="20.0" size="22" />
+               </children>
+            </AnchorPane>
+         </children>
+      </HBox>
+      <VBox layoutX="-2.0" layoutY="30.0" prefHeight="1050.0" prefWidth="112.0" styleClass="sidebar">
+         <children>
+            <HBox alignment="CENTER" prefHeight="67.0" prefWidth="112.0" styleClass="sidebar">
+               <children>
+                  <FontAwesomeIconView fill="WHITE" glyphName="USERS" size="50" />
+               </children>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </HBox>
+            <VBox fx:id="projectListPane" prefHeight="981.0" prefWidth="117.0" />
+         </children>
+      </VBox>
+      <VBox layoutX="110.0" layoutY="30.0" prefHeight="1050.0" prefWidth="376.0" styleClass="infobar">
+         <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="68.0" prefWidth="376.0">
+               <children>
+                  <Label fx:id="project_name" alignment="CENTER" contentDisplay="CENTER" styleClass="project_name" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+               </children>
+               <styleClass>
+                  <String fx:value="infobar" />
+                  <String fx:value="border-infobar" />
+               </styleClass></HBox>
+            <AnchorPane prefHeight="536.0" prefWidth="376.0">
+               <children>
+                  <Label fx:id="information_btn" layoutX="32.0" layoutY="43.0" text="INFORMATION" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Label>
+                  <FontAwesomeIconView fill="WHITE" glyphName="ANGLE_DOWN" layoutX="16.0" layoutY="60.0" size="18" />
+                  <Label layoutX="38.0" layoutY="121.0" text="PROJECT TASK" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Label>
+                  <FontAwesomeIconView fill="WHITE" glyphName="ANGLE_DOWN" layoutX="22.0" layoutY="138.0" size="18" />
+                  <Label layoutX="38.0" layoutY="214.0" text="TEAM MEMBER" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Label>
+                  <FontAwesomeIconView fill="WHITE" glyphName="ANGLE_DOWN" layoutX="22.0" layoutY="231.0" size="18" text="" />
+                  <Label layoutX="46.0" layoutY="148.0" text="#  Running" textFill="WHITE">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="44.0" layoutY="175.0" text="#  Completed" textFill="WHITE">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
+      <VBox layoutX="486.0" layoutY="30.0" prefHeight="1050.0" prefWidth="1435.0" styleClass="mainbar">
+         <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="72.0" prefWidth="1435.0">
+               <styleClass>
+                  <String fx:value="mainbar" />
+                  <String fx:value="border-mainbar" />
+               </styleClass>
+               <children>
+                  <Label fx:id="currentTab" styleClass="project_name" />
+               </children></HBox>
+            <BorderPane fx:id="mainPane" prefHeight="986.0" prefWidth="1435.0" />
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

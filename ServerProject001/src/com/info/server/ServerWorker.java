@@ -15,7 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 import com.info.dao.ProjectDao;
 import com.info.dao.TaskDao;
+import com.info.dao.UserDao;
 import com.info.model.TransferFileModel;
+import com.info.model.User;
 import com.info.model.Project;
 import com.info.model.TaskModel;
 
@@ -49,10 +51,11 @@ public class ServerWorker extends Thread {
     public void run() {
 
         try {
-            // System.out.println("sending hello client to client ");
+             //System.out.println("sending hello client to client ");
 
             while (true) {
                 String clientInput = input.readLine();
+                System.out.println("clientInput "+clientInput);
 
                 if (clientInput.equals("upload")) {
                     System.out.println("file uploader called ---->");
@@ -112,8 +115,8 @@ public class ServerWorker extends Thread {
     private void getProjectListHandler() throws IOException {
        //return the list of project to client
         System.out.println("getProjectListHandler called");
-        
-        List<Project> projectList=ProjectDao.getProjectNameViaUserId(this.currentUserId)
+        System.out.println("current user id is "+this.currentUserId);
+        List<Project> projectList=ProjectDao.getProjectNameViaUserId(this.currentUserId);
         //sending the project object to client
         
         for(Project pro:projectList) {
@@ -527,15 +530,26 @@ public class ServerWorker extends Thread {
 
     }
 
-    private void loginHandler() throws NumberFormatException, IOException {
+    private void loginHandler() throws NumberFormatException, IOException, ClassNotFoundException {
 
-        this.currentUserId = Integer.valueOf(this.input.readLine());// getting
-                                                                    // currently
-                                                                    // logged in
-                                                                    // user id
-        this.currentUserName = this.input.readLine();// getting currently logged
-                                                     // in username
-
+       //reading current user email and password for verification
+        User currentUser=(User)this.ObjIn.readObject();
+        System.out.println("the data sent from client side for verification is\n");
+        System.out.println("email:"+currentUser.getUser_email());
+        System.out.println("password :"+currentUser.getUser_password());
+        
+        //checking useremail and password
+        User checkUser=UserDao.userAuth(currentUser);
+        this.objOut.writeObject(checkUser);
+        if(checkUser==null) {
+            //sending ack to client about error
+            //do nothing
+            System.out.println("the user is not verified");
+          
+            
+        }else {
+            this.currentUserId=checkUser.getUser_id();
+                //sending ack that user is authorize
         // System.out.println("sending msg to other active client");
         List<ServerWorker> workerList = server.getServerWorker();
         int i = 0;
@@ -568,6 +582,7 @@ public class ServerWorker extends Thread {
             i++;
         }
         System.out.println("send  to other client completed");
+        }
 
     }
 

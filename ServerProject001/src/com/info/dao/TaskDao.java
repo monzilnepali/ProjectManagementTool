@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.info.utils.DbConnection;
+import com.info.utils.DBConnection;
 
 public class TaskDao {
 
@@ -17,7 +17,7 @@ public class TaskDao {
 	public static List<String> getAllFileNameOfTaskThroughTaskId(int taskId){
 		
 		try {
-			conn=DbConnection.getConnection();
+			conn=DBConnection.getConnection();
 			String query="SELECT task_filePath FROM taskfile WHERE task_id=?";
 			pst=conn.prepareStatement(query);
 			pst.setInt(1, taskId);

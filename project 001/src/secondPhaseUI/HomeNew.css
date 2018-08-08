@@ -1,0 +1,63 @@
+/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+
+*{
+	/*defining the color variable*/
+	-fx-sidebar: #202225;
+	-fx-infobar: #2F3136;
+	-fx-mainbar: #36393F;
+	-fx-mainColor:#2196F3;
+	
+	
+}
+
+.sidebar{
+	-fx-background-color:-fx-sidebar;
+}
+.infobar{
+	-fx-background-color:-fx-infobar;
+}
+.mainbar{
+	-fx-background-color:-fx-mainbar;
+}
+.project_name{
+	-fx-font-size:18px;
+	-fx-padding:0.0 0 0 20px ;
+	-fx-font-weight:bold;
+	-fx-text-fill:white;
+}
+.border-infobar{
+	-fx-border-width:0.0 0.0 2px 0;
+	-fx-border-color:#222327;
+}
+.border-mainbar{
+	-fx-border-width:0.0 0.0 2px 0;
+	-fx-border-color:#2D2F34;
+}
+
+.card{
+	-fx-background-color:#2D2F34;
+	
+	-fx-effect: InnerShadow(three-pass-box, rgba(0,0,0,0.1), 5, 0,0, 0);
+	-fx-border-radius:8px;	
+}
+.text-mainColor{
+	-fx-text-fill:#2196F3;
+	
+}
+.text-colorGrey{
+		-fx-text-fill:#8C8D91;
+}
+.buttonBlue{
+	-fx-background-color:-fx-mainColor;
+	-fx-text-fill:white;
+	-fx-font-size:18px;
+}
+.list-view{
+	-fx-background-insets: 0; -fx-padding: 0;
+}
+.list-cell{
+	-fx-background-color:#2D2F34;
+	-fx-text-fill:white;
+	
+	
+}

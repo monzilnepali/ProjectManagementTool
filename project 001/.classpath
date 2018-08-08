@@ -10,5 +10,6 @@
 	<classpathentry kind="lib" path="C:/Users/Manjil/Downloads/fontawesomefx-8.4.jar"/>
 	<classpathentry kind="lib" path="E:/project/ProjectManagementTool/project 001/src/Resource/org.apache.commons.io.jar"/>
 	<classpathentry kind="lib" path="E:/project/ProjectManagementTool/project 001/src/Resource/joda-time-2.10.jar"/>
+	<classpathentry kind="lib" path="src/Resource/json-simple-1.1.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

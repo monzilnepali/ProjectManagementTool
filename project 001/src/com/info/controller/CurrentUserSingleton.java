@@ -28,7 +28,13 @@ public class CurrentUserSingleton {
 	private Thread clientListener;
 	private Stage stage;
 	
-	private static  CurrentUserSingleton singleton=new CurrentUserSingleton();
+	//for knowing current project and its selected tab
+	private int activeProjectId;
+	private String activeTab;
+	private int CurrentUserRoleInActiveProject;
+	
+	
+    private static  CurrentUserSingleton singleton=new CurrentUserSingleton();
 	
 	/* A private Constructor prevents any other
 	    * class from instantiating.
@@ -98,6 +104,23 @@ public class CurrentUserSingleton {
 	public void setStage(Stage stage) {
 		this.stage = stage;
 	}
-	
+	public int getActiveProjectId() {
+        return activeProjectId;
+    }
+    public void setActiveProjectId(int activeProjectId) {
+        this.activeProjectId = activeProjectId;
+    }
+    public String getActiveTab() {
+        return activeTab;
+    }
+    public void setActiveTab(String activeTab) {
+        this.activeTab = activeTab;
+    }
+    public int getCurrentUserRoleInActiveProject() {
+        return CurrentUserRoleInActiveProject;
+    }
+    public void setCurrentUserRoleInActiveProject(int currentUserRoleInActiveProject) {
+        CurrentUserRoleInActiveProject = currentUserRoleInActiveProject;
+    }
 
 }

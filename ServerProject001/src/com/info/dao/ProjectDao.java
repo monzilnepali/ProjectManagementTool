@@ -13,7 +13,7 @@ import java.util.List;
 
 import com.info.model.Project;
 import com.info.model.TaskModel;
-import com.info.utils.DbConnection;
+import com.info.utils.DBConnection;
 
 public class ProjectDao {
 	private static Connection conn = null;
@@ -25,7 +25,7 @@ public class ProjectDao {
 		conn = null;
 		pst = null;
 		try {
-			conn = DbConnection.getConnection();
+			conn = DBConnection.getConnection();
 			String query = "INSERT INTO task (task_name,user_id,task_deadline,task_priority,project_id,task_assignDate) VALUES (?,?,?,?,?,?)";
 			pst = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 			pst.setString(1, newTask.getTaskName());
@@ -63,7 +63,7 @@ public class ProjectDao {
 	public static String getEmailThroughId(int userid) {
 
 		try {
-			conn = DbConnection.getConnection();
+			conn = DBConnection.getConnection();
 			String query = "SELECT user_email FROM user WHERE	 user_id=?";
 			pst = conn.prepareStatement(query);
 			pst.setInt(1, userid);
@@ -97,7 +97,7 @@ public class ProjectDao {
 	public static Boolean setTaskFile(int taskId, String filePath,
 			String fileName, String fileSize) {
 		try {
-			conn = DbConnection.getConnection();
+			conn = DBConnection.getConnection();
 			String query = "INSERT INTO taskFile VAlUES(?,?,?,?)";
 			pst = conn.prepareStatement(query);
 			pst.setInt(1, taskId);
@@ -130,7 +130,7 @@ public class ProjectDao {
 	public static Boolean setProjectFile(int projectId, String filePath,
 			String fileName, String fileSize) {
 		try {
-			conn = DbConnection.getConnection();
+			conn = DBConnection.getConnection();
 			String query = "INSERT INTO projectfile VAlUES(?,?,?,?)";
 			pst = conn.prepareStatement(query);
 			pst.setInt(1, projectId);
@@ -171,7 +171,7 @@ public class ProjectDao {
 	public static int CreatProject(Project newProject, int managerId) {
 		ResultSet rs=null;
 	   try {
-		   conn=DbConnection.getConnection();
+		   conn=DBConnection.getConnection();
 		   String query = "INSERT INTO project (project_name,project_categories,project_desc,project_creation) VALUES (?,?,?,?)";
 			pst = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 			pst.setString(1, newProject.getprojectTitle());
@@ -219,7 +219,7 @@ System.out.println("project created");
 		Connection conn = null;
 		PreparedStatement pst = null;
 		try {
-			conn = DbConnection.getConnection();
+			conn = DBConnection.getConnection();
 			String query = "INSERT INTO userproject (project_id,user_id,role_id,status) VALUES (?,?,?,?)";
 			pst = conn.prepareStatement(query);
 			pst.setInt(1, projectId);
@@ -252,7 +252,7 @@ System.out.println("project created");
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DbConnection.getConnection();
+			conn = DBConnection.getConnection();
 			String query = "SELECT user_id FROM user WHERE user_email=?";
 			pst = conn.prepareStatement(query);
 			pst.setString(1, email);
@@ -291,7 +291,7 @@ System.out.println("project created");
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn=DbConnection.getConnection();
+			conn=DBConnection.getConnection();
 			String query="SELECT project_filePath from projectfile WHERE project_id=?";
 			pst=conn.prepareStatement(query);
 			pst.setInt(1, projectid);
@@ -334,7 +334,7 @@ System.out.println("project created");
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DbConnection.getConnection();
+			conn = DBConnection.getConnection();
 			String query = "SELECT project_name FROM project WHERE project_id=?";
 			pst = conn.prepareStatement(query);
 			pst.setInt(1, id);
@@ -373,7 +373,7 @@ System.out.println("project created");
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-		conn=DbConnection.getConnection();
+		conn=DBConnection.getConnection();
 		String query="INSERT INTO taskcompletefile VALUES(?,?,?,?)";
 		pst=conn.prepareStatement(query);
 		pst.setInt(1, task_id);
@@ -407,7 +407,7 @@ System.out.println("project created");
 		PreparedStatement pst = null;
 		
 		try {
-		conn=DbConnection.getConnection();
+		conn=DBConnection.getConnection();
 		String query="UPDATE task SET task_status=? where task_id=?";
 		pst=conn.prepareStatement(query);
 		pst.setString(1, status);
@@ -436,7 +436,7 @@ System.out.println("project created");
 		PreparedStatement pst=null;
 		ResultSet rs=null;
 		try{
-			conn=DbConnection.getConnection();
+			conn=DBConnection.getConnection();
 			String query="SELECT user_email FROM user  INNER JOIN userproject ON user.user_id=userproject.user_id   where project_id=? AND role_id=? ";
 			pst=conn.prepareStatement(query);
 			pst.setInt(1, projectid);
@@ -472,7 +472,7 @@ System.out.println("project created");
 		PreparedStatement pst=null;
 		ResultSet rs=null;
 		try{
-			conn=DbConnection.getConnection();
+			conn=DBConnection.getConnection();
 			String query="SELECT task_name,user_name,task_desc,task_deadline,task_assignDate,project_name FROM "
 					+ " task INNER JOIN user on task.user_id=user.user_id "
 					+ "INNER JOIN project on task.project_id=project.project_id WHERE task_id=? ";
@@ -521,7 +521,7 @@ System.out.println("project created");
 		PreparedStatement pst=null;
 		ResultSet rs=null;
 		try{
-			conn=DbConnection.getConnection();
+			conn=DBConnection.getConnection();
 		    String query="SELECT user_name FROM user WHERE user_id=?";
 		    pst=conn.prepareStatement(query);
 		    pst.setInt(1, userid);
@@ -558,7 +558,7 @@ System.out.println("project created");
 		PreparedStatement pst=null;
 		ResultSet rs=null;
 		try{
-			conn=DbConnection.getConnection();
+			conn=DBConnection.getConnection();
 		    String query="SELECT user_id FROM task WHERE task_id=?";
 		    pst=conn.prepareStatement(query);
 		    pst.setInt(1, taskId);
@@ -587,15 +587,15 @@ System.out.println("project created");
 	}
 
 	public static List<Project> getProjectNameViaUserId(int userId) {
-	    System.out.println("getprokectName via user id called");
+	    System.out.println("getprokectName via user id called,user id= "+userId);
         // getting name of project of currently logged in user
         // System.out.println("getprojectname called");
         Connection conn = null;
         PreparedStatement pst = null;
         ResultSet rs = null;
         try {
-            conn = DbConnection.getConnection();
-            String query = "SELECT project.project_name,project.project_id,userproject.role_id,project.project_image FROM project INNER JOIN userproject ON project.project_id=userproject.project_Id WHERE userproject.user_id=?";
+            conn = DBConnection.getConnection();
+            String query = "SELECT project.project_name,project.project_id,userproject.role_id FROM project INNER JOIN userproject ON project.project_id=userproject.project_Id WHERE userproject.user_id=?";
             pst = conn.prepareStatement(query);
             pst.setInt(1, userId);
 
@@ -603,12 +603,12 @@ System.out.println("project created");
             List<Project> list = new ArrayList<Project>();
             while (rs.next()) {
                 // System.out.println("list new data");
-                   System.out.println("fetch details of project"+rs.getString("project_name"));
+                System.out.println("fetch details of project"+rs.getString("project_name"));
                 Project pro = new Project();
                 pro.setProjectId(rs.getInt("project_id"));
                 pro.setprojectTitle(rs.getString("project_name"));
                 pro.setRoleId(rs.getInt("role_id"));
-                pro.setProjectImage(rs.getString("project_image"));
+                System.out.println("current user role is "+rs.getInt("role_id"));
                 list.add(pro);
             }
             return list;

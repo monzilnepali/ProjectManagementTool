@@ -1,5 +1,7 @@
 package application;
 	
+import java.io.IOException;
+import java.net.Socket;
 import java.util.Date;
 
 import com.info.controller.CurrentUserSingleton;
@@ -20,6 +22,7 @@ public class Main extends Application {
 		try {
 			tmp.setStage(primaryStage);
 			
+			
 			System.out.println("current ttime"+UserDao.formattedDate(new Date()));
 			Parent p=FXMLLoader.load(getClass().getResource("Login_window.fxml"));
 			Scene scene = new Scene(p);
@@ -30,6 +33,7 @@ public class Main extends Application {
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("Project Management");
 			primaryStage.setResizable(false);
+			
 			primaryStage.show();
 		} catch(Exception e) {
 			e.printStackTrace();

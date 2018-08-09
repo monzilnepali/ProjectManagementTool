@@ -172,7 +172,7 @@ public class HomeController implements Initializable {
 
 					
 					if (oldValue.equals("downloadCompleted")) {
-						ProjectInformationController.showDialog(newValue);
+						//ProjectInformationController.showDialog(newValue);
 					} else if (newValue.equals("projectCreationCompleted")) {
 						// getProjectDetail();
 						CurrentStage.close();

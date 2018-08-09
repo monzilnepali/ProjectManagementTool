@@ -15,11 +15,16 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import com.info.controller.ClientListener;
 import com.info.controller.CurrentUserSingleton;
+import com.info.controller.ProjectTaskController;
 import com.info.controller.TaskAddController;
 import com.info.model.Project;
+import com.jfoenix.controls.JFXSnackbar;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -34,6 +39,7 @@ import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -43,6 +49,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class HomeNewController implements Initializable {
+    @FXML
+    private AnchorPane MainPane;
     @FXML
     private FontAwesomeIconView window_minimize;
 
@@ -56,23 +64,29 @@ public class HomeNewController implements Initializable {
     @FXML private Label task_running;
     @FXML private Label task_completed;
     @FXML private Label project_team;
+    @FXML private Label task_inReview;
+    @FXML private Label task_notRunning;
     static  private Label activeTab;
     static private String activeTabName;
     @FXML   private Label activeUserName;
-
+    @FXML private Label notify;
     @FXML  private Label activeUserRole;
     @FXML Label currentTab;
     @FXML private FontAwesomeIconView addTaskBtn;
     private static int activeProjectId;
     static CurrentUserSingleton tmp = CurrentUserSingleton.getInstance(); 
     static private List<Label> labelArray;
-  
+  private  JFXSnackbar snackbar;
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         System.out.println("new Home Controller called");
-        
+        task_inReview.setVisible(false);
         activeTab=project_name;
         labelArray=new ArrayList<Label>();
+         snackbar = new JFXSnackbar(MainPane);
+        clientListenerStart();
+        
+       
        
         
         window_minimize.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -108,6 +122,7 @@ public class HomeNewController implements Initializable {
             project_info.setStyle("-fx-background-color:#36393F;");
             activeTab.setStyle("-fx-background-color:transparent;");
             activeTab=project_info;
+            tmp.setActiveTab(activeTab.getText());
         });
         project_team.setOnMouseClicked(e->{
            // tabClickedAction("ProjectInformation");
@@ -117,26 +132,76 @@ public class HomeNewController implements Initializable {
            activeTab.setStyle("-fx-background-color:transparent;");
             
             activeTab=project_team;
+            tmp.setActiveTab(activeTab.getText());
         });
-        task_running.setOnMouseClicked(e->{
-            if(activeTab!=task_running) {
-             tabClickedAction("ProjectTask1");
-             
-             currentTab.setText("# TASK RUNNING");
-             task_running.setStyle("-fx-background-color:#36393F;");
+        
+       
+        task_notRunning.setOnMouseClicked(e->{
+            
+            if(activeTab!=task_notRunning) {
+                System.out.println("task notrunning called");
+          
+             currentTab.setText("# NOT RUNNING");
+             task_notRunning.setStyle("-fx-background-color:#36393F;");
             activeTab.setStyle("-fx-background-color:transparent;");
-             
-             activeTab=task_running;
+             activeTab=task_notRunning;
+             System.out.println("the active tab name is"+activeTab.getText());
+             tmp.setActiveTab(activeTab.getText());
+             tabClickedAction("ProjectTask1");
             }
          });
-        task_completed.setOnMouseClicked(e->{
-             tabClickedAction("ProjectTaskCompleted");
-            
-             currentTab.setText("# TASK COMPLETED");
-             task_completed.setStyle("-fx-background-color:#36393F;");
-            activeTab.setStyle("-fx-background-color:transparent;");
+        
+        
+        task_running.setOnMouseClicked(e->{
+            System.out.println("task running called");
+            if(activeTab!=task_running) {
+                
+                currentTab.setText("# TASK RUNNING");
+                task_running.setStyle("-fx-background-color:#36393F;");
+               activeTab.setStyle("-fx-background-color:transparent;");
+                
+                activeTab=task_running;
+                System.out.println("the active tab name is"+activeTab.getText());
+                tmp.setActiveTab(activeTab.getText());
+                
+                
+                tabClickedAction("ProjectTask1");
              
-             activeTab=task_completed;
+             
+            }
+         });
+        
+      
+        task_inReview.setOnMouseClicked(e->{
+            System.out.println("task running called");
+            if(activeTab!=task_inReview) {
+                
+                currentTab.setText("# TASK RUNNING");
+                task_inReview.setStyle("-fx-background-color:#36393F;");
+               activeTab.setStyle("-fx-background-color:transparent;");
+                
+                activeTab=task_inReview;
+                System.out.println("the active tab name is"+activeTab.getText());
+                tmp.setActiveTab(activeTab.getText());
+                
+                
+                tabClickedAction("ProjectTask1");
+             
+             
+            }
+         });
+        
+        task_completed.setOnMouseClicked(e->{
+            if(activeTab!=task_completed) {
+            currentTab.setText("# TASK COMPLETED");
+            task_completed.setStyle("-fx-background-color:#36393F;");
+            activeTab.setStyle("-fx-background-color:transparent;");
+            
+            activeTab=task_completed;
+            tmp.setActiveTab(activeTab.getText());
+             tabClickedAction("ProjectTask1");
+            
+            }
          });
         
         addTaskBtn.setOnMouseClicked(e->{
@@ -170,6 +235,60 @@ public class HomeNewController implements Initializable {
         
         
     }
+    private void clientListenerStart() {
+       
+        ClientListener clientlistener1 = new ClientListener();
+
+        // binding property to task update message to get real time return
+        // from Backgroundtask to update ui
+        notify.textProperty().bind(clientlistener1.messageProperty());
+        final ChangeListener changelistener = new ChangeListener<String>() {
+
+            @Override
+            public void changed(
+                    ObservableValue<? extends String> observable,
+                    String oldValue, String newValue) {
+
+                System.out.println("the old value is " + oldValue
+                        + "\nthe new value is " + newValue);
+                //notifylist.setText(oldValue + "\n" + newValue);
+                // notificationlist.add(newValue);
+
+                
+                if (oldValue.equals("downloadCompleted")) {
+                    //ProjectInformationController.showDialog(newValue);
+                } else if (newValue.equals("projectCreationCompleted")) {
+                    // getProjectDetail();
+                    ProjectTaskController pt=new ProjectTaskController();
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                    pt.loadData();
+                   
+
+                } else {
+                    snackbar.show(newValue, 6000);// showing notification
+                                                    // popup from button
+                                                    // about user online
+                }
+
+            }
+
+        };
+        notify.textProperty().addListener(changelistener);
+        Thread newThread = new Thread(clientlistener1);
+
+        newThread.setDaemon(true);
+        newThread.start();
+        tmp.setClientListener(newThread);
+        
+        
+        
+        
+    }
     private void tabClickedAction(String fileName) {
         FXMLLoader loader=new FXMLLoader(getClass().getResource("/application/"+fileName+".fxml"));
         
@@ -185,6 +304,8 @@ public class HomeNewController implements Initializable {
     public void setdata(List<Project> projectList)  {
         
         activeUserName.setText(tmp.getVuser().getUser_name());
+        //showing in review phase tab only for manager of the project
+       
         
         labelArray.add(project_info);
         labelArray.add(project_team);
@@ -251,6 +372,12 @@ public class HomeNewController implements Initializable {
                    tmp.setCurrentUserRoleInActiveProject(pro.getRoleId());
                    if(pro.getRoleId()==1) {
                        activeUserRole.setText("MANAGER");
+                       System.out.println("active user is manager");
+                       task_inReview.setLayoutX(task_completed.getLayoutX());
+                       task_inReview.setLayoutY(task_completed.getLayoutY());
+                       task_completed.setLayoutX(task_inReview.getLayoutX());
+                       task_completed.setLayoutY(task_inReview.getLayoutY()+40);
+                       task_inReview.setVisible(true);
                    }else {
                        activeUserRole.setText("TEAM MEMBER");
                    }

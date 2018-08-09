@@ -26,13 +26,12 @@ public class ClientListener extends Task<String> {
 	private List<String> notifyList;
 	private ObjectOutputStream objOut;
 	private ObjectInputStream objIn;
-
-	public ClientListener(Socket socket, BufferedReader reader,
-			ObjectOutputStream objOut, ObjectInputStream objIn) {
-		this.socket = socket;
-		this.reader = reader;
-		this.objOut = objOut;
-		this.objIn = objIn;
+	 static CurrentUserSingleton tmp = CurrentUserSingleton.getInstance(); 
+	public ClientListener() {
+		this.socket = tmp.getClientSocket();
+		this.reader = tmp.getReader();
+		this.objOut = tmp.getObjOut();
+		this.objIn = tmp.getObjIn();
 	}
 
 	@Override

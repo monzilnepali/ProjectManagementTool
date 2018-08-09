@@ -40,11 +40,11 @@ public class ProjectTaskController implements Initializable {
 	 
 	 @FXML	 private Button AddTaskBtn;
 	
-	
+	 ObservableList<TaskModel> taskList;
 	 CurrentUserSingleton tmp=CurrentUserSingleton.getInstance();
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		System.out.println("project Task controller calleld");
+	
 		AddTaskBtn.setVisible(false);
 		loadData();
 		
@@ -58,8 +58,8 @@ public class ProjectTaskController implements Initializable {
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
-			//TaskAddController controller=loader.getController();
-			//controller.setData(currentProjectId,this);
+			TaskAddController controller=loader.getController();
+			controller.setData(this);
 			Parent p=loader.getRoot();
 			Scene taskAddScene=new Scene(p);
 			Stage taskAddStage=new Stage();
@@ -148,20 +148,23 @@ public class ProjectTaskController implements Initializable {
 	}
 	public void loadData() {
 		//populating table
-		System.out.println("load data called");
+		
+				int task_status = 0;
+				System.out.println("the active tab in load data is"+tmp.getActiveTab());
+              if(tmp.getActiveTab().equals("#  Not Running")) {
+                  System.out.println("showing not running task");
+                  task_status=0;
+              }else if(tmp.getActiveTab().equals("#  Running")) {
+                  System.out.println("showing  running task");
+                  task_status=1;
+              }else if(tmp.getActiveTab().equals("#  Review Phase")) {
+                  task_status=2;
+              }else if(tmp.getActiveTab().equals("#  Completed")) {
+                  task_status=3;
+              }
 				
-		
-		
-	
-		
-		
-		
-				
-		 ObservableList<TaskModel> taskList=FXCollections.observableArrayList(ProjectDao.getTaskList(tmp.getActiveProjectId(),tmp.getCurrentUserRoleInActiveProject(),tmp.getVuser().getUser_id()));
-         for(TaskModel ts:taskList) {
-             System.out.println("task name"+ts.getTaskName());
-         }
-         
+		  taskList=FXCollections.observableArrayList(ProjectDao.getTaskList(tmp.getActiveProjectId(),tmp.getCurrentUserRoleInActiveProject(),tmp.getVuser().getUser_id(),task_status));
+        
          taskName.setCellValueFactory(new PropertyValueFactory<TaskModel,String>("taskName"));
          userName.setCellValueFactory(new PropertyValueFactory<TaskModel,String>("taskAssignToName"));
          taskDeadLine.setCellValueFactory(new PropertyValueFactory<TaskModel,String>("taskDeadLine"));
@@ -171,5 +174,10 @@ public class ProjectTaskController implements Initializable {
          taskTable.setItems(taskList);
 
 	}
+    public void update(TaskModel newTask) {
+      
+        taskList.add(newTask);
+    }
+  
 
 }

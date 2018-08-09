@@ -50,7 +50,7 @@ public class TaskAddController implements Initializable {
     ObservableList<String>listdocs=FXCollections.observableArrayList();
     private List<File> files;
     private FileChooser fc;
-	
+   private ProjectTaskController controller;
 	static CurrentUserSingleton tmp=CurrentUserSingleton.getInstance();
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -151,6 +151,7 @@ public class TaskAddController implements Initializable {
 				TaskModel newTask=new TaskModel();
 				newTask.setTaskName(taskNameField.getText());
 				newTask.setTaskDeadLine(deadlinedate);
+				newTask.setTaskAssignToName(teamMemberList.getValue().getUser_name());
 				newTask.setTaskAssignTo(teamMemberList.getValue().getUser_id());
 				newTask.setTaskPriority(taskPriority.getValue());
 				newTask.setProjectId(tmp.getActiveProjectId());
@@ -172,7 +173,8 @@ public class TaskAddController implements Initializable {
 					
 					
 					
-					//controller.loadData();
+					
+					controller.update(newTask);
 					currentStage.close();
 				
 				
@@ -196,4 +198,9 @@ public class TaskAddController implements Initializable {
 	
 	
 	}
+    public void setData(ProjectTaskController controller) {
+        this.controller=controller;
+        
+    }
+   
 }

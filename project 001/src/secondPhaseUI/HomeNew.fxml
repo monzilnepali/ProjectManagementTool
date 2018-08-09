@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="secondPhaseController.HomeNewController">
+<AnchorPane fx:id="MainPane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="secondPhaseController.HomeNewController">
    <children>
       <HBox prefHeight="32.0" prefWidth="1921.0" styleClass="sidebar">
          <children>
@@ -57,7 +57,7 @@
                </styleClass></HBox>
             <AnchorPane prefHeight="906.0" prefWidth="376.0">
                <children>
-                  <Label layoutX="32.0" layoutY="43.0" text="INFORMATION" textFill="WHITE">
+                  <Label layoutX="32.0" layoutY="40.0" text="INFORMATION" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="22.0" />
                      </font>
@@ -65,29 +65,29 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Label>
-                  <FontAwesomeIconView fill="WHITE" glyphName="ANGLE_DOWN" layoutX="14.0" layoutY="70.0" size="18" />
-                  <Label layoutX="38.0" layoutY="189.0" text="PROJECT TASK" textFill="WHITE">
+                  <FontAwesomeIconView fill="WHITE" glyphName="ANGLE_DOWN" layoutX="13.0" layoutY="63.0" size="18" text="" />
+                  <Label layoutX="38.0" layoutY="180.0" text="PROJECT TASK" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="22.0" />
                      </font>
                   </Label>
-                  <FontAwesomeIconView fill="WHITE" glyphName="ANGLE_DOWN" layoutX="19.0" layoutY="211.0" size="18" />
-                  <Label fx:id="task_running" layoutX="27.0" layoutY="229.0" styleClass="labelStyle" text="#  Running" textFill="WHITE">
+                  <FontAwesomeIconView fill="WHITE" glyphName="ANGLE_DOWN" layoutX="19.0" layoutY="202.0" size="18" />
+                  <Label fx:id="task_running" layoutX="31.0" layoutY="260.0" styleClass="labelStyle" text="#  Running" textFill="WHITE">
                      <font>
                         <Font size="17.0" />
                      </font>
                   </Label>
-                  <Label fx:id="task_completed" layoutX="27.0" layoutY="267.0" styleClass="labelStyle" text="#  Completed" textFill="WHITE">
+                  <Label fx:id="task_completed" layoutX="31.0" layoutY="300.0" styleClass="labelStyle" text="#  Completed" textFill="WHITE">
                      <font>
                         <Font size="17.0" />
                      </font>
                   </Label>
-                  <Label fx:id="project_info" layoutX="31.0" layoutY="77.0" prefHeight="36.0" style="-fx-padding: 7px;" styleClass="labelStyle" text="#  Project Information" textFill="WHITE">
+                  <Label fx:id="project_info" layoutX="31.0" layoutY="80.0" prefHeight="36.0" style="-fx-padding: 7px;" styleClass="labelStyle" text="#  Project Information" textFill="WHITE">
                      <font>
                         <Font size="17.0" />
                      </font>
                   </Label>
-                  <Label fx:id="project_team" layoutX="31.0" layoutY="119.0" styleClass="labelStyle" text="#  Project Team" textFill="WHITE">
+                  <Label fx:id="project_team" layoutX="31.0" layoutY="120.0" styleClass="labelStyle" text="#  Project Team" textFill="WHITE">
                      <font>
                         <Font size="17.0" />
                      </font>
@@ -97,6 +97,17 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </FontAwesomeIconView>
+                  <Label fx:id="notify" layoutX="48.0" layoutY="432.0" textFill="WHITE" />
+                  <Label fx:id="task_inReview" layoutX="31.0" layoutY="340.0" styleClass="labelStyle" text="#  Review Phase" textFill="WHITE">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="task_notRunning" layoutX="27.0" layoutY="220.0" styleClass="labelStyle" text="#  Not Running" textFill="WHITE">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
                </children>
             </AnchorPane>
             <Pane prefHeight="79.0" prefWidth="376.0" style="-fx-background-color: #282A2E;">
@@ -118,7 +129,7 @@
       </VBox>
       <VBox layoutX="486.0" layoutY="32.0" prefHeight="1050.0" prefWidth="1435.0" styleClass="mainbar">
          <children>
-            <HBox alignment="CENTER_LEFT" prefHeight="72.0" prefWidth="1435.0">
+            <HBox alignment="CENTER_LEFT" prefHeight="69.0" prefWidth="1435.0">
                <styleClass>
                   <String fx:value="mainbar" />
                   <String fx:value="border-mainbar" />

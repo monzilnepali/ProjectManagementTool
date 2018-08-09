@@ -28,6 +28,7 @@ public class CurrentUserSingleton {
 	private Thread clientListener;
 	private Stage stage;
 	
+	
 	//for knowing current project and its selected tab
 	private int activeProjectId;
 	private String activeTab;
@@ -122,5 +123,6 @@ public class CurrentUserSingleton {
     public void setCurrentUserRoleInActiveProject(int currentUserRoleInActiveProject) {
         CurrentUserRoleInActiveProject = currentUserRoleInActiveProject;
     }
+   
 
 }

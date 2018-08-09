@@ -325,7 +325,14 @@ public class ProjectDao {
 	}
 
 	public static List<TaskModel> getTaskList(int projectId, int role,
-			int userId) {
+			int userId,int taskStatus) {
+	    /*0->not running
+	     *1->running
+	     *2->in review phase
+	     *3->completed
+	     * 
+	     */
+	    
 		Connection conn = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
@@ -334,14 +341,16 @@ public class ProjectDao {
 			String query = null;
 			if (role==1) {
 
-				query = "SELECT  task_id,task_name,user_name,task_deadline,task_priority,task_status,project_id,task_assignDate,task_desc FROM task INNER JOIN user ON task.user_id=user.user_id WHERE project_id=?";
+				query = "SELECT  task_id,task_name,user_name,task_deadline,task_priority,task_status,project_id,task_assignDate,task_desc FROM task INNER JOIN user ON task.user_id=user.user_id WHERE project_id=? AND task_status=?";
 				pst = conn.prepareStatement(query);
 				pst.setInt(1, projectId);
+				pst.setInt(2, taskStatus);
 			} else {
-				query = "SELECT  task_id,task_name,user_name,task_deadline,task_priority,task_status,project_id,task_assignDate,task_desc FROM task INNER JOIN user ON task.user_id=user.user_id WHERE project_id=? AND user.user_id=?";
+				query = "SELECT  task_id,task_name,user_name,task_deadline,task_priority,task_status,project_id,task_assignDate,task_desc FROM task INNER JOIN user ON task.user_id=user.user_id WHERE project_id=? AND user.user_id=? AND task_status=?";
 				pst = conn.prepareStatement(query);
 				pst.setInt(1, projectId);
 				pst.setInt(2, userId);
+				pst.setInt(3, taskStatus);
 			}
 
 			rs = pst.executeQuery();
@@ -355,7 +364,11 @@ public class ProjectDao {
 				newTask.setTaskAssignToName(rs.getString("user_name"));
 				newTask.setTaskDeadLine(rs.getString("task_deadline"));
 				newTask.setTaskPriority(rs.getString("task_priority"));
-				newTask.setTaskStatus(rs.getString("task_status"));
+				newTask.setTaskStatusId(rs.getInt("task_status"));
+				
+				newTask.setTaskStatus(getTaskStatusNameViaId(rs.getInt("task_status")));
+				
+			
 				newTask.setTaskCreationDate(rs.getString("task_assignDate"));
 				newTask.setTaskDescription(rs.getString("task_desc"));
 				taskList.add(newTask);
@@ -382,7 +395,23 @@ public class ProjectDao {
 		return null;
 	}
 
-	public static List<TaskModel> getCompletedTaskList(int projectId, int role,
+	private static String getTaskStatusNameViaId(int int1) {
+      
+	    if(int1==0) {
+	        return "Not Running";
+	    }else if(int1==1) {
+	        return "In progress";
+	    }else if(int1==2) {
+	        return "In Review Phase";
+	    }else if(int1==3) {
+	        return "Completed";
+	    }else {
+	        return "null";
+	    }
+        
+    }
+
+    public static List<TaskModel> getCompletedTaskList(int projectId, int role,
             int userId) {
         Connection conn = null;
         PreparedStatement pst = null;
@@ -395,13 +424,13 @@ public class ProjectDao {
                 query = "SELECT  task_id,task_name,user_name,task_deadline,task_priority,task_status,project_id,task_assignDate,task_desc FROM task INNER JOIN user ON task.user_id=user.user_id WHERE project_id=? AND task_status=?";
                 pst = conn.prepareStatement(query);
                 pst.setInt(1, projectId);
-                pst.setInt(2, 0);
+                pst.setInt(2, 3);
             } else {
                 query = "SELECT  task_id,task_name,user_name,task_deadline,task_priority,task_status,project_id,task_assignDate,task_desc FROM task INNER JOIN user ON task.user_id=user.user_id WHERE project_id=? AND user.user_id=? AND task_status=?";
                 pst = conn.prepareStatement(query);
                 pst.setInt(1, projectId);
                 pst.setInt(2, userId);
-                pst.setInt(3, 0);
+                pst.setInt(3, 3);
             }
 
             rs = pst.executeQuery();
@@ -415,7 +444,9 @@ public class ProjectDao {
                 newTask.setTaskAssignToName(rs.getString("user_name"));
                 newTask.setTaskDeadLine(rs.getString("task_deadline"));
                 newTask.setTaskPriority(rs.getString("task_priority"));
-                newTask.setTaskStatus(rs.getString("task_status"));
+                
+                
+                newTask.setTaskStatus(getTaskStatusNameViaId(rs.getInt("task_status")));
                 newTask.setTaskCreationDate(rs.getString("task_assignDate"));
                 newTask.setTaskDescription(rs.getString("task_desc"));
                 taskList.add(newTask);
@@ -442,64 +473,7 @@ public class ProjectDao {
         return null;
     }
 	
-	public static List<TaskModel> getCompletedTaskList(int projectId, String role,
-			int userId,String taskstatus) {
-		Connection conn = null;
-		PreparedStatement pst = null;
-		ResultSet rs = null;
-		try {
-			conn = DBConnection.getConnection();
-			String query = null;
-			if (role.equals(" Manager")) {
-
-				query = "SELECT  task_id,task_name,user_name,task_deadline,task_priority,task_status,project_id,task_assignDate,task_desc FROM task INNER JOIN user ON task.user_id=user.user_id WHERE project_id=? AND task_status=?";
-				pst = conn.prepareStatement(query);
-				pst.setInt(1, projectId);
-				pst.setString(2, taskstatus);
-			} else {
-				query = "SELECT  task_id,task_name,user_name,task_deadline,task_priority,task_status,project_id,task_assignDate,task_desc FROM task INNER JOIN user ON task.user_id=user.user_id WHERE project_id=? AND user.user_id=? AND task_status=?";
-				pst = conn.prepareStatement(query);
-				pst.setInt(1, projectId);
-				pst.setInt(2, userId);
-				pst.setString(3, taskstatus);
-			}
-
-			rs = pst.executeQuery();
-			List<TaskModel> taskList = new ArrayList<>();
-			while (rs.next()) {
-				TaskModel newTask = new TaskModel();
-				newTask.setTaskId(rs.getInt("task_id"));
-				newTask.setTaskName(rs.getString("task_name"));
-				newTask.setProjectId(rs.getInt("project_id"));
-				newTask.setTaskAssignToName(rs.getString("user_name"));
-				newTask.setTaskDeadLine(rs.getString("task_deadline"));
-				newTask.setTaskPriority(rs.getString("task_priority"));
-				newTask.setTaskStatus(rs.getString("task_status"));
-				newTask.setTaskCreationDate(rs.getString("task_assignDate"));
-				newTask.setTaskDescription(rs.getString("task_desc"));
-				taskList.add(newTask);
-
-			}
-			return taskList;
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				pst.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			try {
-				conn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-
-		}
-
-		return null;
-	}
+	
 	
 	public static Boolean updateTaskStatus(int taskId, String taskStatus) {
 		System.out.println("update task status called");

@@ -16,6 +16,7 @@ public class TaskModel implements Serializable {
 	private String taskDeadLine;
 	private String taskCreationDate;
 	private String taskStatus;
+	private int taskStatusId;
 	private String taskPriority;
 	private List<File> file;
 	private List<File> completedFile;
@@ -98,6 +99,12 @@ public class TaskModel implements Serializable {
 	public void setSummaryofTask(String summaryofTask) {
 		this.summaryofTask = summaryofTask;
 	}
+    public int getTaskStatusId() {
+        return taskStatusId;
+    }
+    public void setTaskStatusId(int taskStatusId) {
+        this.taskStatusId = taskStatusId;
+    }
 	
 	
 	

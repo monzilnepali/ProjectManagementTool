@@ -58,6 +58,7 @@ public class ServerConnectionController implements Initializable {
                         HomeNewController controller = loader.getController();
                         controller.setdata(projectList);
                         Parent p = loader.getRoot();
+                      
                         Scene new_scene = new Scene(p);
                          String css1=this.getClass().getResource("/secondPhaseUI/HomeNew.css").toExternalForm();
                         // String

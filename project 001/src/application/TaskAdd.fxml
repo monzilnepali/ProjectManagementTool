@@ -1,57 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
-<?import java.lang.String?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="607.0" prefWidth="845.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.info.controller.TaskAddController">
+<AnchorPane prefHeight="645.0" prefWidth="565.0" styleClass="mainbar" stylesheets="@../secondPhaseUI/HomeNew.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.info.controller.TaskAddController">
    <children>
-      <AnchorPane prefHeight="68.0" prefWidth="845.0" styleClass="main-color">
+      <Pane fx:id="firstPane" prefHeight="774.0" prefWidth="577.0" visible="false">
          <children>
-            <Label alignment="CENTER_RIGHT" layoutX="386.0" layoutY="21.0" styleClass="h3" text="Add Task" textFill="WHITE" />
+            <Label layoutX="38.0" layoutY="24.0" styleClass="text-whiteColor" text="TASK NAME">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <TextField fx:id="taskNameField" layoutX="36.0" layoutY="61.0" prefHeight="55.0" prefWidth="498.0" styleClass="text-field" />
+            <Label layoutX="36.0" layoutY="131.0" styleClass="text-whiteColor" text="TASK DESCRIPTION">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <TextArea layoutX="36.0" layoutY="169.0" prefHeight="150.0" prefWidth="498.0" styleClass="text-field" />
+            <Label layoutX="36.0" layoutY="351.0" styleClass="text-whiteColor" text="TASK ASSIGNED">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="teamMemberList" layoutX="36.0" layoutY="387.0" prefHeight="55.0" prefWidth="498.0" />
+            <Label layoutX="36.0" layoutY="455.0" styleClass="text-whiteColor" text="TASK DEADLINE">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <DatePicker fx:id="taskDeadline" layoutX="33.0" layoutY="485.0" prefHeight="55.0" prefWidth="508.0" />
+            <Label layoutX="36.0" layoutY="568.0" styleClass="text-whiteColor" text="TASK PRIORITY">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="taskPriority" layoutX="31.0" layoutY="596.0" prefHeight="55.0" prefWidth="515.0" />
+            <Button fx:id="nextBtn" layoutX="205.0" layoutY="698.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="139.0" styleClass="buttonBlue" text="NEXT" />
          </children>
-      </AnchorPane>
-      <Label layoutX="29.0" layoutY="94.0" text="Task Name" />
-      <TextField fx:id="taskNameField" layoutX="29.0" layoutY="125.0" prefHeight="41.0" prefWidth="393.0" />
-      <Label layoutX="29.0" layoutY="311.0" text="Task Assign To" />
-      <Label layoutX="29.0" layoutY="411.0" text="Task Deadline" />
-      <DatePicker fx:id="taskDeadline" layoutX="28.0" layoutY="458.0" prefHeight="41.0" prefWidth="393.0" />
-      <Label layoutX="484.0" layoutY="353.0" text="Task Priority" />
-      <Button fx:id="createTasktBtn" layoutX="319.0" layoutY="544.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="282.0" text="Create ">
-         <styleClass>
-            <String fx:value="main-color" />
-            <String fx:value="text-color" />
-         </styleClass>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Button>
-      <ComboBox fx:id="taskPriority" layoutX="490.0" layoutY="391.0" prefHeight="41.0" prefWidth="349.0" />
-      <ComboBox fx:id="teamMemberList" layoutX="28.0" layoutY="350.0" prefHeight="41.0" prefWidth="393.0" />
-      <Label layoutX="29.0" layoutY="186.0" text="Task Descrption" />
-      <TextArea layoutX="29.0" layoutY="214.0" prefHeight="86.0" prefWidth="393.0" />
-      <Separator layoutX="448.0" layoutY="68.0" orientation="VERTICAL" prefHeight="443.0" prefWidth="4.0" />
-      <Button fx:id="uploadDocsBtn" layoutX="484.0" layoutY="90.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="142.0" text="Upload Docs">
-         <styleClass>
-            <String fx:value="main-color" />
-            <String fx:value="text-color" />
-         </styleClass>
-         <graphic>
-            <FontAwesomeIconView fill="WHITE" glyphName="SEND" size="20" styleClass="text-color" />
-         </graphic>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Button>
-      <ListView fx:id="docsList" layoutX="484.0" layoutY="146.0" prefHeight="172.0" prefWidth="349.0" />
+      </Pane>
+      <Pane fx:id="secondPane" prefHeight="774.0" prefWidth="577.0">
+         <children>
+            <FontAwesomeIconView fx:id="uploadDocsButton" fill="WHITE" glyphName="UPLOAD" layoutX="237.0" layoutY="310.0" size="120">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </FontAwesomeIconView>
+            <ListView fx:id="docsList" layoutX="39.0" layoutY="187.0" prefHeight="208.0" prefWidth="498.0" styleClass="list-cell" visible="false" />
+            <Button fx:id="createTasktBtn" layoutX="211.0" layoutY="467.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="163.0" styleClass="buttonBlue" text="CREATE">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Label fx:id="docsUploadLabel" layoutX="47.0" layoutY="152.0" text="DOCUMENT UPLOADED" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <Button fx:id="paneBack" layoutX="15.0" layoutY="22.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="33.0">
+               <graphic>
+                  <FontAwesomeIconView glyphName="ANGLE_LEFT" size="22" />
+               </graphic>
+            </Button>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>

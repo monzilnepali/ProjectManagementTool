@@ -47,6 +47,9 @@
 .text-colorGrey{
 		-fx-text-fill:#8C8D91;
 }
+.text-whiteColor{
+	-fx-text-fill:white;
+}
 .buttonBlue{
 	-fx-background-color:-fx-mainColor;
 	-fx-text-fill:white;
@@ -66,3 +69,13 @@
 	-fx-font-size:19px;
 	
 }
+.text-field{
+	-fx-background-color:#2D2F34;
+	-fx-border-radius:5px;
+	-fx-text-fill:white;
+	-fx-font-size:18px;
+}
+.text-area .content{
+      -fx-background-color: #2D2F34;
+      -fx-border-radius:5px;
+  }

@@ -7,6 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -27,7 +28,7 @@
             </AnchorPane>
          </children>
       </HBox>
-      <VBox layoutX="-2.0" layoutY="32.0" prefHeight="1048.0" prefWidth="112.0" styleClass="sidebar">
+      <VBox layoutX="-2.0" layoutY="32.0" prefHeight="1050.0" prefWidth="112.0" styleClass="sidebar">
          <children>
             <HBox alignment="CENTER" prefHeight="67.0" prefWidth="112.0" styleClass="sidebar">
                <children>
@@ -37,10 +38,10 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </HBox>
-            <VBox fx:id="projectListPane" prefHeight="981.0" prefWidth="117.0" />
+            <VBox fx:id="projectListPane" prefHeight="981.0" prefWidth="112.0" />
          </children>
       </VBox>
-      <VBox layoutX="109.0" layoutY="32.0" prefHeight="1048.0" prefWidth="377.0" styleClass="infobar">
+      <VBox layoutX="110.0" layoutY="32.0" prefHeight="1050.0" prefWidth="376.0" styleClass="infobar">
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="68.0" prefWidth="376.0">
                <children>
@@ -54,7 +55,7 @@
                   <String fx:value="infobar" />
                   <String fx:value="border-infobar" />
                </styleClass></HBox>
-            <AnchorPane prefHeight="536.0" prefWidth="376.0">
+            <AnchorPane prefHeight="906.0" prefWidth="376.0">
                <children>
                   <Label layoutX="32.0" layoutY="43.0" text="INFORMATION" textFill="WHITE">
                      <font>
@@ -98,6 +99,21 @@
                   </FontAwesomeIconView>
                </children>
             </AnchorPane>
+            <Pane prefHeight="79.0" prefWidth="376.0" style="-fx-background-color: #282A2E;">
+               <children>
+                  <Label fx:id="activeUserName" layoutX="56.0" layoutY="17.0" styleClass="text-whiteColor" text="Label">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="activeUserRole" layoutX="56.0" layoutY="48.0" styleClass="text-mainColor" text="Label">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <FontAwesomeIconView fill="WHITE" glyphName="USER" layoutX="21.0" layoutY="43.0" size="25" text="" />
+               </children>
+            </Pane>
          </children>
       </VBox>
       <VBox layoutX="486.0" layoutY="32.0" prefHeight="1050.0" prefWidth="1435.0" styleClass="mainbar">

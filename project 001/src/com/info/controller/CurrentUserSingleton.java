@@ -44,10 +44,10 @@ public class CurrentUserSingleton {
 		return singleton;
 	}
 	
-	protected User getVuser() {
+	public User getVuser() {
 		return vuser;
 	}
-	protected void setVuser(User vuser) {
+	public void setVuser(User vuser) {
 		this.vuser = vuser;
 	}
 	public Socket getClientSocket() {

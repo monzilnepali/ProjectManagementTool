@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -15,6 +16,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import com.info.controller.CurrentUserSingleton;
+import com.info.controller.TaskAddController;
 import com.info.model.Project;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
@@ -25,6 +27,8 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
@@ -35,6 +39,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 public class HomeNewController implements Initializable {
     @FXML
@@ -46,23 +52,27 @@ public class HomeNewController implements Initializable {
     private VBox projectListPane;
     @FXML private Label project_name;
     @FXML   private BorderPane mainPane;
-    @FXML Label project_info;
+    @FXML private Label project_info;
     @FXML private Label task_running;
     @FXML private Label task_completed;
     @FXML private Label project_team;
     static  private Label activeTab;
+    static private String activeTabName;
+    @FXML   private Label activeUserName;
+
+    @FXML  private Label activeUserRole;
     @FXML Label currentTab;
-    @FXML
-    private FontAwesomeIconView addTaskBtn;
+    @FXML private FontAwesomeIconView addTaskBtn;
     private static int activeProjectId;
     static CurrentUserSingleton tmp = CurrentUserSingleton.getInstance(); 
+    static private List<Label> labelArray;
   
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         System.out.println("new Home Controller called");
         
         activeTab=project_name;
-
+        labelArray=new ArrayList<Label>();
        
         
         window_minimize.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -76,6 +86,7 @@ public class HomeNewController implements Initializable {
                 //as currently active project
                 JSONObject obj=new JSONObject();
                 obj.put("activeProject", activeProjectId);
+                obj.put("activeTab", activeTab.getText());
                 try(FileWriter file=new FileWriter("file.json")) {
                     file.write(obj.toJSONString());
                     file.flush();
@@ -91,7 +102,7 @@ public class HomeNewController implements Initializable {
             }
         });
         project_info.setOnMouseClicked(e->{
-           tabClickedAction("ProjectInformation");
+            tabClickedAction("ProjectInformation");
            
             currentTab.setText("# PROJECT INFORMATION");
             project_info.setStyle("-fx-background-color:#36393F;");
@@ -108,16 +119,18 @@ public class HomeNewController implements Initializable {
             activeTab=project_team;
         });
         task_running.setOnMouseClicked(e->{
-            // tabClickedAction("ProjectInformation");
-            
+            if(activeTab!=task_running) {
+             tabClickedAction("ProjectTask1");
+             
              currentTab.setText("# TASK RUNNING");
              task_running.setStyle("-fx-background-color:#36393F;");
             activeTab.setStyle("-fx-background-color:transparent;");
              
              activeTab=task_running;
+            }
          });
         task_completed.setOnMouseClicked(e->{
-            // tabClickedAction("ProjectInformation");
+             tabClickedAction("ProjectTaskCompleted");
             
              currentTab.setText("# TASK COMPLETED");
              task_completed.setStyle("-fx-background-color:#36393F;");
@@ -128,13 +141,38 @@ public class HomeNewController implements Initializable {
         
         addTaskBtn.setOnMouseClicked(e->{
             System.out.println("task add");
+            
+            FXMLLoader loader=new FXMLLoader();
+            loader.setLocation(getClass().getResource("/application/TaskAdd.fxml"));
+            try {
+                loader.load();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+           
+            Parent p=loader.getRoot();
+            Scene taskAddScene=new Scene(p);
+            Stage taskAddStage=new Stage();
+            Stage previousStage=(Stage)((Node)e.getSource()).getScene().getWindow();
+            taskAddStage.setScene(taskAddScene);
+            taskAddStage.setTitle("Add Task");
+            taskAddStage.initModality(Modality.WINDOW_MODAL);
+            taskAddStage.initOwner(previousStage);
+            taskAddStage.setResizable(false);
+            taskAddStage.show();
+            
+            
+            
+            
+            
         });
         
         
         
     }
     private void tabClickedAction(String fileName) {
-        FXMLLoader loader=new FXMLLoader(getClass().getResource("/secondPhaseUI/"+fileName+".fxml"));
+        FXMLLoader loader=new FXMLLoader(getClass().getResource("/application/"+fileName+".fxml"));
+        
         
         try {
             mainPane.setCenter(loader.load());
@@ -145,6 +183,17 @@ public class HomeNewController implements Initializable {
        
     }
     public void setdata(List<Project> projectList)  {
+        
+        activeUserName.setText(tmp.getVuser().getUser_name());
+        
+        labelArray.add(project_info);
+        labelArray.add(project_team);
+        labelArray.add(task_running);
+        labelArray.add(task_completed);
+      
+        
+        
+        
         int size=projectList.size();
         //showing the previous active project 
         //reading the json file
@@ -153,16 +202,59 @@ public class HomeNewController implements Initializable {
             Object obj=parser.parse(new FileReader("file.json"));
             JSONObject jObj=(JSONObject)obj;
             Long previousProject=(Long)jObj.get("activeProject");
+            String previousTab=(String)jObj.get("activeTab");
             System.out.println("the previous project is"+previousProject);
+            System.out.println("the previous tab is"+previousTab);
+            
             activeProjectId=previousProject.intValue();
+            activeTabName=previousTab;
+            System.out.println("the previous tab from json is "+previousTab);
             tmp.setActiveProjectId(activeProjectId);
+            tmp.setActiveTab(activeTabName);
            
+            
+            //selecting previous active tab
+            
+//            for(Label lb:labelArray) {
+//                
+//                if(lb.getText().equals(activeTabName)) {
+//                    
+//                    System.out.println("inside true statement \nprevious tab="+activeTabName);
+//                    System.out.println("comparing to "+lb.getText());
+//                    //loading that tab fxml file
+//                    
+//                    if(activeTabName.equals("#  Running")) {
+//                        System.out.println("# running opened");
+//                        tabClickedAction("ProjectTask1");
+//                    }
+//                    
+//                    currentTab.setText(lb.getText());
+//                    lb.setStyle("-fx-background-color:#36393F;");
+//                    activeTab.setStyle("-fx-background-color:transparent;");
+//                    activeTab=lb;
+//                    break;
+//                }
+//  
+//            }
+            tabClickedAction("ProjectInformation");
+            
+            currentTab.setText("# PROJECT INFORMATION");
+            project_info.setStyle("-fx-background-color:#36393F;");
+            activeTab.setStyle("-fx-background-color:transparent;");
+            activeTab=project_info;
+            
             //searching the project via is
            for(Project pro:projectList) {
                
                if(pro.getProjectId()==activeProjectId) {
                    project_name.setText(pro.getprojectTitle());
                    tmp.setCurrentUserRoleInActiveProject(pro.getRoleId());
+                   if(pro.getRoleId()==1) {
+                       activeUserRole.setText("MANAGER");
+                   }else {
+                       activeUserRole.setText("TEAM MEMBER");
+                   }
+                 
                    break;
                }else {
                    //if this project is not available then we simple make first project in list as active project
@@ -171,6 +263,11 @@ public class HomeNewController implements Initializable {
                    tmp.setCurrentUserRoleInActiveProject(pro1.getRoleId());
 
                    project_name.setText(pro1.getprojectTitle());
+                   if(pro1.getRoleId()==1) {
+                       activeUserRole.setText("MANAGER");
+                   }else {
+                       activeUserRole.setText("TEAM MEMBER");
+                   }
                    
                    
                }
@@ -231,11 +328,24 @@ public class HomeNewController implements Initializable {
                      for(i=0;i<size;i++) {
                          if(image1==imageView[i]) {
                              System.out.println(i);
+                             // switching between multiple project
+                             System.out.println("switching between multiple project");
                              Project activeProject=projectList.get(i);
                              
                              activeProjectId=activeProject.getProjectId();
                              tmp.setActiveProjectId(activeProjectId);
                              tmp.setCurrentUserRoleInActiveProject(activeProject.getRoleId());
+                             
+                             tabClickedAction("ProjectInformation");
+                             
+                             currentTab.setText("# PROJECT INFORMATION");
+                            
+                             if(activeTab!=null) {
+                           activeTab.setStyle("-fx-background-color:transparent;");
+                             }
+                             project_info.setStyle("-fx-background-color:#36393F;");
+                             activeTab=project_info;
+                             
                              //searching the project name
                             System.out.println(projectList.get(i).getprojectTitle());
                             project_name.setText(projectList.get(i).getprojectTitle().toUpperCase());

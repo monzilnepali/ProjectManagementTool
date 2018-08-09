@@ -16,6 +16,7 @@ import com.info.dao.UserDao;
 import com.info.model.TaskModel;
 import com.info.model.User;
 
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -24,23 +25,28 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class TaskAddController implements Initializable {
-
+@FXML private Pane firstPane;
+@FXML private Pane secondPane;
 	 @FXML  private TextField taskNameField;
      @FXML  private DatePicker taskDeadline;
 	@FXML private ComboBox<User> teamMemberList;
 	@FXML private ComboBox<String> taskPriority;
 	@FXML private Button createTasktBtn;
-	private static int currentProjectId;
-	
-    @FXML private Button uploadDocsBtn;
+	@FXML
+    private FontAwesomeIconView uploadDocsButton;
+	@FXML private Button nextBtn;
 
     @FXML private ListView<String> docsList;
+    @FXML private Label docsUploadLabel;
+    @FXML private  Button paneBack;
     ObservableList<String>listdocs=FXCollections.observableArrayList();
     private List<File> files;
     private FileChooser fc;
@@ -49,7 +55,11 @@ public class TaskAddController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 			System.out.println("task add controller callled");
-			docsList.setVisible(true);
+			firstPane.setVisible(true);
+			secondPane.setVisible(false);
+			docsList.setVisible(false);
+			createTasktBtn.setVisible(false);
+			docsUploadLabel.setVisible(false);
 			
 			//setting task deadline datepicker min. date to present date
 			
@@ -72,11 +82,10 @@ public class TaskAddController implements Initializable {
 							
 							);
 		
-	}
 	
-	public void setData(int currentProjectId,ProjectTaskController controller) {
-		System.out.println("currentProjectId"+currentProjectId);
-		TaskAddController.currentProjectId=currentProjectId;
+	
+
+	
 		List<String> list=new ArrayList<String>();
 		list.add("Emergency");
 		list.add("High");
@@ -85,30 +94,44 @@ public class TaskAddController implements Initializable {
 		ObservableList<String> olist=FXCollections.observableArrayList(list);
 		taskPriority.setItems(olist);
 		//adding project Team member in list for dropmenu box
-		ObservableList<User> teamlist=FXCollections.observableArrayList(ProjectDao.getTeamMemberNameOfProject(currentProjectId));
+		ObservableList<User> teamlist=FXCollections.observableArrayList(ProjectDao.getTeamMemberNameOfProject(tmp.getActiveProjectId()));
 		teamMemberList.setItems(teamlist);
-		
-		
-		uploadDocsBtn.setOnAction(e->{
-			//onclicking the upload docs btn
-			list.clear();
-			//uploading file in websever
-			Stage currentStage=(Stage)((Node)e.getSource()).getScene().getWindow();
-		    files = fc.showOpenMultipleDialog(currentStage);
-			//getting selected file directory
-		    if(files!=null) {
-			for(File f:files) {
-				if(f!=null) {
-					System.out.println("path"+f.getAbsolutePath());
-					listdocs.add(f.getName()+"\t"+ ProjectCreationController.fileSize(f.length()) );
-					
-					
-				}
-			}
-			docsList.setItems(listdocs);
-			
-		    }	
+		paneBack.setOnAction(e->{
+		    firstPane.setVisible(true);
+            secondPane.setVisible(false);
 		});
+		nextBtn.setOnAction(e->{
+		    //switching the pane
+		    firstPane.setVisible(false);
+            secondPane.setVisible(true);
+		    
+		});
+		uploadDocsButton.setOnMouseClicked(e->{
+		    System.out.println("upload btn clicked");
+		    System.out.println("upoad btn clicked");
+            //onclicking the upload docs btn
+            list.clear();
+            //uploading file in websever
+            Stage currentStage=(Stage)((Node)e.getSource()).getScene().getWindow();
+            files = fc.showOpenMultipleDialog(currentStage);
+            //getting selected file directory
+            if(files!=null) {
+            for(File f:files) {
+                if(f!=null) {
+                    System.out.println("path"+f.getAbsolutePath());
+                    listdocs.add(f.getName()+"\t"+ ProjectCreationController.fileSize(f.length()) );
+                    
+                    
+                }
+            }
+            docsUploadLabel.setVisible(true);
+            docsList.setVisible(true);
+            createTasktBtn.setVisible(true);
+            docsList.setItems(listdocs);
+            
+            }   
+		});
+		
 		
 		createTasktBtn.setOnAction(e->{
 			//onclicking create button
@@ -130,7 +153,7 @@ public class TaskAddController implements Initializable {
 				newTask.setTaskDeadLine(deadlinedate);
 				newTask.setTaskAssignTo(teamMemberList.getValue().getUser_id());
 				newTask.setTaskPriority(taskPriority.getValue());
-				newTask.setProjectId(currentProjectId);
+				newTask.setProjectId(tmp.getActiveProjectId());
 				newTask.setTaskCreationDate (UserDao.formattedDate(new Date()));
 				
 				newTask.setFile(files);
@@ -149,7 +172,7 @@ public class TaskAddController implements Initializable {
 					
 					
 					
-					controller.loadData();
+					//controller.loadData();
 					currentStage.close();
 				
 				
@@ -170,7 +193,7 @@ public class TaskAddController implements Initializable {
 		});
 		
 		
-	}
 	
-
+	
+	}
 }

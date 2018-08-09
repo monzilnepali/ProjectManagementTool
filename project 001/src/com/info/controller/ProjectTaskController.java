@@ -9,6 +9,7 @@ import com.info.model.TaskModel;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -38,12 +39,14 @@ public class ProjectTaskController implements Initializable {
 	 
 	 
 	 @FXML	 private Button AddTaskBtn;
-	 @FXML private Button refreshBtn;
-	 private static int currentProjectId;
+	
+	
+	 CurrentUserSingleton tmp=CurrentUserSingleton.getInstance();
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		System.out.println("project Task controller calleld");
 		AddTaskBtn.setVisible(false);
+		loadData();
 		
 		AddTaskBtn.setOnAction(e->{
 			System.out.println("add task button clicked");
@@ -55,8 +58,8 @@ public class ProjectTaskController implements Initializable {
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
-			TaskAddController controller=loader.getController();
-			controller.setData(currentProjectId,this);
+			//TaskAddController controller=loader.getController();
+			//controller.setData(currentProjectId,this);
 			Parent p=loader.getRoot();
 			Scene taskAddScene=new Scene(p);
 			Stage taskAddStage=new Stage();
@@ -81,25 +84,15 @@ public class ProjectTaskController implements Initializable {
 			System.out.println("the selected row is "+selectedTask.getTaskName());
 		});
 		
-		refreshBtn.setOnAction(e->{
-			
-			loadData();
-			
-		});
 		
-	}
-	public void setData(Integer integer,String role) {
-		
-		currentProjectId=Integer.valueOf(integer);
-		ProjectTaskController.role=role;
-		if(role.equals(" Manager")) {
+
+		if(tmp.getCurrentUserRoleInActiveProject()==1) {
 			AddTaskBtn.setVisible(true);
 		}
-		loadData();
-		
+
 		taskTable.setOnMouseClicked(e->{
 			if(e.getClickCount()==2) {
-				if(ProjectTaskController.role.equals(" Manager")) {
+				if(tmp.getCurrentUserRoleInActiveProject()==1) {
 				
 					
 					System.out.println("open");
@@ -132,7 +125,6 @@ public class ProjectTaskController implements Initializable {
 					try {
 						loader.load();
 					} catch (IOException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 					TaskStatusUpdateController controller=loader.getController();
@@ -157,25 +149,27 @@ public class ProjectTaskController implements Initializable {
 	public void loadData() {
 		//populating table
 		System.out.println("load data called");
-				CurrentUserSingleton tmp=CurrentUserSingleton.getInstance();
-				
-				ObservableList<TaskModel> taskList=FXCollections.observableArrayList(ProjectDao.getTaskList(currentProjectId,ProjectTaskController.role,tmp.getVuser().getUser_id()));
-				for(TaskModel ts:taskList) {
-					System.out.println("task name"+ts.getTaskName());
-				}
-				
-				taskName.setCellValueFactory(new PropertyValueFactory<TaskModel,String>("taskName"));
-				userName.setCellValueFactory(new PropertyValueFactory<TaskModel,String>("taskAssignToName"));
-				taskDeadLine.setCellValueFactory(new PropertyValueFactory<TaskModel,String>("taskDeadLine"));
-				taskStatus.setCellValueFactory(new PropertyValueFactory<TaskModel,String>("taskStatus"));
-				taskPriority.setCellValueFactory(new PropertyValueFactory<TaskModel,String>("taskPriority"));
-				
-				taskTable.setItems(taskList);
-				
-				
 				
 		
 		
+	
+		
+		
+		
+				
+		 ObservableList<TaskModel> taskList=FXCollections.observableArrayList(ProjectDao.getTaskList(tmp.getActiveProjectId(),tmp.getCurrentUserRoleInActiveProject(),tmp.getVuser().getUser_id()));
+         for(TaskModel ts:taskList) {
+             System.out.println("task name"+ts.getTaskName());
+         }
+         
+         taskName.setCellValueFactory(new PropertyValueFactory<TaskModel,String>("taskName"));
+         userName.setCellValueFactory(new PropertyValueFactory<TaskModel,String>("taskAssignToName"));
+         taskDeadLine.setCellValueFactory(new PropertyValueFactory<TaskModel,String>("taskDeadLine"));
+         taskStatus.setCellValueFactory(new PropertyValueFactory<TaskModel,String>("taskStatus"));
+         taskPriority.setCellValueFactory(new PropertyValueFactory<TaskModel,String>("taskPriority"));
+         
+         taskTable.setItems(taskList);
+
 	}
 
 }

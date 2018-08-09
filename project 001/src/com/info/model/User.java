@@ -4,7 +4,8 @@ import java.io.Serializable;
 
 @SuppressWarnings("serial")
 public class User implements Serializable {
-	
+    private static final long serialVersionUID = 1L;
+
 	private int user_id;
 	private String user_name;
 	private String user_email;
@@ -35,6 +36,8 @@ public class User implements Serializable {
 	public void setUser_password(String user_password) {
 		this.user_password = user_password;
 	}
-	
+	  public String toString() {
+	      return this.user_name;   
+	     }
 
 }

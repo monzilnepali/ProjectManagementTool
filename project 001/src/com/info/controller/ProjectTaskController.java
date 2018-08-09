@@ -93,7 +93,7 @@ public class ProjectTaskController implements Initializable {
 		taskTable.setOnMouseClicked(e->{
 			if(e.getClickCount()==2) {
 				if(tmp.getCurrentUserRoleInActiveProject()==1) {
-				
+				//marking task as completed
 					
 					System.out.println("open");
 					TaskModel selectedTask=taskTable.getSelectionModel().getSelectedItem();
@@ -118,17 +118,43 @@ public class ProjectTaskController implements Initializable {
 					newStage.show();
 					
 				}else {
+				    //if task status is not running allowing team member to view task info and marking as running state
+				    
 					System.out.println("open");
 					TaskModel selectedTask=taskTable.getSelectionModel().getSelectedItem();
 					FXMLLoader loader=new FXMLLoader();
-					loader.setLocation(getClass().getResource("/application/TaskStatusUpdate.fxml"));
-					try {
-						loader.load();
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
-					TaskStatusUpdateController controller=loader.getController();
-					controller.setData(selectedTask,this);
+					
+					  if(tmp.getActiveTab().equals("#  Not Running")) {
+					      //allowing team member to view task info and marking task as in running state
+					     
+					      loader.setLocation(getClass().getResource("/application/TaskInitialStatusUpdate.fxml"));
+		                    try {
+		                        loader.load();
+		                    } catch (IOException e1) {
+		                        e1.printStackTrace();
+		                    }
+		                    TaskInitialStatusUpdateController controller=loader.getController();
+		                    controller.setData(selectedTask,this);
+		                    
+					      
+					  }
+					
+//					loader.setLocation(getClass().getResource("/application/TaskStatusUpdate.fxml"));
+//					try {
+//						loader.load();
+//					} catch (IOException e1) {
+//						e1.printStackTrace();
+//					}
+//					TaskStatusUpdateController controller=loader.getController();
+//					controller.setData(selectedTask,this);
+//					
+					
+					
+					
+					
+					
+					
+					
 					Parent p=loader.getRoot();
 					Scene scene=new Scene(p);
 					Stage newStage=new Stage();

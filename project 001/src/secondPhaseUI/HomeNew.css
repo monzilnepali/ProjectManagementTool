@@ -79,18 +79,18 @@
 	-fx-text-fill:white;
 	-fx-font-size:18px;
 }
-.text-area {
+.text-area{
   
     -fx-background-color: #32343A;
      -fx-text-fill:white;
 }
-
 
 .text-area:focused .content {
     -fx-background-color: #32343A;
 }
 .text-area .content{
       -fx-background-color: #32343A;
+       -fx-text-fill:white;
      
      
   }

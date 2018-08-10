@@ -1,12 +1,13 @@
 package secondPhaseController;
 
-import java.awt.Color;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -18,11 +19,10 @@ import org.json.simple.parser.ParseException;
 import com.info.controller.ClientListener;
 import com.info.controller.CurrentUserSingleton;
 import com.info.controller.ProjectTaskController;
-import com.info.controller.TaskAddController;
 import com.info.model.Project;
 import com.jfoenix.controls.JFXSnackbar;
-
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import javafx.animation.FadeTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
@@ -41,12 +41,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class HomeNewController implements Initializable {
     @FXML
@@ -73,18 +74,23 @@ public class HomeNewController implements Initializable {
     @FXML  private Label activeUserRole;
     @FXML Label currentTab;
     @FXML private FontAwesomeIconView addTaskBtn;
+    @FXML private Pane notificationPane;
+    @FXML private FontAwesomeIconView  closeNotification;
+    @FXML private Label NotificationTitle;
+    @FXML private Label NotificationMsg;
     private static int activeProjectId;
     static CurrentUserSingleton tmp = CurrentUserSingleton.getInstance(); 
     static private List<Label> labelArray;
   private  JFXSnackbar snackbar;
+  static List<Project> projectList;
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         System.out.println("new Home Controller called");
         task_inReview.setVisible(false);
         activeTab=project_name;
         labelArray=new ArrayList<Label>();
-         snackbar = new JFXSnackbar(MainPane);
-        clientListenerStart();
+        notificationPane.setVisible(false);
+         clientListenerStart();
         
        
        
@@ -109,7 +115,10 @@ public class HomeNewController implements Initializable {
                     e.printStackTrace();
                 }
                 System.out.println("obj is"+obj);
-                
+                //logout
+                tmp.getOut().println("userLogout");
+                // sending user
+                tmp.getOut().println(tmp.getVuser().getUser_id());
                 
                tmp.getStage().close();
                System.exit(0);
@@ -231,6 +240,10 @@ public class HomeNewController implements Initializable {
             
             
         });
+        closeNotification.setOnMouseClicked(e->{
+            closeNotification();
+            
+        });
         
         
         
@@ -269,10 +282,16 @@ public class HomeNewController implements Initializable {
                     pt.loadData();
                    
 
-                } else {
-                    snackbar.show(newValue, 6000);// showing notification
-                                                    // popup from button
-                                                    // about user online
+                }else if(newValue.equals("taskUpdateAck")) {
+                    showNotification(newValue);
+                }else if(newValue.equals("projectCreationCompleted")) {
+                    //loading the project image file
+                    loadProjectImage();
+                }
+                
+                else {
+                    System.out.println("uer presence online");
+                    showNotification(newValue);
                 }
 
             }
@@ -306,7 +325,7 @@ public class HomeNewController implements Initializable {
         activeUserName.setText(tmp.getVuser().getUser_name());
         //showing in review phase tab only for manager of the project
        
-        
+       this.projectList=projectList;
         labelArray.add(project_info);
         labelArray.add(project_team);
         labelArray.add(task_running);
@@ -315,7 +334,7 @@ public class HomeNewController implements Initializable {
         
         
         
-        int size=projectList.size();
+       
         //showing the previous active project 
         //reading the json file
         JSONParser parser=new JSONParser();
@@ -364,42 +383,7 @@ public class HomeNewController implements Initializable {
             activeTab.setStyle("-fx-background-color:transparent;");
             activeTab=project_info;
             
-            //searching the project via is
-           for(Project pro:projectList) {
-               
-               if(pro.getProjectId()==activeProjectId) {
-                   project_name.setText(pro.getprojectTitle());
-                   tmp.setCurrentUserRoleInActiveProject(pro.getRoleId());
-                   if(pro.getRoleId()==1) {
-                       activeUserRole.setText("MANAGER");
-                       System.out.println("active user is manager");
-                       task_inReview.setLayoutX(task_completed.getLayoutX());
-                       task_inReview.setLayoutY(task_completed.getLayoutY());
-                       task_completed.setLayoutX(task_inReview.getLayoutX());
-                       task_completed.setLayoutY(task_inReview.getLayoutY()+40);
-                       task_inReview.setVisible(true);
-                   }else {
-                       activeUserRole.setText("TEAM MEMBER");
-                   }
-                 
-                   break;
-               }else {
-                   //if this project is not available then we simple make first project in list as active project
-                   Project pro1=projectList.get(0);
-                   activeProjectId=pro1.getProjectId();
-                   tmp.setCurrentUserRoleInActiveProject(pro1.getRoleId());
-
-                   project_name.setText(pro1.getprojectTitle());
-                   if(pro1.getRoleId()==1) {
-                       activeUserRole.setText("MANAGER");
-                   }else {
-                       activeUserRole.setText("TEAM MEMBER");
-                   }
-                   
-                   
-               }
-               
-           }
+         
             
             
             
@@ -409,17 +393,68 @@ public class HomeNewController implements Initializable {
             e2.printStackTrace();
         }
         
+        loadProjectImage();
+      
+       
+
+        
+       
+      
+        
+        
+    }
+    private void loadProjectImage() {
+        System.out.println("***load project Image called");
+        
+        //searching the project via is
+        for(Project pro:projectList) {
+            
+            if(pro.getProjectId()==activeProjectId) {
+                project_name.setText(pro.getprojectTitle());
+                tmp.setCurrentUserRoleInActiveProject(pro.getRoleId());
+                if(pro.getRoleId()==1) {
+                    activeUserRole.setText("MANAGER");
+                    System.out.println("active user is manager");
+                    task_inReview.setLayoutX(task_completed.getLayoutX());
+                    task_inReview.setLayoutY(task_completed.getLayoutY());
+                    task_completed.setLayoutX(task_inReview.getLayoutX());
+                    task_completed.setLayoutY(task_inReview.getLayoutY()+40);
+                    task_inReview.setVisible(true);
+                }else {
+                    activeUserRole.setText("TEAM MEMBER");
+                }
+              
+                break;
+            }else {
+                //if this project is not available then we simple make first project in list as active project
+                Project pro1=projectList.get(0);
+                activeProjectId=pro1.getProjectId();
+                tmp.setCurrentUserRoleInActiveProject(pro1.getRoleId());
+
+                project_name.setText(pro1.getprojectTitle());
+                if(pro1.getRoleId()==1) {
+                    activeUserRole.setText("MANAGER");
+                }else {
+                    activeUserRole.setText("TEAM MEMBER");
+                }
+                
+                
+            }
+            
+        }
         
         System.out.println("projectList called");
         System.out.println("the no of project is "+projectList.size());
-      
+        int size=projectList.size();
         ImageView[] imageView=new ImageView[size];
         int imageCount=0;
         Image image = null;
         for(Project p:projectList) {
             System.out.println("the project image is"+p.getprojectTitle());
              try {
-                image = new Image(new FileInputStream("D:\\client\\"+p.getprojectTitle()+"\\"+p.getprojectTitle()+".jpg"));
+                 Path path=Paths.get(p.getProjectImage());
+                 
+                image = new Image(new FileInputStream("D:\\client\\"+p.getprojectTitle()+"\\"+path.getFileName().toString()));
             
               //Setting the image view 
                  imageView[imageCount] = new ImageView(); 
@@ -498,32 +533,71 @@ public class HomeNewController implements Initializable {
                 e.printStackTrace();
             }
         }
+        
+        
         //adding project add button
-      try {
-        Image  projectCreationImage = new Image(new FileInputStream("E:\\project\\ProjectManagementTool\\project 001\\src\\Resource\\UI\\addButton1.png"));
-        ImageView imageView1=new ImageView();
-        imageView1.setImage(projectCreationImage);
-        imageView1.setCursor(Cursor.HAND);
-   
-        imageView1.setFitHeight(120); 
-        imageView1.setFitWidth(120); 
-      
+        try {
+          Image  projectCreationImage = new Image(new FileInputStream("E:\\project\\ProjectManagementTool\\project 001\\src\\Resource\\UI\\icon.png"));
+          ImageView imageView1=new ImageView();
+          imageView1.setImage(projectCreationImage);
+          imageView1.setCursor(Cursor.HAND);
+     
+          imageView1.setFitHeight(90); 
+          imageView1.setFitWidth(90); 
+          HBox hbox=new HBox();
+          hbox.getChildren().add(imageView1);
+          hbox.setPadding(new Insets(10,10,10,13));
+        
 
-        projectListPane.getChildren().add(imageView1);
+          projectListPane.getChildren().add(hbox);
+          //adding event handler to image view1
+          
+          imageView1.setOnMouseClicked(e->{
+              System.out.println("project creation");
+              
+              //projectCreation fxml file
+              try {
+                  Parent p=FXMLLoader.load(getClass().getResource("/application/ProjectCreation.fxml"));
+                  Scene scene=new Scene(p);
+                  Stage stage=new Stage();
+                  stage.setScene(scene);
+                  stage.setTitle("Project Creation");
+                  stage.initModality(Modality.WINDOW_MODAL);
+                  stage.initOwner(tmp.getStage());
+                  stage.show();
+              } catch (IOException e1) {
+                  // TODO Auto-generated catch block
+                  e1.printStackTrace();
+              }
+          });
+          
+          
+      } catch (FileNotFoundException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+      }
+     
+         
         
         
-    } catch (FileNotFoundException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
     }
-   
-       
-
-        
-       
-      
-        
-        
+    
+    
+    
+    private void showNotification(String msg) {
+        NotificationTitle.setText("NOTIFICATION");
+        NotificationMsg.setText(msg);
+        notificationPane.setVisible(true);
+        closeNotification();
+  
+    }
+    private void closeNotification() {
+        FadeTransition fadeTransition=new FadeTransition();
+        fadeTransition.setDuration(Duration.millis(4000));
+        fadeTransition.setNode(notificationPane);
+        fadeTransition.setFromValue(1);
+        fadeTransition.setToValue(0);
+        fadeTransition.play();
     }
 
 }

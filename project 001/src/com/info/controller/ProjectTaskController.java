@@ -8,6 +8,7 @@ import com.info.dao.ProjectDao;
 import com.info.model.TaskModel;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -39,6 +40,7 @@ public class ProjectTaskController implements Initializable {
 	 
 	 
 	 @FXML	 private Button AddTaskBtn;
+	 @FXML private Button refreshBtn;
 	
 	 ObservableList<TaskModel> taskList;
 	 CurrentUserSingleton tmp=CurrentUserSingleton.getInstance();
@@ -76,7 +78,10 @@ public class ProjectTaskController implements Initializable {
 			
 			
 		});
-		
+		refreshBtn.setOnAction(e->{
+		    System.out.println("table refresh");
+		    loadData();
+		});
 		
 		//on selecting the row of table
 		taskTable.setOnMouseClicked(e->{
@@ -138,6 +143,20 @@ public class ProjectTaskController implements Initializable {
 		                    
 					      
 					  }
+					  if(tmp.getActiveTab().equals("#  Running")) {
+                          //allowing team member to view task info and marking task as in running state
+                         
+                          loader.setLocation(getClass().getResource("/application/TaskRunningStatusUpdate.fxml"));
+                            try {
+                                loader.load();
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
+                            TaskRunningStatusUpdateController controller=loader.getController();
+                            controller.setData(selectedTask,this);
+                            
+                          
+                      }
 					
 //					loader.setLocation(getClass().getResource("/application/TaskStatusUpdate.fxml"));
 //					try {
@@ -169,6 +188,17 @@ public class ProjectTaskController implements Initializable {
 					
 				}
 			}
+		});
+		
+		taskList.addListener(new ListChangeListener<TaskModel>() {
+
+            @Override
+            public void onChanged(Change<? extends TaskModel> arg0) {
+               System.out.println("list changed");
+               loadData();
+                
+            }
+		    
 		});
 	
 	}
@@ -204,6 +234,21 @@ public class ProjectTaskController implements Initializable {
       
         taskList.add(newTask);
     }
+    public void removeTask(int taskId) {
+        //removing task object from obserablelist
+        System.out.println("remove task id is"+taskId);
+        TaskModel removeObject = null;
+       for(TaskModel tm:taskList) {
+           if(tm.getTaskId()==taskId) {
+               removeObject=tm;
+              break;
+           }
+       }
+       if(removeObject!=null) {
+           taskList.remove(removeObject);
+       }
+    }
+    
   
 
 }

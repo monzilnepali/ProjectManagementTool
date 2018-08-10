@@ -24,22 +24,23 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-public class ProjectCreationController extends HomeController implements Initializable {
+public class ProjectCreationController  implements Initializable {
 
     @FXML
-    private JFXTextField projectTitle;
+    private TextField projectTitle;
     @FXML
-    private JFXTextField projectCategories;
+    private TextField projectCategories;
     @FXML
     private TextArea projectDescription;
     @FXML
-    private TextArea projectTeamMember;
+    private TextField projectTeamMember;
     @FXML
     private Pane projectCreation_projectDetail;
     @FXML
@@ -59,23 +60,27 @@ public class ProjectCreationController extends HomeController implements Initial
     @FXML
     private Button projectCreationFinishBtn;
     @FXML
-    private Button uploadDocs;
+    private FontAwesomeIconView  uploadDocs;
     @FXML
     private ListView<String> docsList;
     @FXML
     private JFXProgressBar taskProgress;
     @FXML
     private Label waitLabel;
+    @FXML private Label uploadLabel;
     ObservableList<String> list = FXCollections.observableArrayList();
     private List<File> files;
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
-        taskProgress.setVisible(false);
-        waitLabel.setVisible(false);
+      //  taskProgress.setVisible(false);
+       // waitLabel.setVisible(false);
+        projectCreationFinishBtn.setVisible(false);
         System.out.println("\n\nproject Creation called");
         CurrentUserSingleton tmp = CurrentUserSingleton.getInstance();
         docsList.setVisible(false);
+        uploadLabel.setVisible(true);
+        AddMoreTeamMemberBtn.setVisible(true);
         // filechooser
         FileChooser fc = new FileChooser();
         // restrict the file selection
@@ -97,7 +102,7 @@ public class ProjectCreationController extends HomeController implements Initial
             projectCreation_projectTeam.setVisible(true);
 
         });
-        uploadDocs.setOnAction(e -> {
+        uploadDocs.setOnMouseClicked(e -> {
 
             list.clear();
             // uploading file in websever
@@ -112,22 +117,21 @@ public class ProjectCreationController extends HomeController implements Initial
 
                     }
                 }
+                uploadLabel.setVisible(false);
+                AddMoreTeamMemberBtn.setVisible(false);
                 docsList.setVisible(true);
+                projectCreationFinishBtn.setVisible(true);
                 docsList.setItems(list);
 
             } else {
                 System.out.println("nothing to upload ");
             }
         });
-        projectCreationBackBtn.setOnAction(e -> {
-            // showing projectdetail pane
-            projectCreation_projectDetail.setVisible(true);
-            projectCreation_projectTeam.setVisible(false);
-        });
+       
         projectCreationFinishBtn.setOnAction(e -> {
             // getting data from form and insert into database
-            taskProgress.setVisible(true);
-            waitLabel.setVisible(true);
+          //  taskProgress.setVisible(true);
+          //  waitLabel.setVisible(true);
             System.out.println("project creation finished button called");
 
             Project pro = new Project();

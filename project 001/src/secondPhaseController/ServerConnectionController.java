@@ -20,6 +20,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class ServerConnectionController implements Initializable {
     @FXML
@@ -81,7 +82,8 @@ public class ServerConnectionController implements Initializable {
                         new_stage.setTitle("Project Management");
                         new_stage.setFullScreenExitHint("");
                         new_stage.setResizable(false);
-                        new_stage.setFullScreen(true);
+                       new_stage.setFullScreen(true);
+                     //   new_stage.initStyle(StageStyle.UNDECORATED);
                         new_stage.show();
 
                     }

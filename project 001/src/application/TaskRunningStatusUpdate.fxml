@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+
+<AnchorPane prefHeight="767.0" prefWidth="528.0" styleClass="mainbar" stylesheets="@../secondPhaseUI/HomeNew.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.info.controller.TaskRunningStatusUpdateController">
+   <children>
+      <Pane fx:id="taskinfoPane" prefHeight="767.0" prefWidth="528.0" visible="false">
+         <children>
+            <Label layoutX="289.0" layoutY="37.0" styleClass="text-colorGrey" text="Project Name" />
+            <Label fx:id="projectName" layoutX="286.0" layoutY="68.0" styleClass="text-whiteColor" text="Project managment" />
+            <Label layoutX="42.0" layoutY="42.0" styleClass="text-colorGrey" text="Task Name" />
+            <Label fx:id="taskTitle" layoutX="43.0" layoutY="73.0" styleClass="text-whiteColor" text="design phase" />
+            <Label layoutX="40.0" layoutY="126.0" styleClass="text-colorGrey" text="Task Assign Date" />
+            <Label fx:id="taskAssignDate" layoutX="48.0" layoutY="160.0" styleClass="text-whiteColor" text="2074-12-20" />
+            <Label layoutX="286.0" layoutY="126.0" styleClass="text-colorGrey" text="Task DeadLine Date" />
+            <Label fx:id="taskDeadlineDate" layoutX="297.0" layoutY="160.0" styleClass="text-whiteColor" text="2074-12-20" />
+            <Label layoutX="33.0" layoutY="288.0" styleClass="text-colorGrey" text="Task Description" />
+            <Label layoutX="42.0" layoutY="213.0" styleClass="text-colorGrey" text="Remaining Days" />
+            <Label fx:id="taskDayLeft" layoutX="46.0" layoutY="246.0" styleClass="text-whiteColor" text="10 days" />
+            <Label layoutX="34.0" layoutY="476.0" styleClass="text-colorGrey" text="Documents" />
+            <ListView fx:id="docsList" layoutX="35.0" layoutY="510.0" prefHeight="96.0" prefWidth="459.0" />
+            <Button fx:id="docsDownloadBtn" layoutX="42.0" layoutY="618.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="90.0" styleClass="buttonGreen" text="Download">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="taskUpdatePane1" layoutX="209.0" layoutY="699.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="112.0" styleClass="buttonBlue" text="Update" />
+            <TextArea fx:id="taskDesc" editable="false" layoutX="35.0" layoutY="313.0" prefHeight="141.0" prefWidth="459.0" />
+         </children>
+      </Pane>
+      <Pane fx:id="taskCompletePane" prefHeight="767.0" prefWidth="528.0">
+         <children>
+            <Label fx:id="taskSummaryLabel" layoutX="37.0" layoutY="352.0" styleClass="text-colorGrey" text="Task Summary" />
+            <Label layoutX="33.0" layoutY="99.0" styleClass="text-colorGrey" text="Task File" />
+            <ListView fx:id="taskFileList" layoutX="33.0" layoutY="135.0" prefHeight="96.0" prefWidth="459.0" />
+            <Button fx:id="taskUploadBtn" layoutX="33.0" layoutY="250.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="90.0" styleClass="buttonGreen" text="Upload">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Label layoutX="33.0" layoutY="323.0" styleClass="text-colorGrey" text="Task status" />
+            <CheckBox fx:id="taskStatus" layoutX="123.0" layoutY="323.0" mnemonicParsing="false" text="Completed" textFill="WHITE" />
+            <Button fx:id="taskUpdatePane2" layoutX="183.0" layoutY="549.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="168.0" styleClass="buttonBlue" text="Update" />
+            <TextArea fx:id="taskSummary" layoutX="37.0" layoutY="382.0" prefHeight="141.0" prefWidth="459.0" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

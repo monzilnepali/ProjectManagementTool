@@ -14,6 +14,9 @@ import org.joda.time.format.DateTimeFormatter;
 
 import com.info.dao.ProjectDao;
 import com.info.model.TaskModel;
+
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -58,7 +61,9 @@ public class TaskInitialStatusUpdateController implements Initializable {
     @FXML
     private Button taskUpdateBtn;
    
-
+        private int taskId;
+      
+        
     private List<String> list = new ArrayList<String>();
     ObservableList<String> olist;
 
@@ -66,38 +71,40 @@ public class TaskInitialStatusUpdateController implements Initializable {
                                                                             // user
                                                                             // object
     
-    //for task file upload
-     private FileChooser fc;
-     private List<File> fileList;//adding file from file chooser
+   
+  static Boolean selectionStatus;
      ObservableList<String>Tasklistdocs=FXCollections.observableArrayList();
      
-     private static int  rStatus=0;//to check whether user click running state orcompleted state
-     private static int  cStatus=0;//to check whether user click running state orcompleted state
-  private  int taskid;
-  private int projectid;
+     
   private static String projectname;
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         System.out.println("task status update called");
 
-                taskUpdateBtn.setOnAction(e->{
-                    System.out.println("task update bnt called");
-       //if user choose completed status then user mus upload file and write some summary about task;
-              
-                    
+               
                 
+                taskRunningBtn.selectedProperty().addListener(new ChangeListener<Boolean>() {
+
+                    @Override
+                    public void changed(ObservableValue<? extends Boolean> arg0,
+                            Boolean oldValue, Boolean newValue) {
+                        selectionStatus=newValue;
+                        
+                    }
+                    
                 });
                 
-        
+               
     }
     public void setData(TaskModel task, ProjectTaskController controller) {
+       
         System.out.println("set data task status update called");
         // filling data in form
 
         // getting the name of project from server
         System.out.println("the project id" + task.getProjectId());
-        this.projectid=task.getProjectId();
-        this.taskid=task.getTaskId();
+       
+        this.taskId=task.getTaskId();
          projectname = ProjectDao
                 .getProjectNameThroughId(task.getProjectId());
         // getting the list of all file of that task via task id
@@ -119,9 +126,7 @@ public class TaskInitialStatusUpdateController implements Initializable {
         docsList.setItems(olist);
 
         // conversion of string to date format
-        
-        
-        
+
         DateTimeFormatter df = DateTimeFormat.forPattern("yyyy-MM-dd");
         DateTime jodaDate1 = df.parseDateTime(task.getTaskDeadLine());
         System.out.println("dead date" + jodaDate1);
@@ -142,6 +147,26 @@ public class TaskInitialStatusUpdateController implements Initializable {
             tmp.getOut().println(projectname);
 
         });
+        
+     
+        taskUpdateBtn.setOnAction(e->{
+            
+            if(selectionStatus) {
+                
+              tmp.getOut().println("updateTaskStatus");
+                //true then update task status 
+                tmp.getOut().println(this.taskId);
+                tmp.getOut().println(1);
+                
+                //gettting current stage
+                Stage stage=(Stage)((Node)e.getSource()).getScene().getWindow();
+                stage.close();
+                controller.removeTask(this.taskId);
+              
+                
+            }
+             
+         });
 
     }
 

@@ -21,6 +21,7 @@ public class TaskModel implements Serializable {
 	private List<File> file;
 	private List<File> completedFile;
 	private String summaryofTask;
+	
 	public int getTaskId() {
 		return taskId;
 	}

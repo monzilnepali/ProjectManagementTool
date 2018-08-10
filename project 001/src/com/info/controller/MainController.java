@@ -16,6 +16,7 @@ import java.util.ResourceBundle;
 import com.info.dao.UserDao;
 import com.info.model.User;
 import com.jfoenix.controls.*;
+import com.jfoenix.controls.JFXSnackbar.SnackbarEvent;
 
 import javafx.event.Event;
 import javafx.fxml.FXML;

@@ -13,6 +13,8 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
 
+import org.omg.Messaging.SyncScopeHelper;
+
 import com.info.model.TransferFileModel;
 import com.info.model.NotifyTask;
 import com.info.model.Project;
@@ -73,6 +75,7 @@ public class ClientListener extends Task<String> {
 					} else if (msg.equals("TaskFileIncoming")) {
 						System.out.println("task file incoming handler");
 						TaskFileIncomingHandler();
+						updateMessage("download completed");
 
 					}else if(msg.equals("ProjectFileIncoming")) {
 						System.out.println("ProjectFileIncoming called in client side");
@@ -80,6 +83,9 @@ public class ClientListener extends Task<String> {
 					}else if(msg.equals("projectCreationCompleted")){
 						System.out.println("projectCreationCompleted called");
 						updateMessage(msg);
+					}else if(msg.equals("taskUpdateAck")) {
+					    System.out.println("taskUpdateAck called");
+					    updateMessage(msg);
 					}
 					i++;
 
@@ -177,9 +183,10 @@ public class ClientListener extends Task<String> {
 			}
 		}
 		String projectDirPath = file.getAbsolutePath();
-		System.out.println("server dir " + projectDirPath);
+		System.out.println("client dir " + projectDirPath);
 
 		for (File f : newTask.getFile()) {
+		    System.out.println("the file name is"+f.getName());
 
 			if (f != null) {
 				instream = new FileInputStream(f);
@@ -201,7 +208,7 @@ public class ClientListener extends Task<String> {
 
 			}
 		}
-		System.out.println("downloading project docs completed");
+		System.out.println("downloading task file completed");
 
 	}
 

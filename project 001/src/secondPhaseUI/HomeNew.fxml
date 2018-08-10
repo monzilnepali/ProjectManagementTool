@@ -4,6 +4,7 @@
 <?import java.lang.String?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -11,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="MainPane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="secondPhaseController.HomeNewController">
+<AnchorPane fx:id="MainPane" stylesheets="@HomeNew.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="secondPhaseController.HomeNewController">
    <children>
       <HBox prefHeight="32.0" prefWidth="1921.0" styleClass="sidebar">
          <children>
@@ -140,5 +141,23 @@
             <BorderPane fx:id="mainPane" prefHeight="986.0" prefWidth="1435.0" />
          </children>
       </VBox>
+      <Pane fx:id="notificationPane" layoutX="1460.0" layoutY="975.0" prefHeight="98.0" prefWidth="430.0" styleClass="infobar">
+         <children>
+            <FontAwesomeIconView fx:id="closeNotification" fill="WHITE" glyphName="REMOVE" layoutX="391.0" layoutY="29.0" size="18">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </FontAwesomeIconView>
+            <Label fx:id="NotificationTitle" layoutX="32.0" layoutY="19.0" styleClass="text-mainColor" text="Label">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="NotificationMsg" layoutX="32.0" layoutY="44.0" styleClass="text-colorGrey" text="Label" />
+         </children>
+         <effect>
+            <DropShadow color="#00000066" height="10.0" radius="4.5" width="10.0" />
+         </effect>
+      </Pane>
    </children>
 </AnchorPane>

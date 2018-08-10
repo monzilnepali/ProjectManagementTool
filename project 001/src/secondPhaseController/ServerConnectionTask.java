@@ -4,12 +4,17 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,17 +52,88 @@ public class ServerConnectionTask extends Task<List<Project>> {
 
     private void gettingProjectImage() {
         System.out.println("getting projectImage called");
+        int i=0;
+        Boolean exitStatus=true;
        for(Project pro:projectList) {
-        
-           File file=new File("D:\\client\\"+pro.getprojectTitle()+"\\"+pro.getprojectTitle()+".jpg");
+        //getting file name of file
+           Path p=Paths.get(pro.getProjectImage());
+           
+           File file=new File("D:\\client\\"+pro.getprojectTitle()+"\\"+p.getFileName().toString());
            if(file.exists()) {
                System.out.println("the file exit of project"+pro.getprojectTitle());
            }else {
-               System.out.println("project image doesnot exitst");
+               exitStatus=false;
+               if(i==0) {
+                       tmp.getOut().println("projectImageRequest");
+                       i++;
+               }
+               System.out.println("project image doesnot exitst is"+pro.getprojectTitle());
+               //requesting to server to download that picture
+               System.out.println("sending project title to server for project image");
+               tmp.getOut().println(pro.getProjectId());
+               
            }
-           
+             
+       }
+       if(!exitStatus) {
+       System.out.println("sending stop to server ");
+       tmp.getOut().println("stop");
+       Project pro;
+       while(true) {
+           //reading object
+           try {
+             pro=(Project)tmp.getObjIn().readObject();
+            if(pro!=null) {
+                System.out.println("saving profile iamge");
+               savingProfileImage(pro);
+            }else {
+                System.out.println("no more profile image to downlaod");
+                break;
+            }
+        } catch (ClassNotFoundException | IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+         
            
        }
+       }
+        
+    }
+
+    private void savingProfileImage(Project pro) throws IOException {
+       
+
+            
+            File file = new File("D:\\client\\" + pro.getprojectTitle() );
+            if (!file.exists()) {
+                if (file.mkdirs()) {
+                    System.out.println("directory is created");
+
+                } else {
+                    System.out.println("directory is already exist");
+                }
+            }
+            String projectDirPath = file.getAbsolutePath();
+            FileInputStream instream = null;
+            FileOutputStream outstream = null;
+            
+            instream = new FileInputStream(pro.getProjectImageFile());
+            File outFile = new File(projectDirPath + "\\" + pro.getProjectImageFile().getName());
+            outstream = new FileOutputStream(outFile);
+            byte[] buffer = new byte[1024];
+
+            int length;
+            /*
+             * copying the contents from input stream to output stream using
+             * read and write methods
+             */
+            while ((length = instream.read(buffer)) > 0) {
+                outstream.write(buffer, 0, length);
+            }
+            
+       
+        
         
     }
 
@@ -79,10 +155,7 @@ public class ServerConnectionTask extends Task<List<Project>> {
                     System.out.println("the project name send from server is"+pro.getprojectTitle());
                     projectList.add(pro);
                 }
-                
-                
-                
-                
+
             } catch (ClassNotFoundException | IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

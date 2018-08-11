@@ -1,5 +1,6 @@
 package secondPhaseController;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -18,7 +19,9 @@ import org.json.simple.parser.ParseException;
 
 import com.info.controller.ClientListener;
 import com.info.controller.CurrentUserSingleton;
+import com.info.controller.ProjectCreationController;
 import com.info.controller.ProjectTaskController;
+import com.info.dao.ProjectDao;
 import com.info.model.Project;
 import com.jfoenix.controls.JFXSnackbar;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
@@ -78,10 +81,14 @@ public class HomeNewController implements Initializable {
     @FXML private FontAwesomeIconView  closeNotification;
     @FXML private Label NotificationTitle;
     @FXML private Label NotificationMsg;
+    @FXML private FontAwesomeIconView projectRefreshBtn;//after creation of project,
+    @FXML private Label project_file;
+
     private static int activeProjectId;
     static CurrentUserSingleton tmp = CurrentUserSingleton.getInstance(); 
     static private List<Label> labelArray;
   private  JFXSnackbar snackbar;
+  private static Stage layerStage;
   static List<Project> projectList;
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
@@ -106,7 +113,7 @@ public class HomeNewController implements Initializable {
                 //as currently active project
                 JSONObject obj=new JSONObject();
                 obj.put("activeProject", activeProjectId);
-                obj.put("activeTab", activeTab.getText());
+              
                 try(FileWriter file=new FileWriter("file.json")) {
                     file.write(obj.toJSONString());
                     file.flush();
@@ -134,14 +141,16 @@ public class HomeNewController implements Initializable {
             tmp.setActiveTab(activeTab.getText());
         });
         project_team.setOnMouseClicked(e->{
-           // tabClickedAction("ProjectInformation");
-           
+          
+           if(activeTab!=project_team) {
             currentTab.setText("# PROJECT TEAM");
             project_team.setStyle("-fx-background-color:#36393F;");
            activeTab.setStyle("-fx-background-color:transparent;");
             
             activeTab=project_team;
             tmp.setActiveTab(activeTab.getText());
+            tabClickedAction("ProjectTeam");
+           }
         });
         
        
@@ -213,6 +222,22 @@ public class HomeNewController implements Initializable {
             }
          });
         
+        
+        
+        project_file.setOnMouseClicked(e->{
+            if(activeTab!=project_file) {
+            currentTab.setText("# PROJECT FILE");
+            project_file.setStyle("-fx-background-color:#36393F;");
+            activeTab.setStyle("-fx-background-color:transparent;");
+            
+            activeTab=project_file;
+            tmp.setActiveTab(activeTab.getText());
+             tabClickedAction("ProjectFile");
+            
+            }
+         });
+        
+        
         addTaskBtn.setOnMouseClicked(e->{
             System.out.println("task add");
             
@@ -238,6 +263,11 @@ public class HomeNewController implements Initializable {
             
             
             
+            
+        });
+        projectRefreshBtn.setOnMouseClicked(e->{
+            System.out.println("projectiamge refresh");
+            refreshProjectList();
             
         });
         closeNotification.setOnMouseClicked(e->{
@@ -270,23 +300,16 @@ public class HomeNewController implements Initializable {
                 
                 if (oldValue.equals("downloadCompleted")) {
                     //ProjectInformationController.showDialog(newValue);
-                } else if (newValue.equals("projectCreationCompleted")) {
-                    // getProjectDetail();
-                    ProjectTaskController pt=new ProjectTaskController();
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-                    pt.loadData();
-                   
-
-                }else if(newValue.equals("taskUpdateAck")) {
+                } else if(newValue.equals("taskUpdateAck")) {
                     showNotification(newValue);
                 }else if(newValue.equals("projectCreationCompleted")) {
                     //loading the project image file
+                    System.out.println("getting list of project file asssoaciate with current user");
+                    refreshProjectList();
+                    layerStage.close();
+                    System.out.println("loading new project files");
                     loadProjectImage();
+                    System.out.println("project creation stage closed");
                 }
                 
                 else {
@@ -342,40 +365,11 @@ public class HomeNewController implements Initializable {
             Object obj=parser.parse(new FileReader("file.json"));
             JSONObject jObj=(JSONObject)obj;
             Long previousProject=(Long)jObj.get("activeProject");
-            String previousTab=(String)jObj.get("activeTab");
             System.out.println("the previous project is"+previousProject);
-            System.out.println("the previous tab is"+previousTab);
-            
+
             activeProjectId=previousProject.intValue();
-            activeTabName=previousTab;
-            System.out.println("the previous tab from json is "+previousTab);
             tmp.setActiveProjectId(activeProjectId);
-            tmp.setActiveTab(activeTabName);
            
-            
-            //selecting previous active tab
-            
-//            for(Label lb:labelArray) {
-//                
-//                if(lb.getText().equals(activeTabName)) {
-//                    
-//                    System.out.println("inside true statement \nprevious tab="+activeTabName);
-//                    System.out.println("comparing to "+lb.getText());
-//                    //loading that tab fxml file
-//                    
-//                    if(activeTabName.equals("#  Running")) {
-//                        System.out.println("# running opened");
-//                        tabClickedAction("ProjectTask1");
-//                    }
-//                    
-//                    currentTab.setText(lb.getText());
-//                    lb.setStyle("-fx-background-color:#36393F;");
-//                    activeTab.setStyle("-fx-background-color:transparent;");
-//                    activeTab=lb;
-//                    break;
-//                }
-//  
-//            }
             tabClickedAction("ProjectInformation");
             
             currentTab.setText("# PROJECT INFORMATION");
@@ -405,11 +399,15 @@ public class HomeNewController implements Initializable {
     }
     private void loadProjectImage() {
         System.out.println("***load project Image called");
-        
+        projectListPane.getChildren().clear();
+       int flag=0;//to check whether the previous active project available or not,if not we just make first project as initial active project
         //searching the project via is
+     
         for(Project pro:projectList) {
-            
+          
+            System.out.println("comparing current project id"+pro.getProjectId()+"and previous active project id"+activeProjectId);
             if(pro.getProjectId()==activeProjectId) {
+                System.out.println("previous project id"+activeProjectId+"is available");
                 project_name.setText(pro.getprojectTitle());
                 tmp.setCurrentUserRoleInActiveProject(pro.getRoleId());
                 if(pro.getRoleId()==1) {
@@ -423,9 +421,16 @@ public class HomeNewController implements Initializable {
                 }else {
                     activeUserRole.setText("TEAM MEMBER");
                 }
-              
+                flag=0;
                 break;
             }else {
+              flag++;
+                
+            }
+            
+        }
+            if(flag!=0) {
+                System.out.println("previous active project not avaiable");
                 //if this project is not available then we simple make first project in list as active project
                 Project pro1=projectList.get(0);
                 activeProjectId=pro1.getProjectId();
@@ -438,10 +443,9 @@ public class HomeNewController implements Initializable {
                     activeUserRole.setText("TEAM MEMBER");
                 }
                 
-                
             }
             
-        }
+
         
         System.out.println("projectList called");
         System.out.println("the no of project is "+projectList.size());
@@ -462,7 +466,7 @@ public class HomeNewController implements Initializable {
                  ColorAdjust colorAdjust = new ColorAdjust();
                  //dont apply color adjust to active project image
                  if(p.getProjectId()!=activeProjectId) {
-                   
+                   System.out.println("the active previous project id is"+activeProjectId);
                      colorAdjust.setBrightness(-0.5);
                      imageView[imageCount].setEffect(colorAdjust);
                  }
@@ -473,6 +477,8 @@ public class HomeNewController implements Initializable {
                      int j;
                      for(j=0;j<size;j++) {
                          if(projectList.get(j).getProjectId()==activeProjectId) {
+                             //same project clicke twice so do nothing
+                             System.out.println("previous active project id is"+activeProjectId);
                              break;
                          }
                      }
@@ -499,7 +505,6 @@ public class HomeNewController implements Initializable {
                              tmp.setCurrentUserRoleInActiveProject(activeProject.getRoleId());
                              
                              tabClickedAction("ProjectInformation");
-                             
                              currentTab.setText("# PROJECT INFORMATION");
                             
                              if(activeTab!=null) {
@@ -557,13 +562,21 @@ public class HomeNewController implements Initializable {
               
               //projectCreation fxml file
               try {
-                  Parent p=FXMLLoader.load(getClass().getResource("/application/ProjectCreation.fxml"));
+                  FXMLLoader loader=new FXMLLoader();
+                  loader.setLocation(getClass().getResource("/application/ProjectCreation.fxml"));
+               loader.load();
+               ProjectCreationController controller=loader.getController();
+               controller.setData(this);
+               Parent p=loader.getRoot();
+               
+                  
                   Scene scene=new Scene(p);
                   Stage stage=new Stage();
                   stage.setScene(scene);
                   stage.setTitle("Project Creation");
                   stage.initModality(Modality.WINDOW_MODAL);
                   stage.initOwner(tmp.getStage());
+                  layerStage=stage;
                   stage.show();
               } catch (IOException e1) {
                   // TODO Auto-generated catch block
@@ -581,9 +594,23 @@ public class HomeNewController implements Initializable {
         
         
     }
+    private void refreshProjectList() {
+        
+      refreshProjectListHandler();
+   
+        
+    }
+    
+
     
     
-    
+    private void refreshProjectListHandler() {
+       List<Project> projectListNew=ProjectDao.getProjectNameViaUserId(tmp.getVuser().getUser_id());
+       projectList.clear();
+       projectList=projectListNew;
+        
+        
+    }
     private void showNotification(String msg) {
         NotificationTitle.setText("NOTIFICATION");
         NotificationMsg.setText(msg);

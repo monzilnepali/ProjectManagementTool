@@ -22,25 +22,25 @@
                   <Font size="22.0" />
                </font>
             </Label>
-            <Label layoutX="25.0" layoutY="85.0" text="Project Management" textFill="WHITE" />
+            <Label fx:id="projectName" layoutX="25.0" layoutY="85.0" text="Project Management" textFill="WHITE" />
             <Label layoutX="355.0" layoutY="37.0" styleClass="text-colorGrey" text="Project Manager" textFill="WHITE">
                <font>
                   <Font size="22.0" />
                </font>
             </Label>
-            <Label layoutX="355.0" layoutY="85.0" text="Manjil gautam" textFill="WHITE" />
+            <Label fx:id="projectManager" layoutX="355.0" layoutY="85.0" text="Manjil gautam" textFill="WHITE" />
             <Label layoutX="1111.0" layoutY="29.0" styleClass="text-colorGrey" text="Project Creation Date" textFill="WHITE">
                <font>
                   <Font size="22.0" />
                </font>
             </Label>
-            <Label layoutX="1111.0" layoutY="79.0" text="2072-12-20" textFill="WHITE" />
+            <Label fx:id="projectCreationDate" layoutX="1111.0" layoutY="79.0" text="2072-12-20" textFill="WHITE" />
             <Label layoutX="710.0" layoutY="26.0" styleClass="text-colorGrey" text="Project Categories" textFill="WHITE">
                <font>
                   <Font size="22.0" />
                </font>
             </Label>
-            <Label layoutX="717.0" layoutY="80.0" text="Manjil gautam" textFill="WHITE" />
+            <Label fx:id="projectCategories" layoutX="717.0" layoutY="80.0" text="Manjil gautam" textFill="WHITE" />
          </children>
       </Pane>
       <Label layoutX="60.0" layoutY="415.0" styleClass="text-mainColor" text="PROJECT DOCUMENTATION" textFill="WHITE">

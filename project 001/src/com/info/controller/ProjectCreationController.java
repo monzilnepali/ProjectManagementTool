@@ -10,6 +10,10 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+
 import com.info.dao.ProjectDao;
 import com.info.model.Project;
 import com.jfoenix.controls.*;
@@ -30,6 +34,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import secondPhaseController.HomeNewController;
 
 public class ProjectCreationController  implements Initializable {
 
@@ -49,14 +54,7 @@ public class ProjectCreationController  implements Initializable {
     private Pane projectCreation_projectTeam;
     @FXML
     private StackPane pane;
-    @FXML
-    private Button AddTeamMemberBtn;
-    @FXML
-    private FontAwesomeIconView AddMoreTeamMemberBtn;
-    @FXML
-    private AnchorPane addTeamMemberPane;
-    @FXML
-    private Button projectCreationBackBtn;
+  
     @FXML
     private Button projectCreationFinishBtn;
     @FXML
@@ -68,8 +66,15 @@ public class ProjectCreationController  implements Initializable {
     @FXML
     private Label waitLabel;
     @FXML private Label uploadLabel;
+    
+    @FXML private Button profileUploadBtn;
+    @FXML private Label projectProfileImage;
+    @FXML   private JFXProgressBar progressBar;
+    private File profileImage;
+    
     ObservableList<String> list = FXCollections.observableArrayList();
     private List<File> files;
+    private HomeNewController controller;
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
@@ -80,7 +85,9 @@ public class ProjectCreationController  implements Initializable {
         CurrentUserSingleton tmp = CurrentUserSingleton.getInstance();
         docsList.setVisible(false);
         uploadLabel.setVisible(true);
-        AddMoreTeamMemberBtn.setVisible(true);
+        uploadDocs.setVisible(true);
+        progressBar.setVisible(false);
+        projectProfileImage.setVisible(true);//profile Image name
         // filechooser
         FileChooser fc = new FileChooser();
         // restrict the file selection
@@ -94,6 +101,20 @@ public class ProjectCreationController  implements Initializable {
                 new FileChooser.ExtensionFilter("Text File", "*.txt")
 
         );
+        
+        
+        //profile image file chooser
+        FileChooser imageChooser = new FileChooser();
+        // restrict the file selection
+        // allowing picture extenstion and office extension
+
+        imageChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Picture", "*.jpg", "*.png")
+                
+
+        );
+        
+        
         projectCreation_projectDetail.setVisible(true);
         projectCreation_projectTeam.setVisible(false);
         projectCreation_NextBtn.setOnAction(e -> {
@@ -118,7 +139,7 @@ public class ProjectCreationController  implements Initializable {
                     }
                 }
                 uploadLabel.setVisible(false);
-                AddMoreTeamMemberBtn.setVisible(false);
+                uploadDocs.setVisible(false);
                 docsList.setVisible(true);
                 projectCreationFinishBtn.setVisible(true);
                 docsList.setItems(list);
@@ -126,9 +147,49 @@ public class ProjectCreationController  implements Initializable {
             } else {
                 System.out.println("nothing to upload ");
             }
+       
+        });
+        
+        //profile image upload
+        
+        profileUploadBtn.setOnAction(e->{
+            
+            Stage currentStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+            profileImage=imageChooser.showOpenDialog(currentStage);
+            
+            projectProfileImage.setVisible(true);
+            projectProfileImage.setText(profileImage.getName()+"\t"+fileSize(profileImage.length()));
+            
+            
+            
         });
        
         projectCreationFinishBtn.setOnAction(e -> {
+            
+            progressBar.setVisible(true);
+            
+            File src=profileImage;
+            String fileExtension=FilenameUtils.getExtension(src.getName());
+            File descDir=new File("D:\\client\\"+projectTitle.getText());
+            descDir.mkdir();
+            File temp=new File(descDir,projectTitle.getText()+"."+fileExtension);
+           
+            try {
+                temp.createNewFile();
+                FileUtils.copyFile(src, temp);
+                System.out.println("file copied");
+            } catch (IOException e2) {
+                // TODO Auto-generated catch block
+                e2.printStackTrace();
+            }
+            
+            //writing that project image to client side direct;y
+            ExecutorService executor = Executors.newSingleThreadExecutor();
+            executor.submit(() -> {
+                String threadName = Thread.currentThread().getName();
+               //copy file from user directory to project dir
+            });
+
             // getting data from form and insert into database
           //  taskProgress.setVisible(true);
           //  waitLabel.setVisible(true);
@@ -151,6 +212,8 @@ public class ProjectCreationController  implements Initializable {
 
             pro.setTeamMember(teamMemberList);
             pro.setFileList(files);
+            //setting project image
+            pro.setProjectImageFile(profileImage);
             // sending request to server for creation of project
             tmp.getOut().println("projectCreation");
 
@@ -181,6 +244,11 @@ public class ProjectCreationController  implements Initializable {
             return Math.round(size / (1024 * 1024)) + "MB";
         }
 
+    }
+
+    public void setData(HomeNewController homeNewController) {
+       this.controller=homeNewController;
+        
     }
 
 }

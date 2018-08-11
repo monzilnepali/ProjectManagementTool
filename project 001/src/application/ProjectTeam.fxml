@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="986.0" prefWidth="1435.0" styleClass="mainbar" stylesheets="@../secondPhaseUI/HomeNew.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.info.controller.ProjectTeamController">
+   <children>
+      <Label layoutX="102.0" layoutY="150.0" styleClass="text-mainColor" text="Project Manager">
+         <font>
+            <Font name="System Bold" size="36.0" />
+         </font>
+      </Label>
+      <Label layoutX="102.0" layoutY="223.0" styleClass="text-colorGrey" text="Name" />
+      <Label fx:id="projectManageName" layoutX="151.0" layoutY="223.0" prefHeight="21.0" prefWidth="54.0" styleClass="text-whiteColor" text="Label" />
+      <Label layoutX="97.0" layoutY="281.0" styleClass="text-mainColor" text="Project Team Member">
+         <font>
+            <Font name="System Bold" size="36.0" />
+         </font>
+      </Label>
+      <VBox fx:id="teamMember" layoutX="104.0" layoutY="337.0" prefHeight="295.0" prefWidth="517.0" />
+   </children>
+</AnchorPane>

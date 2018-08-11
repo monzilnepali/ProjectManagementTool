@@ -656,5 +656,94 @@ public class ProjectDao {
 		
 		
 	}
+	public static List<Project> getProjectNameViaUserId(int userId) {
+        System.out.println("getprokectName via user id called,user id= "+userId);
+        // getting name of project of currently logged in user
+        // System.out.println("getprojectname called");
+        Connection conn = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        try {
+            conn = DBConnection.getConnection();
+            String query = "SELECT project.project_name,project.project_id,userproject.role_id,project_profile_imagepath FROM project INNER JOIN userproject ON project.project_id=userproject.project_Id WHERE userproject.user_id=?";
+            pst = conn.prepareStatement(query);
+            pst.setInt(1, userId);
+
+            rs = pst.executeQuery();
+            List<Project> list = new ArrayList<Project>();
+            while (rs.next()) {
+                // System.out.println("list new data");
+                System.out.println("fetch details of project"+rs.getString("project_name"));
+                Project pro = new Project();
+                pro.setProjectId(rs.getInt("project_id"));
+                pro.setprojectTitle(rs.getString("project_name"));
+                pro.setRoleId(rs.getInt("role_id"));
+                pro.setProjectImage(rs.getString("project_profile_imagepath"));
+                System.out.println("current user role is "+rs.getInt("role_id"));
+                list.add(pro);
+            }
+            return list;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                pst.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return null;
+    }
+	
+	public static String getProjectManagerViaProjectId(int projectId) {
+	    //gettting the name of project via project id;
+	    /*
+	     * 1->manager
+	     * 2->team member
+	     */
+	    Connection conn=null;
+	    PreparedStatement pst=null;
+	    ResultSet rs=null;
+	    try {
+	        conn=DBConnection.getConnection();
+	        String query="SELECT user_name FROM user INNER JOIN userproject ON user.user_id=userproject.user_id WHERE userproject.role_id=? AND userproject.project_id=?";
+	        pst=conn.prepareStatement(query);
+	        pst.setInt(1, 1);
+	        pst.setInt(2, projectId);
+	        rs=pst.executeQuery();
+	        while(rs.next()) {
+	            return rs.getString("user_name");
+	        }
+	        
+	        
+	    } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            try {
+                pst.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+	    return null;
+	}
 
 }

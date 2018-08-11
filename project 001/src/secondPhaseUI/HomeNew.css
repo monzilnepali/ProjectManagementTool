@@ -73,12 +73,16 @@
 	-fx-font-size:19px;
 	
 }
+.labelStyle:hover{
+	-fx-background-color:#36393F;
+}
 .text-field{
 	-fx-background-color:#2D2F34;
 	-fx-border-radius:5px;
 	-fx-text-fill:white;
 	-fx-font-size:18px;
 }
+
 .text-area{
   
     -fx-background-color: #32343A;

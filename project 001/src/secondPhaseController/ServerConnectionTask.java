@@ -37,17 +37,10 @@ public class ServerConnectionTask extends Task<List<Project>> {
        updateMessage("just few second..");
        
        gettingProjectImage();
-       
-       
-       
+
        return projectList;
        
-        
-        
-        
-        
-        
-        
+
     }
 
     private void gettingProjectImage() {
@@ -78,6 +71,7 @@ public class ServerConnectionTask extends Task<List<Project>> {
        if(!exitStatus) {
        System.out.println("sending stop to server ");
        tmp.getOut().println("stop");
+       List<Project> prolist = null;
        Project pro;
        while(true) {
            //reading object
@@ -85,9 +79,15 @@ public class ServerConnectionTask extends Task<List<Project>> {
              pro=(Project)tmp.getObjIn().readObject();
             if(pro!=null) {
                 System.out.println("saving profile iamge");
-               savingProfileImage(pro);
+               prolist.add(pro);
             }else {
                 System.out.println("no more profile image to downlaod");
+                
+                //writing file in client side in client side
+                for(Project project:prolist) {
+                    savingProfileImage(project);
+                }
+
                 break;
             }
         } catch (ClassNotFoundException | IOException e) {
@@ -104,7 +104,7 @@ public class ServerConnectionTask extends Task<List<Project>> {
     private void savingProfileImage(Project pro) throws IOException {
        
 
-            
+            System.out.println("saving profile image function");
             File file = new File("D:\\client\\" + pro.getprojectTitle() );
             if (!file.exists()) {
                 if (file.mkdirs()) {

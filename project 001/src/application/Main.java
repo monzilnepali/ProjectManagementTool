@@ -1,5 +1,6 @@
 package application;
 	
+import java.awt.Toolkit;
 import java.util.Date;
 
 import com.info.controller.CurrentUserSingleton;
@@ -11,15 +12,18 @@ import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.media.AudioClip;
 
 
 public class Main extends Application {
 	 static CurrentUserSingleton tmp=CurrentUserSingleton.getInstance();	//current user object
+
 	@Override
 	public void start(Stage primaryStage) {
 		try {
 			tmp.setStage(primaryStage);
-			
+	        //Toolkit.getDefaultToolkit().beep();
+
 			
 			System.out.println("current ttime"+UserDao.formattedDate(new Date()));
 			Parent p=FXMLLoader.load(getClass().getResource("Login_window.fxml"));

@@ -21,6 +21,7 @@ import com.info.controller.ClientListener;
 import com.info.controller.CurrentUserSingleton;
 import com.info.controller.ProjectCreationController;
 import com.info.controller.ProjectTaskController;
+import com.info.controller.Sound;
 import com.info.dao.ProjectDao;
 import com.info.model.Project;
 import com.jfoenix.controls.JFXSnackbar;
@@ -271,8 +272,8 @@ public class HomeNewController implements Initializable {
             
         });
         closeNotification.setOnMouseClicked(e->{
-            closeNotification();
-            
+            closeNotificationHandler();            
+           
         });
         
         
@@ -304,16 +305,16 @@ public class HomeNewController implements Initializable {
                     showNotification(newValue);
                 }else if(newValue.equals("projectCreationCompleted")) {
                     //loading the project image file
+                    showNotification(newValue);
                     System.out.println("getting list of project file asssoaciate with current user");
                     refreshProjectList();
                     layerStage.close();
                     System.out.println("loading new project files");
                     loadProjectImage();
                     System.out.println("project creation stage closed");
-                }
-                
-                else {
+                }else {
                     System.out.println("uer presence online");
+                    
                     showNotification(newValue);
                 }
 
@@ -347,7 +348,7 @@ public class HomeNewController implements Initializable {
         
         activeUserName.setText(tmp.getVuser().getUser_name());
         //showing in review phase tab only for manager of the project
-       
+       if(projectList!=null) {
        this.projectList=projectList;
         labelArray.add(project_info);
         labelArray.add(project_team);
@@ -391,7 +392,11 @@ public class HomeNewController implements Initializable {
       
        
 
-        
+       }else {
+           System.out.println("no project found");
+           System.out.println("adding project add button");
+           addProjectButton();
+       }
        
       
         
@@ -539,8 +544,17 @@ public class HomeNewController implements Initializable {
             }
         }
         
+        addProjectButton();
         
-        //adding project add button
+         
+        
+        
+    }
+    
+    private void addProjectButton() {
+        
+        
+      //adding project add button
         try {
           Image  projectCreationImage = new Image(new FileInputStream("E:\\project\\ProjectManagementTool\\project 001\\src\\Resource\\UI\\icon.png"));
           ImageView imageView1=new ImageView();
@@ -590,7 +604,13 @@ public class HomeNewController implements Initializable {
           e.printStackTrace();
       }
      
-         
+        
+        
+        
+        
+        
+        
+        
         
         
     }
@@ -606,21 +626,25 @@ public class HomeNewController implements Initializable {
     
     private void refreshProjectListHandler() {
        List<Project> projectListNew=ProjectDao.getProjectNameViaUserId(tmp.getVuser().getUser_id());
+       if(projectList!=null) {
        projectList.clear();
+       }
        projectList=projectListNew;
         
         
     }
     private void showNotification(String msg) {
+        Sound.play("src\\Resource\\sound\\notify.wav");
         NotificationTitle.setText("NOTIFICATION");
         NotificationMsg.setText(msg);
         notificationPane.setVisible(true);
-        closeNotification();
+       
   
     }
-    private void closeNotification() {
+    private void closeNotificationHandler() {
+       
         FadeTransition fadeTransition=new FadeTransition();
-        fadeTransition.setDuration(Duration.millis(4000));
+        fadeTransition.setDuration(Duration.millis(1000));
         fadeTransition.setNode(notificationPane);
         fadeTransition.setFromValue(1);
         fadeTransition.setToValue(0);

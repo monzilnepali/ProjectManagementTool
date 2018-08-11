@@ -56,7 +56,7 @@ public class MainController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		
-		
+	  
 		login_screen.setVisible(true);
 		signup_screen.setVisible(false);
 		System.out.println("main controller called");

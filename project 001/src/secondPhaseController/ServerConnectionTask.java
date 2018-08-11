@@ -26,6 +26,7 @@ import javafx.concurrent.Task;
 public class ServerConnectionTask extends Task<List<Project>> {
     static CurrentUserSingleton tmp = CurrentUserSingleton.getInstance(); 
     List<Project> projectList;
+   static Boolean flag=false;//to indicate the project exist or not
     @Override
     protected List<Project> call() throws Exception {
         updateMessage("connecting to server");
@@ -35,9 +36,9 @@ public class ServerConnectionTask extends Task<List<Project>> {
         //getting project list
         getProjectList();
        updateMessage("just few second..");
-       
+       if(flag) {
        gettingProjectImage();
-
+       }
        return projectList;
        
 
@@ -142,16 +143,23 @@ public class ServerConnectionTask extends Task<List<Project>> {
         List<Project> projectList=new ArrayList<>();
         tmp.getOut().println("getProjectList");
         //waiting for server response
+        
         while(true) {
             
             try {
                 Project pro=(Project)tmp.getObjIn().readObject();
                
                 if(pro.getRoleId()==007) {
+                    if(flag) {
                     this.projectList=projectList;
+                    }else {
+                        System.out.println("no projet found");
+                        this.projectList=null;
+                    }
                     break;
                     
                 }else if(pro!=null) {
+                    flag=true;
                     System.out.println("the project name send from server is"+pro.getprojectTitle());
                     projectList.add(pro);
                 }

@@ -77,9 +77,9 @@ public class ClientListener extends Task<String> {
 						TaskFileIncomingHandler();
 						updateMessage("download completed");
 
-					}else if(msg.equals("ProjectFileIncoming")) {
+					}else if(msg.equals("ProjectDocsIncoming")) {
 						System.out.println("ProjectFileIncoming called in client side");
-						ProjectFileIncomingHandler();
+						ProjectFileIncomingHandler("docs");
 					}else if(msg.equals("projectCreationCompleted")){
 						System.out.println("projectCreationCompleted called");
 						updateMessage(msg);
@@ -102,7 +102,7 @@ public class ClientListener extends Task<String> {
 
 	}
 
-	private void ProjectFileIncomingHandler()
+	private void ProjectFileIncomingHandler(String dir)
 			throws IOException, ClassNotFoundException, InterruptedException {
 
 		// downlaod the docs of project from database
@@ -117,7 +117,7 @@ public class ClientListener extends Task<String> {
 		FileOutputStream outstream = null;
 
 		// creating directory of that project
-		File file = new File("D:\\Client\\" + projectName);
+		File file = new File("D:\\Client\\"+tmp.getVuser().getUser_name()+"\\"+ projectName+"\\"+dir);
 
 		if (!file.exists()) {
 			if (file.mkdirs()) {

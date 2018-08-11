@@ -1,0 +1,67 @@
+/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+
+*{
+	/*defining the color variable*/
+	-fx-sidebar: #202225;
+	-fx-infobar: #2F3136;
+	-fx-mainbar: #36393F;
+	-fx-mainColor:#2196F3;
+	
+	
+}
+
+
+.table-view {
+	-fx-border-width:0.0 0 0 0.0 ;
+    -fx-base: -fx-infobar;
+    -fx-control-inner-background: -fx-infobar;
+    -fx-background-color: -fx-infobar;
+    -fx-padding: 0;
+  
+     
+}
+
+.table-view .column-header,
+.table-view .column-header .filler,
+.table-view .column-header-background .filler {
+    -fx-background-color:-fx-mainColor ;
+   -fx-size:55px;
+   -fx-border-color:-fx-infobar;
+    
+}
+.table-view .column-header{
+	-fx-alignment: LEFT;
+}
+.table-row-cell {
+    -fx-cell-size: 55px;
+}
+.table-column {
+  -fx-alignment: CENTER;
+  -fx-padding:0.0 10 0 0;
+}
+
+
+.table-view .table-row-cell {
+	
+    /*-fx-background-color:red;*/
+    -fx-border-width:0 0 0 0;
+    -fx-border-color:#E0E0E0;
+   
+}
+
+.table-view .table-row-cell:active{
+	-fx-background-color:red;
+}
+.table-view .table-column{
+	 -fx-border-width: 0;
+	
+}
+.table-row-cell:empty {
+    -fx-background-color: #36393F;
+     -fx-border-color:#36393F;
+}
+ 
+.table-row-cell:empty .table-cell {
+	 -fx-border-width:0 0 0 0;
+   
+}

@@ -138,7 +138,7 @@ public class TaskAddController implements Initializable {
 			
 			//checking the input field
 			//getting date as string from datepicker 
-			SimpleDateFormat ft =new SimpleDateFormat ("E yyyy-MM-dd");
+			SimpleDateFormat ft =new SimpleDateFormat ("yyyy-MM-dd");
 			LocalDate  date=taskDeadline.getValue();
 			Date date1=java.sql.Date.valueOf(date);
 			String deadlinedate=ft.format(date1);

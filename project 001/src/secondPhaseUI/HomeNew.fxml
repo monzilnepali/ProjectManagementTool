@@ -89,7 +89,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Label>
-                  <Label fx:id="project_info" layoutX="31.0" layoutY="80.0" prefHeight="36.0" style="-fx-padding: 7px;" styleClass="labelStyle" text="#  Project Information" textFill="WHITE">
+                  <Label fx:id="project_info" layoutX="31.0" layoutY="80.0" prefHeight="36.0" styleClass="labelStyle" text="#  Project Information" textFill="WHITE">
                      <font>
                         <Font size="17.0" />
                      </font>

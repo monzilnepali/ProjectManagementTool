@@ -1,16 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
+<?import java.net.URL?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="986.0" prefWidth="1435.0" styleClass="mainbar" stylesheets="@../secondPhaseUI/HomeNew.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="com.info.controller.ProjectFileController">
+<AnchorPane prefHeight="986.0" prefWidth="1435.0" styleClass="mainbar" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.info.controller.ProjectFileController">
+   <stylesheets>
+      <URL value="@../secondPhaseUI/HomeNew.css" />
+      <URL value="@ProjectFile.css" />
+   </stylesheets>
    <children>
-      <Label layoutX="93.0" layoutY="302.0" styleClass="text-mainColor" text="Project File">
-         <font>
-            <Font size="21.0" />
-         </font>
-      </Label>
+      <ScrollPane layoutX="35.0" layoutY="60.0" prefHeight="587.0" prefWidth="1356.0" style="-fx-background-color: #36393F;">
+         <content>
+            <TableView fx:id="fileTable" prefHeight="585.0" prefWidth="1354.0">
+              <columns>
+                <TableColumn fx:id="Title" prefWidth="150.00003051757812" text="File Name" />
+                <TableColumn fx:id="Member" minWidth="0.0" prefWidth="0.0" text="Member" />
+                  <TableColumn fx:id="ModifiedDate" prefWidth="75.0" text="Last Modified Date" />
+              </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+            </TableView>
+         </content>
+      </ScrollPane>
    </children>
 </AnchorPane>

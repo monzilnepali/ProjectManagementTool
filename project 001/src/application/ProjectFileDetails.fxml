@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="722.0" prefWidth="794.0" styleClass="mainbar" stylesheets="@../secondPhaseUI/HomeNew.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171">
+   <children>
+      <Label layoutX="31.0" layoutY="26.0" styleClass="text-mainColor" text="TASK INFORMATION">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="35.0" layoutY="78.0" styleClass="text-colorGrey" text="Task Name" />
+      <Label fx:id="taskName" layoutX="35.0" layoutY="108.0" styleClass="text-whiteColor" text="Label" />
+      <Label layoutX="35.0" layoutY="147.0" styleClass="text-colorGrey" text="Task Description" />
+      <TextArea fx:id="taskDesc" layoutX="35.0" layoutY="175.0" prefHeight="95.0" prefWidth="326.0" />
+      <ListView fx:id="taskDocs" layoutX="35.0" layoutY="341.0" prefHeight="83.0" prefWidth="326.0" />
+      <Label layoutX="41.0" layoutY="294.0" styleClass="text-colorGrey" text="Task Documentation" />
+      <Button fx:id="taskDocsDownload" layoutX="35.0" layoutY="440.0" mnemonicParsing="false" styleClass="buttonGreen" text="Download Docs" />
+      <Label layoutX="413.0" layoutY="26.0" styleClass="text-mainColor" text="TASK FILE">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="413.0" layoutY="147.0" styleClass="text-colorGrey" text="Task Summary" />
+      <TextArea fx:id="taskSummary" layoutX="413.0" layoutY="175.0" prefHeight="95.0" prefWidth="326.0" />
+      <ListView fx:id="taskFile" layoutX="413.0" layoutY="341.0" prefHeight="83.0" prefWidth="326.0" />
+      <Label layoutX="419.0" layoutY="294.0" styleClass="text-colorGrey" text="Task FIles" />
+      <Button fx:id="taskFileDownload" layoutX="413.0" layoutY="440.0" mnemonicParsing="false" styleClass="buttonGreen" text="Download File" />
+      <Separator layoutY="498.0" prefHeight="3.0" prefWidth="793.0" />
+      <ScrollPane layoutX="3.0" layoutY="504.0" prefHeight="217.0" prefWidth="788.0">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+        </content>
+      </ScrollPane>
+   </children>
+</AnchorPane>

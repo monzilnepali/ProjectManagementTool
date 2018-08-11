@@ -12,6 +12,7 @@ import java.util.List;
 
 import com.info.controller.CurrentUserSingleton;
 import com.info.model.Project;
+import com.info.model.ProjectFile;
 import com.info.model.TaskModel;
 import com.info.model.User;
 import com.info.utils.DBConnection;
@@ -360,15 +361,12 @@ public class ProjectDao {
 				newTask.setTaskId(rs.getInt("task_id"));
 				newTask.setTaskName(rs.getString("task_name"));
 				newTask.setProjectId(rs.getInt("project_id"));
-				
 				newTask.setTaskAssignToName(rs.getString("user_name"));
 				newTask.setTaskDeadLine(rs.getString("task_deadline"));
 				newTask.setTaskPriority(rs.getString("task_priority"));
 				newTask.setTaskStatusId(rs.getInt("task_status"));
 				
 				newTask.setTaskStatus(getTaskStatusNameViaId(rs.getInt("task_status")));
-				
-			
 				newTask.setTaskCreationDate(rs.getString("task_assignDate"));
 				newTask.setTaskDescription(rs.getString("task_desc"));
 				taskList.add(newTask);
@@ -744,6 +742,54 @@ public class ProjectDao {
 
         }
 	    return null;
+	}
+	public static List<ProjectFile> getProjectCompletedFile(int projectId) {
+	    
+	    Connection conn=null;
+        PreparedStatement pst=null;
+        ResultSet rs=null;
+        try {
+            conn=DBConnection.getConnection();
+           String query="SELECT file_name,user_name,task.task_id FROM taskfile INNER JOIN task ON taskfile.task_id=task.task_id INNER JOIN user ON task.user_id=user.user_id WHERE task.project_id=? AND task.task_status=?";
+           pst=conn.prepareStatement(query);
+           pst.setInt(1, projectId);
+           pst.setInt(2,3);
+           rs=pst.executeQuery();
+           List<ProjectFile> list=new ArrayList<>();
+           while(rs.next()) {
+               
+               ProjectFile pf=new ProjectFile();
+               pf.setFileName(rs.getString("file_name"));
+               pf.setTaskId(projectId);
+               pf.setTeamMemberName(rs.getString("user_name"));
+               pf.setLastModified("");
+               list.add(pf);
+            
+           }
+           return list;
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            try {
+                pst.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return null;
+        
 	}
 
 }

@@ -44,7 +44,6 @@ public class ProjectInformationController implements Initializable {
         //getting project informatiom
         
         Project currentProject=ProjectDao.getProjectInformation(tmp.getActiveProjectId());
-       
         projectName.setText(currentProject.getprojectTitle());
         projectManager.setText(ProjectDao.getProjectManagerViaProjectId(tmp.getActiveProjectId()));
         projectCreationDate.setText(currentProject.getProjectCreationDate());

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="208.0" prefWidth="469.0" styleClass="mainbar" stylesheets="@../secondPhaseUI/HomeNew.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171">
+   <children>
+      <Label layoutX="25.0" layoutY="23.0" styleClass="text-colorGrey" text="Project Name" />
+      <Label fx:id="projectName" layoutX="25.0" layoutY="47.0" styleClass="text-whiteColor" text="sdsd" />
+      <Label layoutX="25.0" layoutY="74.0" styleClass="text-colorGrey" text="Project Manager" />
+      <Label fx:id="projectManager" layoutX="25.0" layoutY="98.0" styleClass="text-whiteColor" text="sdsd" />
+      <Button fx:id="acceptBtn" layoutX="114.0" layoutY="150.0" mnemonicParsing="false" styleClass="buttonGreen" text="Accept" />
+      <Button fx:id="declineBtn" layoutX="334.0" layoutY="147.0" mnemonicParsing="false" styleClass="buttonRed" text="Decline" />
+   </children>
+</AnchorPane>

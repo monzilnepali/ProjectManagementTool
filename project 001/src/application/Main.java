@@ -1,18 +1,15 @@
 package application;
 	
-import java.awt.Toolkit;
+import java.io.File;
 import java.util.Date;
-
 import com.info.controller.CurrentUserSingleton;
 import com.info.dao.UserDao;
 import com.info.utils.DBConnection;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.media.AudioClip;
 
 
 public class Main extends Application {

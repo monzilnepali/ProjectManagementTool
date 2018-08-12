@@ -86,6 +86,12 @@ public class ClientListener extends Task<String> {
 					}else if(msg.equals("taskUpdateAck")) {
 					    System.out.println("taskUpdateAck called");
 					    updateMessage(msg);
+					}else if(msg.equals("projectRequest")) {
+					    //invitation to project
+					    System.out.println("project request called");
+					    //reading notification messsage
+					    String msg1="projectRequest,"+reader.readLine();
+					    updateMessage(msg1);
 					}
 					i++;
 

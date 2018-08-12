@@ -31,7 +31,7 @@ public class ProjectTeamController implements Initializable {
         teamMember.setSpacing(10);
        for(User user:teamMemberList) {
            Label label=new Label();
-           label.setStyle("-fx-text-fill:white;-fx-font-size:18px;-fx-padding:20 10 20 10;-fx-pref-width:300;-fx-pref-height:200;-fx-background-color:#2F3136");
+           label.setStyle("-fx-text-fill:white;-fx-font-size:18px;-fx-background-color:#2F3136");
            label.setText("Name: "+user.getUser_name());
            teamMember.getChildren().add(label);
        }

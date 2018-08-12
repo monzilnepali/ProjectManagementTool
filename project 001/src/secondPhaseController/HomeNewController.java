@@ -77,13 +77,22 @@ public class HomeNewController implements Initializable {
     @FXML private Label notify;
     @FXML  private Label activeUserRole;
     @FXML Label currentTab;
-    @FXML private FontAwesomeIconView addTaskBtn;
+   
     @FXML private Pane notificationPane;
     @FXML private FontAwesomeIconView  closeNotification;
     @FXML private Label NotificationTitle;
     @FXML private Label NotificationMsg;
     @FXML private FontAwesomeIconView projectRefreshBtn;//after creation of project,
     @FXML private Label project_file;
+    @FXML  private FontAwesomeIconView projectRequestBtn;
+
+    @FXML  private FontAwesomeIconView notificationBtn;
+    @FXML  private Pane notificationList;
+    @FXML  private Pane projectRequestList;
+    @FXML private VBox notificationBox;
+    @FXML  private FontAwesomeIconView projectRequestCloseBtn;
+    @FXML  private FontAwesomeIconView notificationCloseBtn;
+    @FXML  private VBox projectRequestBox;
 
     private static int activeProjectId;
     static CurrentUserSingleton tmp = CurrentUserSingleton.getInstance(); 
@@ -91,17 +100,53 @@ public class HomeNewController implements Initializable {
   private  JFXSnackbar snackbar;
   private static Stage layerStage;
   static List<Project> projectList;
+  static private Boolean rflag=false;//to fixing the position of review phase; 
+  static private Boolean pflag=false;//active project click twice 
+  String styleActive;
+  String styleInActive;
+  String notifyActive;//notification bell color change when notificcation appear
+  String notifyInActive;
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         System.out.println("new Home Controller called");
         task_inReview.setVisible(false);
+        notificationList.setVisible(false);
+        projectRequestList.setVisible(false);
+        notify.setVisible(false);
+        Label  lb=new Label();
+        lb.setText("notification");
+       lb.setId("notificationLabel");
+        notificationBox.getChildren().add(lb);
         activeTab=project_name;
         labelArray=new ArrayList<Label>();
         notificationPane.setVisible(false);
          clientListenerStart();
-        
+         
+         //css definition
+         styleActive="-fx-border-color:#2196F3;" + 
+                 "    -fx-border-width:0.0 0 0 3;"
+                 + "-fx-background-color:#282A2E ";
+         styleInActive="-fx-border-color:transparent;" + 
+                 "    -fx-border-width:0.0 0 0 3;"
+                 + "-fx-background-color:transparent ";
+         
+         notifyActive="-fx-fill:#2196F3;";
+         notifyInActive="-fx-fill:white;";
+         
+         
+         //end
        
-       
+         notificationCloseBtn.setOnMouseClicked(e->{
+             System.out.println("close notification");
+             notificationBtn.setStyle("notifyInActive");
+             notificationList.setVisible(false);
+            
+         });
+         projectRequestCloseBtn.setOnMouseClicked(e->{
+             
+             projectRequestList.setVisible(false);
+             System.out.println("close request project");
+         });
         
         window_minimize.setOnMouseClicked(new EventHandler<MouseEvent>() {
             public void handle(MouseEvent me) {
@@ -112,17 +157,20 @@ public class HomeNewController implements Initializable {
             public void handle(MouseEvent me) {
                 //saving the current active project id in file in json format so that when client again logged in software will show previous active project 
                 //as currently active project
+                if(activeProjectId!=0) {
                 JSONObject obj=new JSONObject();
                 obj.put("activeProject", activeProjectId);
               
-                try(FileWriter file=new FileWriter("file.json")) {
+                try(FileWriter file=new FileWriter("./"+tmp.getVuser().getUser_name()+".json")) {
                     file.write(obj.toJSONString());
                     file.flush();
                     
                 }catch(IOException e) {
                     e.printStackTrace();
                 }
+                
                 System.out.println("obj is"+obj);
+                }
                 //logout
                 tmp.getOut().println("userLogout");
                 // sending user
@@ -132,21 +180,37 @@ public class HomeNewController implements Initializable {
                System.exit(0);
             }
         });
+        
+        projectRequestBtn.setOnMouseClicked(e->{
+            
+            System.out.println("projectRequestBtn clicked");
+            notificationList.setVisible(false);
+            projectRequestList.setVisible(true);
+        });
+        notificationBtn.setOnMouseClicked(e->{
+            System.out.println("notificationBtn clicked");
+            notificationList.setVisible(true);
+            projectRequestList.setVisible(false);
+        });
+        
+        
         project_info.setOnMouseClicked(e->{
-            tabClickedAction("ProjectInformation");
+           
            
             currentTab.setText("# PROJECT INFORMATION");
-            project_info.setStyle("-fx-background-color:#36393F;");
-            activeTab.setStyle("-fx-background-color:transparent;");
+            project_info.setStyle(styleActive);
+            activeTab.setStyle(styleInActive);
+            
             activeTab=project_info;
             tmp.setActiveTab(activeTab.getText());
+            tabClickedAction("ProjectInformation");
         });
         project_team.setOnMouseClicked(e->{
           
            if(activeTab!=project_team) {
             currentTab.setText("# PROJECT TEAM");
-            project_team.setStyle("-fx-background-color:#36393F;");
-           activeTab.setStyle("-fx-background-color:transparent;");
+            project_team.setStyle(styleActive);
+            activeTab.setStyle(styleInActive);
             
             activeTab=project_team;
             tmp.setActiveTab(activeTab.getText());
@@ -161,8 +225,9 @@ public class HomeNewController implements Initializable {
                 System.out.println("task notrunning called");
           
              currentTab.setText("# NOT RUNNING");
-             task_notRunning.setStyle("-fx-background-color:#36393F;");
-            activeTab.setStyle("-fx-background-color:transparent;");
+             task_notRunning.setStyle(styleActive);
+             activeTab.setStyle(styleInActive);
+            
              activeTab=task_notRunning;
              System.out.println("the active tab name is"+activeTab.getText());
              tmp.setActiveTab(activeTab.getText());
@@ -176,8 +241,8 @@ public class HomeNewController implements Initializable {
             if(activeTab!=task_running) {
                 
                 currentTab.setText("# TASK RUNNING");
-                task_running.setStyle("-fx-background-color:#36393F;");
-               activeTab.setStyle("-fx-background-color:transparent;");
+                task_running.setStyle(styleActive);
+                activeTab.setStyle(styleInActive);
                 
                 activeTab=task_running;
                 System.out.println("the active tab name is"+activeTab.getText());
@@ -196,8 +261,8 @@ public class HomeNewController implements Initializable {
             if(activeTab!=task_inReview) {
                 
                 currentTab.setText("# TASK RUNNING");
-                task_inReview.setStyle("-fx-background-color:#36393F;");
-               activeTab.setStyle("-fx-background-color:transparent;");
+                task_inReview.setStyle(styleActive);
+                activeTab.setStyle(styleInActive);
                 
                 activeTab=task_inReview;
                 System.out.println("the active tab name is"+activeTab.getText());
@@ -213,8 +278,8 @@ public class HomeNewController implements Initializable {
         task_completed.setOnMouseClicked(e->{
             if(activeTab!=task_completed) {
             currentTab.setText("# TASK COMPLETED");
-            task_completed.setStyle("-fx-background-color:#36393F;");
-            activeTab.setStyle("-fx-background-color:transparent;");
+            task_completed.setStyle(styleActive);
+            activeTab.setStyle(styleInActive);
             
             activeTab=task_completed;
             tmp.setActiveTab(activeTab.getText());
@@ -228,8 +293,8 @@ public class HomeNewController implements Initializable {
         project_file.setOnMouseClicked(e->{
             if(activeTab!=project_file) {
             currentTab.setText("# PROJECT FILE");
-            project_file.setStyle("-fx-background-color:#36393F;");
-            activeTab.setStyle("-fx-background-color:transparent;");
+            project_file.setStyle(styleActive);
+            activeTab.setStyle(styleInActive);
             
             activeTab=project_file;
             tmp.setActiveTab(activeTab.getText());
@@ -239,33 +304,7 @@ public class HomeNewController implements Initializable {
          });
         
         
-        addTaskBtn.setOnMouseClicked(e->{
-            System.out.println("task add");
-            
-            FXMLLoader loader=new FXMLLoader();
-            loader.setLocation(getClass().getResource("/application/TaskAdd.fxml"));
-            try {
-                loader.load();
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-           
-            Parent p=loader.getRoot();
-            Scene taskAddScene=new Scene(p);
-            Stage taskAddStage=new Stage();
-            Stage previousStage=(Stage)((Node)e.getSource()).getScene().getWindow();
-            taskAddStage.setScene(taskAddScene);
-            taskAddStage.setTitle("Add Task");
-            taskAddStage.initModality(Modality.WINDOW_MODAL);
-            taskAddStage.initOwner(previousStage);
-            taskAddStage.setResizable(false);
-            taskAddStage.show();
-            
-            
-            
-            
-            
-        });
+      
         projectRefreshBtn.setOnMouseClicked(e->{
             System.out.println("projectiamge refresh");
             refreshProjectList();
@@ -297,13 +336,13 @@ public class HomeNewController implements Initializable {
                         + "\nthe new value is " + newValue);
                 //notifylist.setText(oldValue + "\n" + newValue);
                 // notificationlist.add(newValue);
-
+                String msg[]=newValue.split(",");
                 
                 if (oldValue.equals("downloadCompleted")) {
                     //ProjectInformationController.showDialog(newValue);
-                } else if(newValue.equals("taskUpdateAck")) {
+                } else if(msg[0].equals("taskUpdateAck")) {
                     showNotification(newValue);
-                }else if(newValue.equals("projectCreationCompleted")) {
+                }else if(msg[0].equals("projectCreationCompleted")) {
                     //loading the project image file
                     showNotification(newValue);
                     System.out.println("getting list of project file asssoaciate with current user");
@@ -312,10 +351,33 @@ public class HomeNewController implements Initializable {
                     System.out.println("loading new project files");
                     loadProjectImage();
                     System.out.println("project creation stage closed");
-                }else {
-                    System.out.println("uer presence online");
+                }else if(msg[0].equals("projectRequest")) {
+                    //project request from other
+                    //showing this in requestpane
+                    System.out.println("project request");
+                    Label lb=new Label();
+                    lb.setText(msg[1]+"id is"+msg[2]);
+                    lb.setId("notificationLabel");
+                    lb.setOnMouseClicked(e->{
+                        System.out.println("the of this project is"+msg[2]);
+                    });
+                    projectRequestBox.getChildren().add(lb);
+                    showNotification(msg[1]);
                     
+                }
+                
+                
+                else {
+                    
+                    notificationBtn.setStyle("notifyActive");
+                    System.out.println("uer presence online");
+                    Label  lb=new Label();
+                    lb.setText(newValue);
+                    lb.setId("notificationLabel");
+                    notificationBox.getChildren().add(lb);
                     showNotification(newValue);
+                    
+                    
                 }
 
             }
@@ -363,7 +425,7 @@ public class HomeNewController implements Initializable {
         //reading the json file
         JSONParser parser=new JSONParser();
         try {
-            Object obj=parser.parse(new FileReader("file.json"));
+            Object obj=parser.parse(new FileReader("./"+tmp.getVuser().getUser_name()+".json"));
             JSONObject jObj=(JSONObject)obj;
             Long previousProject=(Long)jObj.get("activeProject");
             System.out.println("the previous project is"+previousProject);
@@ -374,8 +436,8 @@ public class HomeNewController implements Initializable {
             tabClickedAction("ProjectInformation");
             
             currentTab.setText("# PROJECT INFORMATION");
-            project_info.setStyle("-fx-background-color:#36393F;");
-            activeTab.setStyle("-fx-background-color:transparent;");
+            project_info.setStyle(styleActive);
+            activeTab.setStyle(styleInActive);
             activeTab=project_info;
             
          
@@ -415,13 +477,15 @@ public class HomeNewController implements Initializable {
                 System.out.println("previous project id"+activeProjectId+"is available");
                 project_name.setText(pro.getprojectTitle());
                 tmp.setCurrentUserRoleInActiveProject(pro.getRoleId());
+                System.out.println("current user role in current project is"+pro.getRoleId());
                 if(pro.getRoleId()==1) {
                     activeUserRole.setText("MANAGER");
+                    rflag=true;
                     System.out.println("active user is manager");
-                    task_inReview.setLayoutX(task_completed.getLayoutX());
-                    task_inReview.setLayoutY(task_completed.getLayoutY());
-                    task_completed.setLayoutX(task_inReview.getLayoutX());
-                    task_completed.setLayoutY(task_inReview.getLayoutY()+40);
+                    task_inReview.setLayoutX(task_running.getLayoutX());
+                    task_inReview.setLayoutY(task_running.getLayoutY()+40);
+                    task_completed.setLayoutX(task_running.getLayoutX());
+                    task_completed.setLayoutY(task_running.getLayoutY()+80);
                     task_inReview.setVisible(true);
                 }else {
                     activeUserRole.setText("TEAM MEMBER");
@@ -484,9 +548,14 @@ public class HomeNewController implements Initializable {
                          if(projectList.get(j).getProjectId()==activeProjectId) {
                              //same project clicke twice so do nothing
                              System.out.println("previous active project id is"+activeProjectId);
+                             pflag=true;
                              break;
                          }
                      }
+                     
+                     if(pflag) {
+                         //if alrady active project id clicked then we dont have to load it again 
+                     pflag=false;
                      ColorAdjust colorAdjust11 = new ColorAdjust();
                      colorAdjust11.setBrightness(-0.5);
                      imageView[j].setEffect(colorAdjust11);
@@ -508,14 +577,31 @@ public class HomeNewController implements Initializable {
                              activeProjectId=activeProject.getProjectId();
                              tmp.setActiveProjectId(activeProjectId);
                              tmp.setCurrentUserRoleInActiveProject(activeProject.getRoleId());
+                             if(activeProject.getRoleId()==1) {
+                                 activeUserRole.setText("MANAGER");
+                                 System.out.println("active user is manager");
+                                 if(!rflag) {
+                                     System.out.println("mananger ui  already set");
+                                 task_inReview.setLayoutX(task_running.getLayoutX());
+                                 task_inReview.setLayoutY(task_running.getLayoutY()+40);
+                                 task_completed.setLayoutX(task_running.getLayoutX());
+                                 task_completed.setLayoutY(task_running.getLayoutY()+80);
+                                 }
+                                 task_inReview.setVisible(true);
+                                 
+                             }else {
+                                 activeUserRole.setText("TEAM MEMBER");
+                                 task_inReview.setVisible(false);
+                                 task_completed.setLayoutY(task_running.getLayoutY()+40);
+                             }
                              
                              tabClickedAction("ProjectInformation");
                              currentTab.setText("# PROJECT INFORMATION");
                             
                              if(activeTab!=null) {
-                           activeTab.setStyle("-fx-background-color:transparent;");
+                           activeTab.setStyle(styleInActive);
                              }
-                             project_info.setStyle("-fx-background-color:#36393F;");
+                             project_info.setStyle(styleActive);
                              activeTab=project_info;
                              
                              //searching the project name
@@ -526,7 +612,9 @@ public class HomeNewController implements Initializable {
                          
                      }
                      
-                 
+                     }
+                     
+                     //
                     
                 });
               
@@ -644,7 +732,7 @@ public class HomeNewController implements Initializable {
     private void closeNotificationHandler() {
        
         FadeTransition fadeTransition=new FadeTransition();
-        fadeTransition.setDuration(Duration.millis(1000));
+        fadeTransition.setDuration(Duration.millis(500));
         fadeTransition.setNode(notificationPane);
         fadeTransition.setFromValue(1);
         fadeTransition.setToValue(0);

@@ -3,6 +3,7 @@ package com.info.controller;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
@@ -107,6 +108,7 @@ public class MainController implements Initializable {
                         tmp.getOut().println("loginHandler");
                         //sending user email and password for verification to server
                         tmp.getObjOut().writeObject(currentUser);
+                        
                       //reading the response from server 
                         vuser = (User)tmp.getObjIn().readObject();
                     
@@ -115,7 +117,19 @@ public class MainController implements Initializable {
                     }
                     if(vuser!=null) {
                         System.out.println("user logged in");
-                        
+                      //creating json file 
+                        File file =new File("./"+vuser.getUser_name()+".json");
+                      //Create the file
+                        try {
+                            if (file.createNewFile()){
+                              System.out.println("File is created!");
+                            }else{
+                              System.out.println("File already exists.");
+                            }
+                        } catch (IOException e2) {
+                            // TODO Auto-generated catch block
+                            e2.printStackTrace();
+                        }
                         //switching to home.fxml scene 
                         //setting current verified user in singleton class
                         CurrentUserSingleton tmp=CurrentUserSingleton.getInstance();

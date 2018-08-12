@@ -44,8 +44,18 @@
 	-fx-text-fill:#2196F3;
 	
 }
+.bg-mainColor{
+	-fx-background-color:#2196F3;
+	-fx-text-fill:white;
+}
 .text-colorGrey{
 		-fx-text-fill:#8C8D91;
+}
+.bg-colorGrey{
+		 -fx-fill:#8C8D91;
+}
+.bg-colorGrey:hover{
+	 -fx-fill:white;
 }
 .text-whiteColor{
 	-fx-text-fill:white;
@@ -59,6 +69,10 @@
 	-fx-background-color:#4CAF50;
 	-fx-text-fill:white;
 	}
+.buttonRed{
+	-fx-background-color:#C62828;
+	-fx-text-fill:white;
+	}	
 .list-view{
 	-fx-background-insets: 0; -fx-padding: 0;
 }
@@ -67,15 +81,18 @@
 	-fx-text-fill:white;
 }
 .labelStyle{
-	-fx-padding:5px;
-	-fx-pref-height:30px;
+	-fx-padding:10px;
+	-fx-pref-height:35px;
 	-fx-pref-width:330px;
 	-fx-font-size:19px;
+	-fx-border-width:0.0 0 0 2; 
+		-fx-border-color:transparent;
 	
 }
 .labelStyle:hover{
 	-fx-background-color:#36393F;
-}
+	
+	}
 .text-field{
 	-fx-background-color:#2D2F34;
 	-fx-border-radius:5px;
@@ -98,3 +115,20 @@
      
      
   }
+  
+ #notificationLabel{
+ 	-fx-text-fill:white;
+ 	 
+ 	 -fx-pref-width:300px;
+ 	 -fx-pref-height:55px;
+ 	 -fx-padding:0.0 0 0.0 10.0 ;
+ 	 -fx-border-width:0.0 0.0 1 0;
+ 	 -fx-border-color:#8C8D91;
+ } 
+ #notifyActive{
+ 	-fx-text-fill:-fx-mainColor;
+ }
+ #notifyInActive{
+ 		-fx-text-fill:white;
+ }
+ 
